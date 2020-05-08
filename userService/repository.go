@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/jinzhu/gorm"
-	pb "github.com/zjjt/abjnet/userService/proto/user"
+	pb "github.com/zjjt/abjnet/userservice/proto/user"
 )
 
 type repository interface {
