@@ -8,7 +8,7 @@ import (
 	"log"
 
 	"github.com/micro/go-micro/v2/broker"
-	pb "github.com/zjjt/abjnet/userservice/proto/user"
+	pb "github.com/zjjt/abjnet/user_service/proto/user"
 	"golang.org/x/crypto/bcrypt"
 )
 
