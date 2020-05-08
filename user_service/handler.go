@@ -21,7 +21,7 @@ type service struct {
 	PubSub       broker.Broker
 }
 
-func newUserService(repo repository, tokenService Authable, pubsub broker.Broker) *service {
+func newuser_service(repo repository, tokenService Authable, pubsub broker.Broker) *service {
 	return &service{repo, tokenService, pubsub}
 }
 
@@ -29,7 +29,7 @@ func newUserService(repo repository, tokenService Authable, pubsub broker.Broker
 func (s *service) Get(ctx context.Context, req *pb.User, res *pb.Response) error {
 	user, err := s.repo.Get(req.Id)
 	if err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 	res.User = user
@@ -40,7 +40,7 @@ func (s *service) Get(ctx context.Context, req *pb.User, res *pb.Response) error
 func (s *service) GetAll(ctx context.Context, req *pb.Request, res *pb.Response) error {
 	users, err := s.repo.GetAll()
 	if err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 	res.Users = users
@@ -53,17 +53,17 @@ func (s *service) Auth(ctx context.Context, req *pb.User, res *pb.Token) error {
 	user, err := s.repo.GetByEmail(req.Email)
 	log.Println("user is ", user)
 	if err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 	// Compare the password with the hashed password stored in database
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 	token, err := s.tokenService.Encode(user)
 	if err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 	res.Token = token
@@ -75,12 +75,12 @@ func (s *service) Create(ctx context.Context, req *pb.User, res *pb.Response) er
 	//generate hash version of user password
 	hashPass, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 	req.Password = string(hashPass)
 	if err := s.repo.Create(req); err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 	res.User = req
@@ -95,12 +95,12 @@ func (s *service) ValidateToken(ctx context.Context, req *pb.Token, res *pb.Toke
 	//decode token
 	claims, err := s.tokenService.Decode(req.Token)
 	if err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 	//log.Println(claims)
 	if claims.User.Id == "" {
-		return errors.New("invalid user --from UserService")
+		return errors.New("invalid user --from user_service")
 	}
 	res.Valid = true
 	return nil
@@ -111,7 +111,7 @@ func (s *service) publishEvent(user *pb.User) error {
 	//concerning that user
 	body, err := json.Marshal(user)
 	if err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		return errors.New(theerror)
 	}
 
@@ -124,7 +124,7 @@ func (s *service) publishEvent(user *pb.User) error {
 	}
 	//publish the message to the broker
 	if err := s.PubSub.Publish(topic, msg); err != nil {
-		theerror := fmt.Sprintf("%v --from UserService", err)
+		theerror := fmt.Sprintf("%v --from user_service", err)
 		log.Printf("[PUB] failed %s\n", theerror)
 	}
 	return nil

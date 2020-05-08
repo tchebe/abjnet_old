@@ -2,7 +2,7 @@ syntax= "proto3";
 
 package user;
 
-service UserService{
+service user_service{
     rpc Create(User) returns (Response){}
     rpc Get(User) returns (Response){}
     rpc GetAll(Request) returns (Response){}

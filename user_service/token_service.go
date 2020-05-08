@@ -52,7 +52,7 @@ func (srv *TokenService) Encode(user *pb.User) (string, error) {
 		user,
 		jwt.StandardClaims{
 			ExpiresAt: exprireTime,
-			Issuer:    "shippingGo.service.user",
+			Issuer:    "abjnet.service.user",
 		},
 	}
 	//create token
