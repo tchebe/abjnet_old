@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	db, err := createPostgresDBConnection()
+	db, err := CreatePostgresDBConnection()
 	defer db.Close()
 	if err != nil {
 		log.Fatalf("Could not connect to the database: %v", err)
