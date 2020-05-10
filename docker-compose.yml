@@ -31,9 +31,10 @@ services:
     environment: 
       MICRO_SERVER_ADDRESS: ":50054"
       MICRO_REGISTERY: "mdns"
-database:
-    image: postgres
-    ports:
-      - 5433:5432
-    environment: 
-      POSTGRES_PASSWORD: "postgres"
+      
+  database:
+      image: postgres
+      ports:
+        - 5433:5432
+      environment: 
+        POSTGRES_PASSWORD: "postgres"
