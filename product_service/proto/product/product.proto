@@ -3,16 +3,13 @@ syntax= "proto3";
 package product;
 
 service ProductService{
-    rpc Create(Product) returns (Response){}
     rpc Get(Product) returns (Response){}
     rpc GetAll(Request)returns(Response){}
-    rpc Delete(Product) returns(Response){}
 }
 
 message Product{
     string id=1;
     string name=2;
-    string description=3;
 }
 message Request{}
 

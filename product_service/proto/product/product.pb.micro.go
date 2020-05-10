@@ -34,10 +34,8 @@ var _ server.Option
 // Client API for ProductService service
 
 type ProductService interface {
-	Create(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 	Get(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 	GetAll(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
-	Delete(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 }
 
 type productService struct {
@@ -50,16 +48,6 @@ func NewProductService(name string, c client.Client) ProductService {
 		c:    c,
 		name: name,
 	}
-}
-
-func (c *productService) Create(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "ProductService.Create", in)
-	out := new(Response)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *productService) Get(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error) {
@@ -82,31 +70,17 @@ func (c *productService) GetAll(ctx context.Context, in *Request, opts ...client
 	return out, nil
 }
 
-func (c *productService) Delete(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "ProductService.Delete", in)
-	out := new(Response)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // Server API for ProductService service
 
 type ProductServiceHandler interface {
-	Create(context.Context, *Product, *Response) error
 	Get(context.Context, *Product, *Response) error
 	GetAll(context.Context, *Request, *Response) error
-	Delete(context.Context, *Product, *Response) error
 }
 
 func RegisterProductServiceHandler(s server.Server, hdlr ProductServiceHandler, opts ...server.HandlerOption) error {
 	type productService interface {
-		Create(ctx context.Context, in *Product, out *Response) error
 		Get(ctx context.Context, in *Product, out *Response) error
 		GetAll(ctx context.Context, in *Request, out *Response) error
-		Delete(ctx context.Context, in *Product, out *Response) error
 	}
 	type ProductService struct {
 		productService
@@ -119,18 +93,10 @@ type productServiceHandler struct {
 	ProductServiceHandler
 }
 
-func (h *productServiceHandler) Create(ctx context.Context, in *Product, out *Response) error {
-	return h.ProductServiceHandler.Create(ctx, in, out)
-}
-
 func (h *productServiceHandler) Get(ctx context.Context, in *Product, out *Response) error {
 	return h.ProductServiceHandler.Get(ctx, in, out)
 }
 
 func (h *productServiceHandler) GetAll(ctx context.Context, in *Request, out *Response) error {
 	return h.ProductServiceHandler.GetAll(ctx, in, out)
-}
-
-func (h *productServiceHandler) Delete(ctx context.Context, in *Product, out *Response) error {
-	return h.ProductServiceHandler.Delete(ctx, in, out)
 }
