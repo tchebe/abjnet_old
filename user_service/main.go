@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/micro/go-micro/v2"
-	pb "github.com/zjjt/shippingGo/user_service/proto/user"
+	pb "github.com/zjjt/abjnet/user_service/proto/user"
 )
 
 func main() {

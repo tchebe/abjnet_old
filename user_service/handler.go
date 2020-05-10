@@ -21,7 +21,7 @@ type service struct {
 	PubSub       broker.Broker
 }
 
-func newuser_service(repo repository, tokenService Authable, pubsub broker.Broker) *service {
+func newUserService(repo repository, tokenService Authable, pubsub broker.Broker) *service {
 	return &service{repo, tokenService, pubsub}
 }
 
