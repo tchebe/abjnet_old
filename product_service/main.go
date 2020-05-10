@@ -20,7 +20,7 @@ func main() {
 	// into database columns/types etc. This will
 	// check for changes and migrate them each time
 	// this service is restarted.
-	db.AutoMigrate(&pb.Product{})
+	//db.AutoMigrate(&pb.Product{})
 	repo := newProductRepository(db)
 	service := micro.NewService(micro.Name("abjnet.service.product"))
 	service.Init()
