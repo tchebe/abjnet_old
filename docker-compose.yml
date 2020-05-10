@@ -24,17 +24,33 @@ services:
       DB_NAME: "postgres"
       MICRO_REGISTERY: "mdns"
 
+  abjnet_product_service:
+    restart: always
+    container_name: "abjnet_product_service"
+    build: ./product_service
+    ports:
+      - 50052:50051
+    environment: 
+      DB_HOST: "10.8.3.29:57055"
+      DB_USER: "reportvie"
+      DB_PASSWORD: "reportvie"
+      DB_NAME: "SUN_COTEDIVOIRE"
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTERY: "mdns"
+
   abjnet_email_service:
     restart: always
     container_name: "abjnet_email_service"
     build: ./email_service
+    ports:
+      - 50053:50051
     environment: 
-      MICRO_SERVER_ADDRESS: ":50054"
+      MICRO_SERVER_ADDRESS: ":50051"
       MICRO_REGISTERY: "mdns"
       
   database:
       image: postgres
       ports:
-        - 5433:5432
+        - 5434:5432
       environment: 
         POSTGRES_PASSWORD: "postgres"

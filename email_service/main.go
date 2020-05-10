@@ -54,7 +54,7 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 
 func main() {
 	//slice of topics to suscribe to
-	topics := []string{"user.created", "product.deleted"}
+	topics := []string{"user.created"}
 	srv := micro.NewService(micro.Name("abjnet.service.email"))
 	srv.Init()
 	//get the broker instance
