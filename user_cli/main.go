@@ -30,25 +30,29 @@ func main() {
 	//ici on prerempli les elements du slice de user afin de boucler sur leur creation
 	for i:=0;i<1;i++{
 		append(userArray,&user{
-			name := "weblogie"
-			email := "thibaut.zehi@groupensia.com"
-			password := "nsi@weblogie130"
+			name := "weblogie",
+			email := "thibaut.zehi@groupensia.com",
+			password := "nsi@weblogie130",
 			company := "WEBLOGIE"
 		})
 	}
 	
 	//here we call our user service
 	if len(userArray){
-		r, err := client.Create(context.TODO(), &pb.User{
-			Name:     name,
-			Email:    email,
-			Password: password,
-			Company:  company,
-		})
-		if err != nil {
-			log.Fatalf("couldnt create user %v", err)
+		for i:=0;i<len(userArray);i++{
+			r, err := client.Create(context.TODO(), &pb.User{
+				Name:     userArray[i].name,
+				Email:    userArray[i].email,
+				Password: userArray[i].password,
+				Company:  userArray[i].company,
+			})
+			if err != nil {
+				log.Fatalf("couldnt create user %v", err)
+			}
+			log.Printf("Created: %s", r.User.Id)
+
 		}
-		log.Printf("Created: %s", r.User.Id)
+		
 		getAll, err := client.GetAll(context.Background(), &pb.Request{})
 		if err != nil {
 			log.Fatalf("Couldnt retrieve list of users %v", err)
@@ -57,12 +61,12 @@ func main() {
 			log.Println(v)
 		}
 		authResponse, err := client.Auth(context.Background(), &pb.User{
-			Email:    email,
-			Password: password,
+			Email:    userArray[0].email,
+			Password: userArray[0].password,
 		})
 	
 		if err != nil {
-			log.Fatalf("Could not authenticate user: %s error: %v\n", email, err)
+			log.Fatalf("Could not authenticate user: %s error: %v\n", userArray[0].email, err)
 		}
 		log.Printf("Your access token is: %s \n", authResponse.Token)
 		os.Exit(0)
