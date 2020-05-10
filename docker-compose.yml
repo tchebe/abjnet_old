@@ -17,7 +17,7 @@ services:
       #   - HTTP_PROXY=http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
     ports:
-      - 50051:50051
+      - 8084:50051
     depends_on: 
       - "database"
     environment: 
@@ -37,7 +37,7 @@ services:
       #   - HTTP_PROXY=http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
     ports:
-      - 50052:50051
+      - 8085:50051
     environment: 
       DB_HOST: "10.8.3.29:57055"
       DB_USER: "reportvie"
@@ -55,7 +55,7 @@ services:
       #   - HTTP_PROXY=http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
     ports:
-      - 50053:50051
+      - 8086:50051
     environment: 
       MICRO_SERVER_ADDRESS: ":50051"
       MICRO_REGISTERY: "mdns"
