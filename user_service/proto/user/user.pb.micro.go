@@ -5,14 +5,13 @@ package user
 
 import (
 	fmt "fmt"
-	math "math"
-
 	proto "github.com/golang/protobuf/proto"
+	math "math"
+)
 
+import (
 	context "context"
-
 	client "github.com/micro/go-micro/v2/client"
-
 	server "github.com/micro/go-micro/v2/server"
 )
 
@@ -32,9 +31,9 @@ var _ context.Context
 var _ client.Option
 var _ server.Option
 
-// Client API for user_service service
+// Client API for UserService service
 
-type user_service interface {
+type UserService interface {
 	Create(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error)
 	Get(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error)
 	GetAll(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
@@ -42,20 +41,20 @@ type user_service interface {
 	ValidateToken(ctx context.Context, in *Token, opts ...client.CallOption) (*Token, error)
 }
 
-type user_service struct {
+type userService struct {
 	c    client.Client
 	name string
 }
 
-func Newuser_service(name string, c client.Client) user_service {
-	return &user_service{
+func NewUserService(name string, c client.Client) UserService {
+	return &userService{
 		c:    c,
 		name: name,
 	}
 }
 
-func (c *user_service) Create(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "user_service.Create", in)
+func (c *userService) Create(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "UserService.Create", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -64,8 +63,8 @@ func (c *user_service) Create(ctx context.Context, in *User, opts ...client.Call
 	return out, nil
 }
 
-func (c *user_service) Get(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "user_service.Get", in)
+func (c *userService) Get(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "UserService.Get", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -74,8 +73,8 @@ func (c *user_service) Get(ctx context.Context, in *User, opts ...client.CallOpt
 	return out, nil
 }
 
-func (c *user_service) GetAll(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "user_service.GetAll", in)
+func (c *userService) GetAll(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "UserService.GetAll", in)
 	out := new(Response)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -84,8 +83,8 @@ func (c *user_service) GetAll(ctx context.Context, in *Request, opts ...client.C
 	return out, nil
 }
 
-func (c *user_service) Auth(ctx context.Context, in *User, opts ...client.CallOption) (*Token, error) {
-	req := c.c.NewRequest(c.name, "user_service.Auth", in)
+func (c *userService) Auth(ctx context.Context, in *User, opts ...client.CallOption) (*Token, error) {
+	req := c.c.NewRequest(c.name, "UserService.Auth", in)
 	out := new(Token)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -94,8 +93,8 @@ func (c *user_service) Auth(ctx context.Context, in *User, opts ...client.CallOp
 	return out, nil
 }
 
-func (c *user_service) ValidateToken(ctx context.Context, in *Token, opts ...client.CallOption) (*Token, error) {
-	req := c.c.NewRequest(c.name, "user_service.ValidateToken", in)
+func (c *userService) ValidateToken(ctx context.Context, in *Token, opts ...client.CallOption) (*Token, error) {
+	req := c.c.NewRequest(c.name, "UserService.ValidateToken", in)
 	out := new(Token)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -104,9 +103,9 @@ func (c *user_service) ValidateToken(ctx context.Context, in *Token, opts ...cli
 	return out, nil
 }
 
-// Server API for user_service service
+// Server API for UserService service
 
-type user_serviceHandler interface {
+type UserServiceHandler interface {
 	Create(context.Context, *User, *Response) error
 	Get(context.Context, *User, *Response) error
 	GetAll(context.Context, *Request, *Response) error
@@ -114,41 +113,41 @@ type user_serviceHandler interface {
 	ValidateToken(context.Context, *Token, *Token) error
 }
 
-func Registeruser_serviceHandler(s server.Server, hdlr user_serviceHandler, opts ...server.HandlerOption) error {
-	type user_service interface {
+func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
+	type userService interface {
 		Create(ctx context.Context, in *User, out *Response) error
 		Get(ctx context.Context, in *User, out *Response) error
 		GetAll(ctx context.Context, in *Request, out *Response) error
 		Auth(ctx context.Context, in *User, out *Token) error
 		ValidateToken(ctx context.Context, in *Token, out *Token) error
 	}
-	type user_service struct {
-		user_service
+	type UserService struct {
+		userService
 	}
-	h := &user_serviceHandler{hdlr}
-	return s.Handle(s.NewHandler(&user_service{h}, opts...))
+	h := &userServiceHandler{hdlr}
+	return s.Handle(s.NewHandler(&UserService{h}, opts...))
 }
 
-type user_serviceHandler struct {
-	user_serviceHandler
+type userServiceHandler struct {
+	UserServiceHandler
 }
 
-func (h *user_serviceHandler) Create(ctx context.Context, in *User, out *Response) error {
-	return h.user_serviceHandler.Create(ctx, in, out)
+func (h *userServiceHandler) Create(ctx context.Context, in *User, out *Response) error {
+	return h.UserServiceHandler.Create(ctx, in, out)
 }
 
-func (h *user_serviceHandler) Get(ctx context.Context, in *User, out *Response) error {
-	return h.user_serviceHandler.Get(ctx, in, out)
+func (h *userServiceHandler) Get(ctx context.Context, in *User, out *Response) error {
+	return h.UserServiceHandler.Get(ctx, in, out)
 }
 
-func (h *user_serviceHandler) GetAll(ctx context.Context, in *Request, out *Response) error {
-	return h.user_serviceHandler.GetAll(ctx, in, out)
+func (h *userServiceHandler) GetAll(ctx context.Context, in *Request, out *Response) error {
+	return h.UserServiceHandler.GetAll(ctx, in, out)
 }
 
-func (h *user_serviceHandler) Auth(ctx context.Context, in *User, out *Token) error {
-	return h.user_serviceHandler.Auth(ctx, in, out)
+func (h *userServiceHandler) Auth(ctx context.Context, in *User, out *Token) error {
+	return h.UserServiceHandler.Auth(ctx, in, out)
 }
 
-func (h *user_serviceHandler) ValidateToken(ctx context.Context, in *Token, out *Token) error {
-	return h.user_serviceHandler.ValidateToken(ctx, in, out)
+func (h *userServiceHandler) ValidateToken(ctx context.Context, in *Token, out *Token) error {
+	return h.UserServiceHandler.ValidateToken(ctx, in, out)
 }

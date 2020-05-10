@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/v2"
 )
 
 func main() {
