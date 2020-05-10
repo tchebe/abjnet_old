@@ -5,11 +5,10 @@ import (
 	"log"
 
 	"github.com/micro/go-micro/v2"
-	pb "github.com/zjjt/shippingGo/user_service/proto/user"
+	pb "github.com/zjjt/abjnet/product_service/proto/product"
 )
 
 func main() {
-
 	db, err := createPostgresDBConnection()
 	defer db.Close()
 	if err != nil {
@@ -17,14 +16,13 @@ func main() {
 	} else {
 		log.Println("Connected to DB successfully")
 	}
-	// Automatically migrates the user struct
+	// Automatically migrates the product struct
 	// into database columns/types etc. This will
 	// check for changes and migrate them each time
 	// this service is restarted.
-	db.AutoMigrate(&pb.User{})
-	repo := newUserRepository(db)
-	tokenservice := newtokenService(repo)
-	service := micro.NewService(micro.Name("abjnet.service.user"))
+	db.AutoMigrate(&pb.Product{})
+	repo := newProductRepository(db)
+	service := micro.NewService(micro.Name("abjnet.service.product"))
 	service.Init()
 	//get an instance of the event broker
 	pubsub := service.Server().Options().Broker
@@ -34,9 +32,9 @@ func main() {
 	if err := pubsub.Connect(); err != nil {
 		log.Fatalf("Broker Connect error: %v", err)
 	}
-	pb.RegisterUserServiceHandler(service.Server(), newUserService(repo, tokenservice, pubsub))
+	pb.RegisterProductServiceHandler(service.Server(), newProductService(repo, pubsub))
 	if err := service.Run(); err != nil {
-		theerror := fmt.Sprintf("%v --from user_service", err)
+		theerror := fmt.Sprintf("%v --from ProductService", err)
 		fmt.Println(theerror)
 	}
 }
