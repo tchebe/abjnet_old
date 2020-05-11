@@ -11,8 +11,8 @@ ENV GO111MODULE=on
 
 COPY go.mod . 
 COPY go.sum .
-ENV http_proxy 'http://127.0.0.1:3128'
-ENV https_proxy 'http://127.0.0.1:3128'
+ENV http_proxy 'http://127.0.0.1:3128/'
+ENV https_proxy 'http://127.0.0.1:3128/'
 RUN go mod download -x
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o abjnetProductService
