@@ -52,7 +52,8 @@ services:
     build: 
       context: ./email_service
       args:
-        HTTP_PROXY: http://127.0.0.1:3138/
+        http_proxy: http://127.0.0.1:3128/
+      #   HTTP_PROXY: http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
     ports:
       - 8086:50051
