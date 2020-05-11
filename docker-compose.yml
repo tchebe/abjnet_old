@@ -51,8 +51,7 @@ services:
     container_name: "abjnet_email_service"
     build: 
       context: ./email_service
-      args:
-        http_proxy: http://127.0.0.1:3128/
+      # args:
       #   HTTP_PROXY: http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
     ports:
