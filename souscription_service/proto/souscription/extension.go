@@ -7,7 +7,7 @@ import (
 
 //BeforeCreate is a postgresql gorm related function enabling us to
 //add uuid for example
-func (model *User) BeforeCreate(scope *gorm.Scope) error {
+func (model *Souscription) BeforeCreate(scope *gorm.Scope) error {
 	uuid := uuid.NewV4()
 	return scope.SetColumn("Id", uuid.String())
 }
