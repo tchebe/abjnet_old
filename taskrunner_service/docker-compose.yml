@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  abjnet_taskrunner_service:
+    restart: always
+    container_name: "abjnet_taskrunner_service"
+    build: 
+      context: .
+    environment: 
+      DELETESUBSAT: "* * * * *"
+      MICRO_SERVER_ADDRESS: ":50055"
+      MICRO_REGISTERY: "mdns"

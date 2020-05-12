@@ -1,0 +1,14 @@
+version: '3.5'
+
+services:
+  abjnet_email_service:
+    restart: always
+    container_name: "abjnet_email_service"
+    build: 
+      context: .
+    environment: 
+      MICRO_SERVER_ADDRESS: ":50054"
+      MICRO_REGISTERY: "mdns"
+      SMTP_HOST: 10.10.4.15
+      SMTP_PORT: 25
+      FROM: "thibaut.zehi@groupensia.com"

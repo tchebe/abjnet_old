@@ -10,6 +10,7 @@ services:
   #     - "abjnet_user_service"
 
   abjnet_user_service:
+    container_name: abjnet_user_service
     restart: always
     build: 
       context: ./user_service
@@ -32,6 +33,7 @@ services:
   
   abjnet_souscription_service:
     restart: always
+    container_name: abjnet_souscription_service
     build: 
       context: ./souscription_service
       # args:
@@ -100,6 +102,8 @@ services:
       - 9088:50051
     environment: 
       DELETESUBSAT: "* * * * *"
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTERY: "mdns"
 
   #we use the default db postgres created   
   database:

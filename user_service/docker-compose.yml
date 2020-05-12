@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+  abjnet_user_service:
+    container_name: abjnet_user_service
+    restart: always
+    build: 
+      context: .
+      # args:
+      #   - HTTP_PROXY=http://127.0.0.1:3138/
+      #   - HTTPS_PROXY=http://127.0.0.1:3138/
+    depends_on: 
+      - "database"
+    environment: 
+      MICRO_SERVER_ADDRESS: ":50051"
+      DB_HOST: "127.0.0.1:5434"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_NAME: "postgres"
+      #TOKENEXPIRE in minutes
+      TOKENEXPIRE: "5"
+      MICRO_REGISTERY: "mdns"
+    network_mode: host
+   #we use the default db postgres created   
+  database:
+    restart: always
+    image: postgres
+    ports:
+      - 5434:5432
+    environment: 
+      POSTGRES_PASSWORD: "postgres"

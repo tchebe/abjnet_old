@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  abjnet_product_service:
+    restart: always
+    container_name: "abjnet_product_service"
+    build: 
+      context: ./product_service
+      # args:
+      #   - HTTP_PROXY=http://127.0.0.1:3138/
+      #   - HTTPS_PROXY=http://127.0.0.1:3138/
+    environment: 
+      DB_HOST: "10.8.3.29:57055"
+      DB_USER: "reportvie"
+      DB_PASSWORD: "reportvie"
+      DB_NAME: "SUN_COTEDIVOIRE"
+      MICRO_SERVER_ADDRESS: ":50053"
+      MICRO_REGISTERY: "mdns"
+    network_mode: host
