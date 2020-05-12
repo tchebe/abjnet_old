@@ -22,8 +22,8 @@ dockerbuild_souscription_service:
 dockerbuild_souscription_service_proxy:
 	cd souscription_service && docker build --build-arg HTTP_PROXY=http://172.17.0.1:3128/  --build-arg HTTPS_PROXY=http://172.17.0.1:3128/ -t abjnet_souscription_service . 
 
-dockerbuild_taksrunner_service:
+dockerbuild_taskrunner_service:
 	cd taksrunner_service && docker build -t abjnet_taksrunner_service . 
 
-dockerbuild_taksrunner_service_proxy:
+dockerbuild_taskrunner_service_proxy:
 	cd taksrunner_service && docker build --build-arg HTTP_PROXY=http://172.17.0.1:3128/  --build-arg HTTPS_PROXY=http://172.17.0.1:3128/ -t abjnet_taksrunner_service . 
