@@ -94,10 +94,11 @@ func prepareExcelFile(subs []*pbS.Souscription) *excelize.File {
 	excelfile.SetCellValue("Sheet1", "D1", "CONTACT TELEPHONIQUE")
 	excelfile.SetCellValue("Sheet1", "E1", "N CARTE ABIDJAN.NET")
 	excelfile.SetCellValue("Sheet1", "F1", "MONTANT PAIEMENT")
-	excelfile.SetCellValue("Sheet1", "G1", "DATE PAIEMENT")
-	excelfile.SetCellValue("Sheet1", "H1", "ECHEANCE")
-	excelfile.SetCellValue("Sheet1", "I1", "NOM BENEFICIAIRE")
-	excelfile.SetCellValue("Sheet1", "J1", "EMAIL")
+	excelfile.SetCellValue("Sheet1", "G1", "CODE PRODUIT")
+	excelfile.SetCellValue("Sheet1", "H1", "DATE PAIEMENT")
+	excelfile.SetCellValue("Sheet1", "I1", "ECHEANCE")
+	excelfile.SetCellValue("Sheet1", "J1", "NOM BENEFICIAIRE")
+	excelfile.SetCellValue("Sheet1", "K1", "EMAIL")
 	//here we fill the file with the data
 	for i, v := range subs {
 		index := i + 2
@@ -107,10 +108,11 @@ func prepareExcelFile(subs []*pbS.Souscription) *excelize.File {
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("D%d", index), v.Telephone)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Abjcardno)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("F%d", index), v.Montant)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Datepayment)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Echeance)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("I%d", index), v.Beneficiaire)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("J%d", index), v.Email)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Codeproduit)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Datepayment)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("I%d", index), v.Echeance)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("J%d", index), v.Beneficiaire)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("K%d", index), v.Email)
 
 	}
 	return excelfile

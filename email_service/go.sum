@@ -439,10 +439,14 @@ github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 h1:eY9dn8+vbi4tKz5
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/xuri/efp v0.0.0-20191019043341-b7dc4fe9aa91 h1:gp02YctZuIPTk0t7qI+wvg3VQwTPyNmSGG6ZqOsjSL8=
 github.com/xuri/efp v0.0.0-20191019043341-b7dc4fe9aa91/go.mod h1:uBiSUepVYMhGTfDeBKKasV4GpgBlzJ46gXUBAqV8qLk=
+github.com/zjjt/abjnet v0.0.0-20200512225231-e7d5ddf0bc94 h1:zqLYVUqtk1O3NoK14/4cvjZOXlYnNsOxONF2rkKhPFg=
 github.com/zjjt/abjnet/product_service v0.0.0-20200510124243-75087721cd23 h1:d5FQ0CIgFvHdoZR/bTToV1o3dBT5D6pvCUCnWHQP0Q8=
 github.com/zjjt/abjnet/product_service v0.0.0-20200510124243-75087721cd23/go.mod h1:npqagUHqar9vT+UnodyHa4r8L6/s50IXfo6ilc4al1Q=
 github.com/zjjt/abjnet/souscription_service v0.0.0-20200512110341-1915f11f41db h1:IMa9UtVpWAxOe3fSF5ws0UcR60UK8wmUmDCmr3biKwg=
 github.com/zjjt/abjnet/souscription_service v0.0.0-20200512110341-1915f11f41db/go.mod h1:la8N30n7jXLddeevGW5ny0AyVYCCRyq7gpqIUHjI0uU=
+github.com/zjjt/abjnet/souscription_service v0.0.0-20200512225231-e7d5ddf0bc94 h1:cq+GtJs/h94X9VI0FUF/HAK3bdcPf4W44YXaF/HxvGA=
+github.com/zjjt/abjnet/souscription_service v0.0.0-20200512225231-e7d5ddf0bc94/go.mod h1:la8N30n7jXLddeevGW5ny0AyVYCCRyq7gpqIUHjI0uU=
+github.com/zjjt/abjnet/user_service v0.0.0-20200510124243-75087721cd23/go.mod h1:iKFmHxVNh6z8m8F16qlYFWxjgmmBP5wdL6iLNiLSJuk=
 github.com/zjjt/abjnet/user_service v0.0.0-20200511095046-4fffd71d851d h1:WT6qPIp0wK4ITuhXImLLWBD40rhOAxPSTw/dvmbGSTU=
 github.com/zjjt/abjnet/user_service v0.0.0-20200511095046-4fffd71d851d/go.mod h1:iKFmHxVNh6z8m8F16qlYFWxjgmmBP5wdL6iLNiLSJuk=
 go.etcd.io/bbolt v1.3.4 h1:hi1bXHMVrlQh6WwxAy+qZCV/SYIlqo+Ushwdpa4tAKg=
