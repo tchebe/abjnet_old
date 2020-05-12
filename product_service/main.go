@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/jinzhu/gorm"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/metadata"
@@ -48,7 +49,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	}
 }
 func main() {
-	db := nil
+	var db *gorm.DB
 	if os.Getenv("IN_NSIA") == "yes" {
 		db, err := createSqlServerDBConnection()
 		defer db.Close()
