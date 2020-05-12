@@ -32,7 +32,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 		}
 		meta, ok := metadata.FromContext(ctx)
 		if !ok {
-			return errors.New("no auth meta-data found in request --from ConsignementService")
+			return errors.New("no auth meta-data found in request --from souscription_service l35")
 		}
 		//it changed from token to Token
 		token := meta["Token"]
@@ -43,7 +43,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 			Token: token,
 		})
 		if err != nil {
-			theerror := fmt.Sprintf("%v --from UserService", err)
+			theerror := fmt.Sprintf("%v --from souscription_service l46", err)
 			return errors.New(theerror)
 		}
 		err = fn(ctx, req, res)
