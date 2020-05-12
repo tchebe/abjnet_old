@@ -27,3 +27,9 @@ dockerbuild_taskrunner_service:
 
 dockerbuild_taskrunner_service_proxy:
 	cd taskrunner_service && docker build --build-arg HTTP_PROXY=http://172.17.0.1:3128/  --build-arg HTTPS_PROXY=http://172.17.0.1:3128/ -t abjnet_taskrunner_service . 
+
+dockerbuild_api_gateway:
+	cd api_gateway && docker build -t abjnet_api_gateway . 
+
+dockerbuild_api_gateway_proxy:
+	cd api_gateway && docker build --build-arg HTTP_PROXY=http://172.17.0.1:3128/  --build-arg HTTPS_PROXY=http://172.17.0.1:3128/ -t abjnet_api_gateway . 
