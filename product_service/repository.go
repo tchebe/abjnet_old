@@ -28,7 +28,7 @@ func (repo *ProductRepository) Get(id string) (*pb.Product, error) {
 }
 func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 	var products []*pb.Product
-	req := repo.db.Raw("SELECT JAPRODP_WNPRO as CodeProduit, JAPRODP_LIPR01 as Name FROM NSIACIP.JAPRODP").Scan(&products)
+	req := repo.db.Raw("exec dbo.lstprdweblogy").Scan(&products)
 	if err := req.Error; err != nil {
 		return nil, err
 	}
