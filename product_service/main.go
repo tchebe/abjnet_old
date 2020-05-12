@@ -48,6 +48,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	}
 }
 func main() {
+	db := nil
 	if os.Getenv("IN_NSIA") == "yes" {
 		db, err := createSqlServerDBConnection()
 		defer db.Close()

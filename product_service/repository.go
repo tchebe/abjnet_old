@@ -22,6 +22,9 @@ func newProductRepository(db *gorm.DB) *ProductRepository {
 
 func (repo *ProductRepository) Get(id string) (*pb.Product, error) {
 	var product *pb.Product
+	if os.Getenv("IN_NSIA") == "no" {
+		return &pb.Product{Id: "1", Name: "CAREC TEST RETRAITE"}, nil
+	}
 	product.Id = id
 	if err := repo.db.First(&product).Error; err != nil {
 		return nil, err
