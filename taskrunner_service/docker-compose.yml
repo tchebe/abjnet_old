@@ -6,6 +6,7 @@ services:
     container_name: "abjnet_taskrunner_service"
     build: 
       context: .
+    network_mode: host
     environment: 
       DELETESUBSAT: "* * * * *"
       MICRO_SERVER_ADDRESS: ":50055"

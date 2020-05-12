@@ -8,7 +8,24 @@ services:
   #    MICRO_REGISTRY: "mdns"
   #   depends_on: 
   #     - "abjnet_user_service"
-
+  abjnet_api_gateway:
+    container: abjnet_api_gateway
+    restart: always
+    build: ./api_gateway
+    command: micro api
+    ports:
+      - 8080:8080
+      - 8081:8081
+      - 8082:8082
+    depends_on: 
+      - "abjnet_user_service"
+      - "abjnet_souscription_service"
+      - "abjnet_product_service"
+      - "abjnet_email_service"
+      - "abjnet_taskrunner_service"
+    environment: 
+      MICRO_NAMESPACE: "abjnet"
+    
   abjnet_user_service:
     container_name: abjnet_user_service
     restart: always

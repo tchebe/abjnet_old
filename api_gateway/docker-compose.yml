@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  abjnet_api_gateway:
+    container: abjnet_api_gateway
+    restart: always
+    build: .
+    command: micro api
+    # ports:
+    #   - 8080:8080
+    #   - 8081:8081
+    #   - 8082:8082
+    network_mode: host
+    environment: 
+      MICRO_NAMESPACE: "abjnet"
+      MICRO_REGISTERY: "mdns"
