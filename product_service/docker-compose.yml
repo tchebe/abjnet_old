@@ -11,6 +11,7 @@ services:
       #   - HTTP_PROXY=http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
     environment: 
+      IN_NSIA: "no"
       DB_HOST: "10.8.3.29:57055"
       DB_USER: "reportvie"
       DB_PASSWORD: "reportvie"

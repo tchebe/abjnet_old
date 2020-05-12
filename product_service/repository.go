@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/jinzhu/gorm"
 	pb "github.com/zjjt/abjnet/product_service/proto/product"
 )
@@ -28,10 +30,15 @@ func (repo *ProductRepository) Get(id string) (*pb.Product, error) {
 }
 func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 	var products []*pb.Product
-	req := repo.db.Raw("exec dbo.lstprdweblogy").Scan(&products)
-	if err := req.Error; err != nil {
-		return nil, err
+	if os.Getenv("IN_NSIA") == "no" {
+		products = append(products, &pb.Product{Id: "1", Name: "CAREC TEST RETRAITE"})
+		products = append(products, &pb.Product{Id: "2", Name: "CAREC TEST EPARGNE"})
+
+	} else {
+		req := repo.db.Raw("exec dbo.lstprdweblogy").Scan(&products)
+		if err := req.Error; err != nil {
+			return nil, err
+		}
 	}
 	return products, nil
-
 }
