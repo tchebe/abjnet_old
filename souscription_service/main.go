@@ -81,7 +81,7 @@ func publishEvent(subs []*pb.Souscription, pubsub broker.Broker, topic string) e
 }
 
 func main() {
-	db, err := createSqlServerDBConnection()
+	db, err := createPostgresDBConnection()
 	defer db.Close()
 	if err != nil {
 		log.Fatalf("Could not connect to the database: %v", err)
