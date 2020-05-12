@@ -34,8 +34,7 @@ func (repo *SubRepository) GetAll() ([]*pb.Souscription, error) {
 
 }
 func (repo *SubRepository) DeleteAll() (bool, error) {
-	_, subs := repo.GetAll()
-	if err := repo.db.Delete(&subs).Error; err != nil {
+	if err := repo.db.Raw("TRUNCATE TABLE souscriptions").Error; err != nil {
 		return false, err
 	}
 	return true, nil
