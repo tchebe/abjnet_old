@@ -107,7 +107,7 @@ func sendEmail(from string, to string, cc string, topic string, msghtml string, 
 	m.SetHeader("Subject", topic)
 	m.SetBody("text/html", msghtml)
 	//if there's a file to join first we unmarshall the byteArr into the appropriate format
-	if len(byteArr) {
+	if len(byteArr) > 0 {
 		var subs *pbS.Souscription
 		json.Unmarshal(byteArr, &subs)
 	}
