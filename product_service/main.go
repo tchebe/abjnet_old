@@ -48,13 +48,16 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	}
 }
 func main() {
-	db, err := createSqlServerDBConnection()
-	defer db.Close()
-	if err != nil {
-		log.Fatalf("Could not connect to the database: %v", err)
-	} else {
-		log.Println("Connected to DB successfully")
+	if os.Getenv("IN_NSIA") == "yes" {
+		db, err := createSqlServerDBConnection()
+		defer db.Close()
+		if err != nil {
+			log.Fatalf("Could not connect to the database: %v", err)
+		} else {
+			log.Println("Connected to DB successfully")
+		}
 	}
+
 	// Automatically migrates the product struct
 	// into database columns/types etc. This will
 	// check for changes and migrate them each time
