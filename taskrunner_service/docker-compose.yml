@@ -4,8 +4,9 @@ services:
   abjnet_taskrunner_service:
     restart: always
     container_name: "abjnet_taskrunner_service"
-    build: 
-      context: .
+    image: abjnet_taskrunner_service
+    # build: 
+    #   context: .
     network_mode: host
     environment: 
       DELETESUBSAT: "* * * * *"

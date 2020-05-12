@@ -4,7 +4,8 @@ services:
   abjnet_api_gateway:
     container: abjnet_api_gateway
     restart: always
-    build: .
+    image: abjnet_api_gateway
+    # build: .
     command: micro api
     # ports:
     #   - 8080:8080

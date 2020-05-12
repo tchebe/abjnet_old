@@ -4,8 +4,9 @@ services:
   abjnet_souscription_service:
     restart: always
     container_name: abjnet_souscription_service
-    build: 
-      context: .
+    image: abjnet_souscription_service
+    # build: 
+    #   context: .
     network_mode: host
     environment: 
       MICRO_SERVER_ADDRESS: ":50052"
