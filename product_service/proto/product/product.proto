@@ -22,3 +22,8 @@ message Error{
     int32 code=1;
     string description=2;
 }
+message Token{
+    string token=1;
+    bool valid=2;
+    repeated Error errors=3;
+}

@@ -1,0 +1,33 @@
+syntax= "proto3";
+
+package souscription;
+
+service SouscriptionService{
+    rpc Subscribe(Souscription) returns (Response){}
+    rpc GetAll(Request)returns(Response){}
+    rpc DeleteAll(Request)returns(Response){}
+}
+message Souscription{
+    string id=1;
+    string nom=2;
+    string prenom=3;
+    string dateofbith=4;
+    string telephone=5;
+    fixed32 abjcardno=6;
+    uint64 montant=7;
+    string datepayment=8;
+    string echeance=9;
+    string beneficiaire=10;
+    string email=11;
+}
+message Request{}
+message Response{
+    bool done=1;
+    Souscription souscription=2;
+    repeated Souscription souscriptions=3;
+    repeated Error errors=4;
+}
+message Error{
+    int32 code=1;
+    string description=2;
+}

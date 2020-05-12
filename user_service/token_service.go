@@ -47,7 +47,7 @@ func (srv *TokenService) Decode(token string) (*CustomClaims, error) {
 
 //Encode -encode the data and creates the jwt
 func (srv *TokenService) Encode(user *pb.User) (string, error) {
-	exprireTime := time.Now().Add(time.Hour * 72).Unix()
+	exprireTime := time.Now().Add(time.Hour).Unix()
 	claims := CustomClaims{
 		user,
 		jwt.StandardClaims{

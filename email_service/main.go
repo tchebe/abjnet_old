@@ -6,9 +6,11 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/go-mail/mail"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
 	pbP "github.com/zjjt/abjnet/product_service/proto/product"
+	pbS "github.com/zjjt/abjnet/souscription_service/proto/souscription"
 	pbU "github.com/zjjt/abjnet/user_service/proto/user"
 )
 
@@ -19,6 +21,18 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 		for _, v := range topics {
 			switch v {
 			case "user.created":
+				_, err := pubsub.Subscribe(v, func(p broker.Event) error {
+					var user *pbU.User
+					if err := json.Unmarshal(p.Message().Body, &user); err != nil {
+						theerror := fmt.Sprintf("%v --from email_service", err)
+						return errors.New(theerror)
+					}
+					log.Println(user)
+					go sendEmail(user.Email, "user.created")
+					return nil
+				})
+				return err
+			case "souscription.sendmail":
 				_, err := pubsub.Subscribe(v, func(p broker.Event) error {
 					var user *pbU.User
 					if err := json.Unmarshal(p.Message().Body, &user); err != nil {
@@ -54,7 +68,7 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 
 func main() {
 	//slice of topics to suscribe to
-	topics := []string{"user.created"}
+	topics := []string{"user.created", "souscription.sendmail"}
 	srv := micro.NewService(micro.Name("abjnet.service.email"))
 	srv.Init()
 	//get the broker instance
@@ -76,7 +90,37 @@ func main() {
 	}
 }
 
-func sendEmail(email string, topic string) error {
-	log.Println("sendig email to: ", email)
+func sendEmail(from string, to string, cc string, topic string, msghtml string, byteArr []byte) error {
+	//first we unpack to slices the to and cc args
+	//TO:=strings.Split(to,",")
+	//CC:=strings.Split(to,",")
+
+	TO := []string{"thibaut.zehi@groupensia.com"}
+	CC := []string{"thibaut.zehi@groupensia.com"}
+	m := mail.NewMessage()
+	m.SetHeader("From", from)
+	m.SetHeader("To", TO...)
+	for _, v := range CC {
+		m.SetAddressHeader("Cc", v, "")
+	}
+
+	m.SetHeader("Subject", topic)
+	m.SetBody("text/html", msghtml)
+	//if there's a file to join first we unmarshall the byteArr into the appropriate format
+	if len(byteArr) {
+		var subs *pbS.Souscription
+		json.Unmarshal(byteArr, &subs)
+	}
+	m.Attach("/home/Alex/lolcat.jpg")
+
+	d := mail.NewDialer("smtp.example.com", 587, "user", "123456")
+	d.StartTLSPolicy = mail.MandatoryStartTLS
+
+	// Send the email to Bob, Cora and Dan.
+	if err := d.DialAndSend(m); err != nil {
+		panic(err)
+	}
+	// Send the email body.
+	log.Println("sendig email to: ", to)
 	return nil
 }
