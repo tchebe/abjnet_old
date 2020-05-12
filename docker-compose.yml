@@ -26,6 +26,8 @@ services:
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
+      #TOKENEXPIRE in minutes
+      TOKENEXPIRE: "5"
       MICRO_REGISTERY: "mdns"
   
   abjnet_souscription_service:
@@ -46,8 +48,10 @@ services:
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
       MICRO_REGISTERY: "mdns"
-      TO: "mariejeanne.pillah@groupensia.com,colombe.brou@groupensia.com"
-      CC: "Exploitation_VIECI@groupensia.com,armel.amacou@groupensia.com,mamery.silue@groupensia.com"
+      TO: "thibaut.zehi@groupensia,"
+      CC: "thibaut.zehi@groupensia,"
+      #TO: "mariejeanne.pillah@groupensia.com,colombe.brou@groupensia.com"
+      #CC: "Exploitation_VIECI@groupensia.com,armel.amacou@groupensia.com,mamery.silue@groupensia.com"
 
   abjnet_product_service:
     restart: always
@@ -83,6 +87,19 @@ services:
       SMTP_HOST: 10.10.4.15
       SMTP_PORT: 25
       FROM: "thibaut.zehi@groupensia.com"
+
+  abjnet_taskrunner_service:
+    restart: always
+    container_name: "abjnet_taskrunner_service"
+    build: 
+      context: ./taskrunner_service
+      # args:
+      #   HTTP_PROXY: http://172.17.0.1:3138/
+      #   HTTPS_PROXY: http://172.17.0.1:3138/
+    ports:
+      - 9088:50051
+    environment: 
+      DELETESUBSAT: "* * * * *"
 
   #we use the default db postgres created   
   database:

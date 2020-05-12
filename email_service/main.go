@@ -5,7 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
+	"strconv"
+	"strings"
 
+	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/go-mail/mail"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
@@ -27,33 +31,25 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 						theerror := fmt.Sprintf("%v --from email_service", err)
 						return errors.New(theerror)
 					}
-					log.Println(user)
-					go sendEmail(user.Email, "user.created")
+					log.Println("user created")
 					return nil
 				})
 				return err
 			case "souscription.sendmail":
 				_, err := pubsub.Subscribe(v, func(p broker.Event) error {
-					var user *pbU.User
-					if err := json.Unmarshal(p.Message().Body, &user); err != nil {
-						theerror := fmt.Sprintf("%v --from email_service", err)
-						return errors.New(theerror)
-					}
-					log.Println(user)
-					go sendEmail(user.Email, "user.created")
+					eventHeadersMap := p.Message().Header
+					go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
 					return nil
 				})
 				return err
 			case "product.deleted":
 				_, err := pubsub.Subscribe(v, func(p broker.Event) error {
 					var product *pbP.Product
-					admin := "thibaut.zehi@groupensia.com"
 					if err := json.Unmarshal(p.Message().Body, &product); err != nil {
 						theerror := fmt.Sprintf("%v --from email_service", err)
 						return errors.New(theerror)
 					}
 					log.Println(product)
-					go sendEmail(admin, "product.deleted")
 					return nil
 				})
 				return err
@@ -89,14 +85,42 @@ func main() {
 		log.Println(err)
 	}
 }
+func prepareExcelFile(subs []*pbS.Souscription) *excelize.File {
+	excelfile := excelize.NewFile()
+	//here we create the top header rows
+	excelfile.SetCellValue("Sheet1", "A1", "NOM ASSURE")
+	excelfile.SetCellValue("Sheet1", "B1", "PRENOMS ASSURE")
+	excelfile.SetCellValue("Sheet1", "C1", "DATE DE NAISSANCE")
+	excelfile.SetCellValue("Sheet1", "D1", "CONTACT TELEPHONIQUE")
+	excelfile.SetCellValue("Sheet1", "E1", "N CARTE ABIDJAN.NET")
+	excelfile.SetCellValue("Sheet1", "F1", "MONTANT PAIEMENT")
+	excelfile.SetCellValue("Sheet1", "G1", "DATE PAIEMENT")
+	excelfile.SetCellValue("Sheet1", "H1", "ECHEANCE")
+	excelfile.SetCellValue("Sheet1", "I1", "NOM BENEFICIAIRE")
+	excelfile.SetCellValue("Sheet1", "J1", "EMAIL")
+	//here we fill the file with the data
+	for i, v := range subs {
+		index := i + 2
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("A%d", index), v.Nom)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("B%d", index), v.Prenom)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("C%d", index), v.Dateofbith)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("D%d", index), v.Telephone)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Abjcardno)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("F%d", index), v.Montant)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Datepayment)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Echeance)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("I%d", index), v.Beneficiaire)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("J%d", index), v.Email)
+
+	}
+	return excelfile
+}
 
 func sendEmail(from string, to string, cc string, topic string, msghtml string, byteArr []byte) error {
 	//first we unpack to slices the to and cc args
-	//TO:=strings.Split(to,",")
-	//CC:=strings.Split(to,",")
+	TO := strings.Split(to, ",")
+	CC := strings.Split(to, ",")
 
-	TO := []string{"thibaut.zehi@groupensia.com"}
-	CC := []string{"thibaut.zehi@groupensia.com"}
 	m := mail.NewMessage()
 	m.SetHeader("From", from)
 	m.SetHeader("To", TO...)
@@ -108,19 +132,31 @@ func sendEmail(from string, to string, cc string, topic string, msghtml string, 
 	m.SetBody("text/html", msghtml)
 	//if there's a file to join first we unmarshall the byteArr into the appropriate format
 	if len(byteArr) > 0 {
-		var subs *pbS.Souscription
+		var subs []*pbS.Souscription
 		json.Unmarshal(byteArr, &subs)
+		//here we create the excel file from the subs
+		excelfile := prepareExcelFile(subs)
+		// Save xlsx file by the given path.
+		if err := excelfile.SaveAs(fmt.Sprintf("%s.xlsx", topic)); err != nil {
+			fmt.Println(err)
+		}
+		//add the excel file to the mail
+		m.Attach(fmt.Sprintf("%s.xlsx", topic))
 	}
-	m.Attach("/home/Alex/lolcat.jpg")
+	port, err := strconv.Atoi(os.Getenv("SMTP_PORT"))
+	if err != nil {
+		log.Fatal("Error please check the smtp port in environment")
+	}
+	d := mail.NewDialer(os.Getenv("SMTP_HOST"), port, os.Getenv("FROM"), "ZjjTEnt@1988")
+	//d.StartTLSPolicy = mail.MandatoryStartTLS
 
-	d := mail.NewDialer("smtp.example.com", 587, "user", "123456")
-	d.StartTLSPolicy = mail.MandatoryStartTLS
-
-	// Send the email to Bob, Cora and Dan.
+	// Send the email
 	if err := d.DialAndSend(m); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	// Send the email body.
-	log.Println("sendig email to: ", to)
+	//delete the excel file
+	if err := os.Remove(fmt.Sprintf("%s.xlsx", topic)); err != nil {
+		log.Println(err)
+	}
 	return nil
 }

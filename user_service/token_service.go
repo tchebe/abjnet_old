@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -47,7 +50,12 @@ func (srv *TokenService) Decode(token string) (*CustomClaims, error) {
 
 //Encode -encode the data and creates the jwt
 func (srv *TokenService) Encode(user *pb.User) (string, error) {
-	exprireTime := time.Now().Add(time.Hour).Unix()
+	//get the custom time from environment
+	timeenv, err := strconv.Atoi(os.Getenv("TOKENEXPIRE"))
+	if err != nil {
+		log.Fatal("Please check the TOKENEXPIRE environment variable")
+	}
+	exprireTime := time.Now().Add(time.Second * time.Duration(timeenv)).Unix()
 	claims := CustomClaims{
 		user,
 		jwt.StandardClaims{

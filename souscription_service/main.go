@@ -68,7 +68,7 @@ func publishEvent(subs []*pb.Souscription, pubsub broker.Broker, topic string) e
 		Header: map[string]string{
 			"to":    os.Getenv("TO"),
 			"cc":    os.Getenv("CC"),
-			"objet": "SOUSCRIPTIONS ABIDJAN.NET DU " + time.Now().Format("02-01-2006"),
+			"objet": fmt.Sprintf("SOUSCRIPTIONS ABIDJAN.NET DU %v", time.Now().Format("02-01-2006")),
 		},
 		Body: body,
 	}
