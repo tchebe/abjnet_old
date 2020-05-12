@@ -15,10 +15,11 @@ message Souscription{
     string telephone=5;
     fixed32 abjcardno=6;
     uint64 montant=7;
-    string datepayment=8;
-    string echeance=9;
-    string beneficiaire=10;
-    string email=11;
+    int32 codeproduit=8;
+    string datepayment=9;
+    string echeance=10;
+    string beneficiaire=11;
+    string email=12;
 }
 message Request{}
 message Response{
