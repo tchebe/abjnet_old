@@ -55,7 +55,7 @@ func (srv *TokenService) Encode(user *pb.User) (string, error) {
 	if err != nil {
 		log.Fatal("Please check the TOKENEXPIRE environment variable")
 	}
-	exprireTime := time.Now().Add(time.Second * time.Duration(timeenv)).Unix()
+	exprireTime := time.Now().Add(time.Minute * time.Duration(timeenv)).Unix()
 	claims := CustomClaims{
 		user,
 		jwt.StandardClaims{
