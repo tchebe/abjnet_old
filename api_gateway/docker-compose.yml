@@ -6,12 +6,11 @@ services:
     restart: always
     image: microhq/micro:latest
     # build: .
-    command: api --namespace=abjnet.service --handler=rpc
-    # ports:
-    #   - 8080:8080
+    command: api --namespace=abjnet.service --handler=rpc --address=:8080
+    ports:
+      - 8080:8080
     #   - 8081:8081
     #   - 8082:8082
     network_mode: host
     environment: 
-      MICRO_NAMESPACE: "abjnet.api"
       MICRO_REGISTERY: "mdns"
