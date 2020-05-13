@@ -30,12 +30,14 @@ type userdetails struct {
 //Login logs in the user and returns a token
 func (s *User) Login(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to log in via rest")
-	if err := req.Request.ParseForm(); err != nil {
+	err := req.Request.ParseForm()
+	if err != nil {
 		res.WriteErrorString(http.StatusBadRequest, err.Error())
 		return
 	}
 	user := new(userdetails)
-	if err := decoder.Decode(user, req.Request.PostForm); err != nil {
+	err = decoder.Decode(user, req.Request.PostForm)
+	if err != nil {
 		log.Println("here l38")
 		res.WriteError(http.StatusBadRequest, fmt.Errorf("Mauvais identifiants de connexion1"))
 		return
