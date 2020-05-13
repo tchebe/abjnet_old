@@ -80,7 +80,47 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 	ctx := metadata.Set(context.Background(), "Token", token)
 	response, err := productC.GetAll(ctx, &productP.Request{})
 	if err != nil {
-		res.WriteError(http.StatusBadRequest, errors.New("Mauvais identifiants de connexion"))
+		res.WriteError(http.StatusBadRequest, errors.New("Une erreur est survenue lors de la recuperation des produits"))
+	}
+	res.WriteEntity(response)
+}
+
+func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
+	log.Println("attempting to suscribe to a contract via rest api")
+	//extract the token from the headers
+	tokenheader := req.HeaderParameter("Authorization")
+	if tokenheader == "" {
+		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+		return
+	}
+	splitted := strings.Split(tokenheader, " ")
+	if len(splitted) != 2 {
+		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+		return
+	}
+	token := splitted[1]
+	_, err := userC.ValidateToken(context.Background(), &userP.Token{
+		Token: token,
+	})
+	if err != nil {
+		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+		return
+	}
+	ctx := metadata.Set(context.Background(), "Token", token)
+	err = req.Request.ParseForm()
+	if err != nil {
+		res.WriteErrorString(http.StatusBadRequest, err.Error())
+		return
+	}
+	sub := new(souscriptionP.Souscription)
+	err = decoder.Decode(sub, req.Request.PostForm)
+	if err != nil {
+		res.WriteError(http.StatusBadRequest, fmt.Errorf("une erreur est survenue lors de la souscription"))
+		return
+	}
+	response, err := souscriptionC.Subscribe(ctx, sub)
+	if err != nil {
+		res.WriteError(http.StatusBadRequest, errors.New("Un probleme a été rencontré lors de la souscription"))
 	}
 	res.WriteEntity(response)
 }
@@ -110,6 +150,7 @@ func main() {
 	ws.Produces(restful.MIME_JSON, restful.MIME_XML)
 	ws.Route(ws.POST("/login").Consumes("application/x-www-form-urlencoded").To(api.Login))
 	ws.Route(ws.GET("/listeproduit").To(api.ListContracts))
+	ws.Route(ws.POST("/souscription").Consumes("application/x-www-form-urlencoded").To(api.Souscrire))
 	wc.Add(ws)
 	//register handler
 	service.Handle("/", wc)
