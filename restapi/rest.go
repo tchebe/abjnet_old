@@ -117,7 +117,9 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	sub := new(souscriptionP.Souscription)
 	err = decoder.Decode(sub, req.Request.PostForm)
 	if err != nil {
-		res.WriteError(http.StatusBadRequest, fmt.Errorf("une erreur est survenue lors de la souscription"))
+		theerror := fmt.Sprintf("une erreur est survenue lors de la souscription %v", err)
+
+		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 		return
 	}
 	response, err := souscriptionC.Subscribe(ctx, sub)
