@@ -14,7 +14,7 @@ services:
       - "database"
     environment: 
       MICRO_SERVER_ADDRESS: ":50051"
-      DB_HOST: "127.0.0.1:5434"
+      DB_HOST: "database:5434"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
