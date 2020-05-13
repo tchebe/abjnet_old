@@ -78,7 +78,7 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 		return
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
-	log.Println("Authenticated with token ".token)
+	log.Println("Authenticated with token ", token)
 	response, err := productC.GetAll(ctx, &productP.Request{})
 	if err != nil {
 		theerror := fmt.Sprintf("Une erreur est survenue lors de la recuperation des produits %v", err)
