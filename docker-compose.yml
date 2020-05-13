@@ -11,7 +11,7 @@ services:
       - "8600:53/udp"
 
   abjnet_api_gateway:
-    container: abjnet_api_gateway
+    container_name: abjnet_api_gateway
     restart: always
     image: microhq/micro:latest
     build: ./api_gateway
