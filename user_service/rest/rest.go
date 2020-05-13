@@ -57,7 +57,7 @@ func main() {
 	)
 	service.Init()
 	//setup user server client
-	cl = pb.NewUserService("abjnet.service.srv.user", client.DefaultClient)
+	cl = pb.NewUserService("abjnet.service.user", client.DefaultClient)
 	//create RESTFUL handler
 	decoder = schema.NewDecoder()
 	userd := new(User)
