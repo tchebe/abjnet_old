@@ -21,7 +21,8 @@ services:
       #TOKENEXPIRE in minutes
       TOKENEXPIRE: "15"
       MICRO_REGISTERY: "mdns"
-    network_mode: host
+    networks: 
+      - abjnet_network
    #we use the default db postgres created   
   database:
     restart: always
@@ -30,3 +31,7 @@ services:
       - 5434:5432
     environment: 
       POSTGRES_PASSWORD: "postgres"
+networks: 
+  abjnet_network:
+    external: true
+  

@@ -11,7 +11,11 @@ services:
       - 8080:8080
     #   - 8081:8081
     #   - 8082:8082
-    network_mode: host
+    networks: 
+      - abjnet_network
     environment: 
       MICRO_REGISTERY: "mdns"
       MICRO_NAMESPACE: "abjnet"
+networks: 
+  abjnet_network:
+    name: abjnet_network
