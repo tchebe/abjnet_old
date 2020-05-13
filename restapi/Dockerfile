@@ -16,7 +16,7 @@ COPY go.sum .
 # ENV https_proxy 'http://10.11.101.77:3128/'
 RUN go mod download -x
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o abjnetRestUser
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o abjnetRestApi
 
 # Run container
 FROM alpine:latest
@@ -25,6 +25,6 @@ RUN apk --no-cache add ca-certificates
 
 RUN mkdir /app
 WORKDIR /app
-COPY --from=builder /app/abjnetRestUser .
+COPY --from=builder /app/abjnetRestApi .
 
-CMD ["./abjnetRestUser"]
+CMD ["./abjnetRestApi"]

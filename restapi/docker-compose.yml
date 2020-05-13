@@ -1,9 +1,9 @@
 version: '3.5'
 
 services:
-  abjnet_api_user:
-    container_name: abjnet_api_user
-    image: abjnet_api_user
+  abjnet_api_rest:
+    container_name: abjnet_api_rest
+    image: abjnet_api_rest
     restart: always
     environment: 
       MICRO_REGISTERY: "mdns"
