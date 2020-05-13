@@ -1,69 +1,63 @@
 version: '3.5'
 
 services:
-  consul: 
-    command: -server -bootstrap -rejoin
-    image: cargonauts/progrium-consul:latest
-    ports:
-      - "8300:8300"
-      - "8400:8400"
-      - "8500:8500"
-      - "8600:53/udp"
-
+  
   abjnet_api_gateway:
-    container_name: abjnet_api_gateway
+    container: abjnet_api_gateway
     restart: always
-    image: microhq/micro:latest
     build: ./api_gateway
-    command: --registry_address=consul:8500 api --namespace=abjnet.api --handler=http
+    command: api --namespace=abjnet.api --handler=http
     ports:
       - 9080:8080
-    links:
-      - consul
-      - abjnet_api_rest
 
   abjnet_api_rest:
     container_name: abjnet_api_rest
     build: ./restapi
     image: abjnet_api_rest
-    command: --registry_address=consul:8500
     restart: always
-    links:
-      - consul
-      - abjnet_user_service
     
   abjnet_user_service:
     container_name: abjnet_user_service
     restart: always
-    image: abjnet_api_rest
+    image: abjnet_user_service
     build: 
       context: ./user_service
-    command: --registry_address=consul:8500
-    links:
-      - consul
-      - database      
+      # args:
+      #   - HTTP_PROXY=http://127.0.0.1:3138/
+      #   - HTTPS_PROXY=http://127.0.0.1:3138/
+    ports:
+      - 9084:50051
+    depends_on: 
+      - "database"
     environment: 
+      MICRO_SERVER_ADDRESS: ":50051"
       DB_HOST: "database:5434"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
+      #TOKENEXPIRE in minutes
       TOKENEXPIRE: "5"
-      
+      MICRO_REGISTERY: "mdns"
   
   abjnet_souscription_service:
     restart: always
-    command: --registry_address=consul:8500
-    container_name: abjnet_souscription_service   
+    container_name: abjnet_souscription_service
     build: 
       context: ./souscription_service
-    links:
-      - consul
-      - database  
+      # args:
+      #   - HTTP_PROXY=http://127.0.0.1:3138/
+      #   - HTTPS_PROXY=http://127.0.0.1:3138/
+    ports:
+      - 9085:50051
+    depends_on: 
+      - "database"
     environment: 
+      MICRO_SERVER_ADDRESS: ":50051"
       DB_HOST: "database:5434"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
+      MICRO_REGISTERY: "mdns"
       TO: "thibaut.zehi@groupensia,"
       CC: "thibaut.zehi@groupensia,"
       #TO: "mariejeanne.pillah@groupensia.com,colombe.brou@groupensia.com"
@@ -71,45 +65,54 @@ services:
 
   abjnet_product_service:
     restart: always
-    command: --registry_address=consul:8500
     container_name: "abjnet_product_service"
     build: 
       context: ./product_service
-    links:
-      - consul
+      # args:
+      #   - HTTP_PROXY=http://127.0.0.1:3138/
+      #   - HTTPS_PROXY=http://127.0.0.1:3138/
+    ports:
+      - 9086:50051
     environment: 
       IN_NSIA: "no"
       DB_HOST: "10.8.3.29:57055"
       DB_USER: "reportvie"
       DB_PASSWORD: "reportvie"
       DB_NAME: "SUN_COTEDIVOIRE"
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTERY: "mdns"
 
   abjnet_email_service:
     restart: always
-    command: --registry_address=consul:8500
     container_name: "abjnet_email_service"
     build: 
       context: ./email_service
-    links:
-      - consul
+      # args:
+      #   HTTP_PROXY: http://172.17.0.1:3138/
+      #   HTTPS_PROXY: http://172.17.0.1:3138/
+    ports:
+      - 9087:50051
     environment: 
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTERY: "mdns"
       SMTP_HOST: 10.10.4.15
       SMTP_PORT: 25
       FROM: "thibaut.zehi@groupensia.com"
 
-  # abjnet_taskrunner_service:
-  #   restart: always
-  #   container_name: "abjnet_taskrunner_service"
-  #   command: --registry_address=consul:8500
-  #   build: 
-  #     context: ./taskrunner_service
-  #     # args:
-  #     #   HTTP_PROXY: http://172.17.0.1:3138/
-  #     #   HTTPS_PROXY: http://172.17.0.1:3138/
-  #   links:
-  #     - consul
-  #   environment: 
-  #     DELETESUBSAT: "* 12 * * *"
+  abjnet_taskrunner_service:
+    restart: always
+    container_name: "abjnet_taskrunner_service"
+    build: 
+      context: ./taskrunner_service
+      # args:
+      #   HTTP_PROXY: http://172.17.0.1:3138/
+      #   HTTPS_PROXY: http://172.17.0.1:3138/
+    ports:
+      - 9088:50051
+    environment: 
+      DELETESUBSAT: "* * * * *"
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTERY: "mdns"
 
   #we use the default db postgres created   
   database:
