@@ -55,6 +55,7 @@ services:
     #   - 9085:50051
     depends_on: 
       - abjnet_user_service
+    network_mode: host
     environment: 
       MICRO_SERVER_ADDRESS: ":50052"
       DB_HOST: "127.0.0.1:5434"
@@ -116,6 +117,7 @@ services:
     container_name: "abjnet_taskrunner_service"
     build: 
       context: ./taskrunner_service
+    network_mode: host
       # args:
       #   HTTP_PROXY: http://172.17.0.1:3138/
       #   HTTPS_PROXY: http://172.17.0.1:3138/
@@ -128,8 +130,9 @@ services:
 
   #we use the default db postgres created   
   database:
-      image: postgres
-      ports:
-        - 5434:5432
-      environment: 
-        POSTGRES_PASSWORD: "postgres"
+    image: postgres
+    ports:
+      - 5434:5432
+    network_mode: host
+    environment: 
+      POSTGRES_PASSWORD: "postgres"
