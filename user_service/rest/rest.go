@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -36,7 +37,7 @@ func (s *User) Login(req *restful.Request, res *restful.Response) {
 	user := new(userdetails)
 	if err := decoder.Decode(user, req.Request.PostForm); err != nil {
 		log.Println("here l38")
-		res.WriteErrorString(http.StatusBadRequest, err.Error())
+		res.WriteError(http.StatusBadRequest, fmt.Errorf("Mauvais identifiants de connexion1"))
 		return
 	}
 	response, err := cl.Auth(context.TODO(), &pb.User{Email: user.Email, Password: user.Password})
