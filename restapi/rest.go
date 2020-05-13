@@ -148,6 +148,7 @@ func main() {
 	wc := restful.NewContainer()
 	wc.EnableContentEncoding(true)
 	ws.Produces(restful.MIME_JSON, restful.MIME_XML)
+	ws.Path("/api")
 	ws.Route(ws.POST("/login").Consumes("application/x-www-form-urlencoded").To(api.Login))
 	ws.Route(ws.GET("/listeproduit").To(api.ListContracts))
 	ws.Route(ws.POST("/souscription").Consumes("application/x-www-form-urlencoded").To(api.Souscrire))
