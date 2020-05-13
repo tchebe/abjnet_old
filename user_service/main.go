@@ -24,7 +24,7 @@ func main() {
 	db.AutoMigrate(&pb.User{})
 	repo := newUserRepository(db)
 	tokenservice := newtokenService(repo)
-	service := micro.NewService(micro.Name("abjnet.service.user"))
+	service := micro.NewService(micro.Name("abjnet.server.user"))
 	service.Init()
 	//get an instance of the event broker
 	pubsub := service.Server().Options().Broker

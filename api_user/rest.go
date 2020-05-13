@@ -53,11 +53,11 @@ func (s *User) Login(req *restful.Request, res *restful.Response) {
 func main() {
 	//create rest service
 	service := web.NewService(
-		web.Name("abjnet.service.user"),
+		web.Name("abjnet.api.user"),
 	)
 	service.Init()
 	//setup user server client
-	cl = pb.NewUserService("abjnet.service.user", client.DefaultClient)
+	cl = pb.NewUserService("abjnet.server.user", client.DefaultClient)
 	//create RESTFUL handler
 	decoder = schema.NewDecoder()
 	userd := new(User)

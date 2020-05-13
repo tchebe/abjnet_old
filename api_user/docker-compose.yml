@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  abjnet_api_user:
+    container_name: abjnet_api_user
+    image: abjnet_api_user
+    restart: always
+    environment: 
+      MICRO_REGISTERY: "mdns"
+    network_mode: host

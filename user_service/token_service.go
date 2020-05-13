@@ -60,7 +60,7 @@ func (srv *TokenService) Encode(user *pb.User) (string, error) {
 		user,
 		jwt.StandardClaims{
 			ExpiresAt: exprireTime,
-			Issuer:    "abjnet.service.user",
+			Issuer:    "abjnet.server.user",
 		},
 	}
 	//create token
