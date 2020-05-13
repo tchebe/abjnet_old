@@ -114,6 +114,7 @@ services:
   abjnet_taskrunner_service:
     restart: always
     container_name: "abjnet_taskrunner_service"
+    command: --registry_address=consul:8500
     build: 
       context: ./taskrunner_service
       # args:
@@ -122,7 +123,7 @@ services:
     links:
       - consul
     environment: 
-      DELETESUBSAT: "* * * * *"
+     # DELETESUBSAT: "* * * * *"
 
   #we use the default db postgres created   
   database:
