@@ -6,7 +6,7 @@ services:
     restart: always
     image: micro/micro
     # build: .
-    command: api --handler=http --address=:8080 --namespace=abjnet.api
+    command: api --handler=http --address=:8080 --namespace=abjnet
     ports:
       - 8080:8080
     #   - 8081:8081
