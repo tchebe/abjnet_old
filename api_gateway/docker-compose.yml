@@ -4,7 +4,7 @@ services:
   abjnet_api_gateway:
     container_name: abjnet_api_gateway
     restart: always
-    image: microhq/micro:latest
+    image: micro/micro
     # build: .
     command: api --handler=rpc --address=:8080 --namespace=abjnet.
     ports:
