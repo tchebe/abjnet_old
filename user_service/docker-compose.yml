@@ -14,16 +14,14 @@ services:
       - "database"
     environment: 
       MICRO_SERVER_ADDRESS: ":50051"
-      DB_HOST: "database:5434"
+      DB_HOST: "127.0.0.1:5434"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
       #TOKENEXPIRE in minutes
       TOKENEXPIRE: "15"
       MICRO_REGISTERY: "mdns"
-    networks: 
-      - abjnet_network
-      - dbnet
+    network_mode: host
    #we use the default db postgres created   
   database:
     restart: always
@@ -32,11 +30,6 @@ services:
       - 5434:5432
     environment: 
       POSTGRES_PASSWORD: "postgres"
-    networks: 
-    - dbnet
-networks: 
-  abjnet_network:
-    external: true
-  dbnet:
-    name: dbnet
+    
+
   
