@@ -58,7 +58,7 @@ func main() {
 	userd := new(User)
 	ws := new(restful.WebService)
 	wc := restful.NewContainer()
-	ws.Produces(restful.MIME_JSON, restful.MIME_XML)
+	//ws.Produces(restful.MIME_JSON, restful.MIME_XML)
 	ws.Route(ws.POST("/login").Consumes("application/x-www-form-urlencoded").To(userd.Login))
 	wc.Add(ws)
 	//register handler
