@@ -41,8 +41,7 @@ services:
     command: --registry_address=consul:8500
     links:
       - consul
-    depends_on: 
-      - "database"
+      - database      
     environment: 
       DB_HOST: "database:5434"
       DB_USER: "postgres"
@@ -57,10 +56,9 @@ services:
     container_name: abjnet_souscription_service   
     build: 
       context: ./souscription_service
-    depends_on: 
-      - "database"
     links:
       - consul
+      - database  
     environment: 
       DB_HOST: "database:5434"
       DB_USER: "postgres"
