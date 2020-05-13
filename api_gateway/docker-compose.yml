@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   abjnet_api_gateway:
-    container: abjnet_api_gateway
+    container_name: abjnet_api_gateway
     restart: always
     image: abjnet_api_gateway
     # build: .
