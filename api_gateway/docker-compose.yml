@@ -6,7 +6,7 @@ services:
     restart: always
     image: microhq/micro:latest
     # build: .
-    command: api --namespace=abjnet 
+    command: api --namespace=abjnet.service 
     # ports:
     #   - 8080:8080
     #   - 8081:8081
