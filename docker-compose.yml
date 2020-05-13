@@ -55,7 +55,6 @@ services:
     #   - 9085:50051
     depends_on: 
       - abjnet_user_service
-      - abjnet_product_service
     environment: 
       MICRO_SERVER_ADDRESS: ":50052"
       DB_HOST: "127.0.0.1:5434"
@@ -79,7 +78,6 @@ services:
     # ports:
     #   - 9086:50051
     depends_on: 
-      - abjnet_user_service
       - abjnet_souscription_service
     network_mode: host
     environment: 
@@ -92,6 +90,8 @@ services:
       MICRO_REGISTERY: "mdns"
 
   abjnet_email_service:
+    depends_on: 
+      - abjnet_product_service
     restart: always
     container_name: "abjnet_email_service"
     build: 
@@ -110,6 +110,8 @@ services:
       FROM: "thibaut.zehi@groupensia.com"
 
   abjnet_taskrunner_service:
+    depends_on: 
+      - abjnet_email_service
     restart: always
     container_name: "abjnet_taskrunner_service"
     build: 
