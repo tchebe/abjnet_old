@@ -7,14 +7,16 @@ services:
     restart: always
     build: ./api_gateway
     command: api --namespace=abjnet.api --handler=http
-    ports:
-      - 9080:8080
+    network_mode: host
+    # ports:
+    #   - 9080:8080
 
   abjnet_api_rest:
     container_name: abjnet_api_rest
     build: ./restapi
     image: abjnet_api_rest
     restart: always
+    network_mode: host
     
   abjnet_user_service:
     container_name: abjnet_user_service
@@ -25,13 +27,14 @@ services:
       # args:
       #   - HTTP_PROXY=http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
-    ports:
-      - 9084:50051
+    # ports:
+    #   - 9084:50051
     depends_on: 
       - "database"
+    network_mode: host
     environment: 
       MICRO_SERVER_ADDRESS: ":50051"
-      DB_HOST: "database:5434"
+      DB_HOST: "127.0.0.1:5434"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
@@ -47,13 +50,13 @@ services:
       # args:
       #   - HTTP_PROXY=http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
-    ports:
-      - 9085:50051
+    # ports:
+    #   - 9085:50051
     depends_on: 
       - "database"
     environment: 
-      MICRO_SERVER_ADDRESS: ":50051"
-      DB_HOST: "database:5434"
+      MICRO_SERVER_ADDRESS: ":50052"
+      DB_HOST: "127.0.0.1:5434"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
@@ -71,15 +74,16 @@ services:
       # args:
       #   - HTTP_PROXY=http://127.0.0.1:3138/
       #   - HTTPS_PROXY=http://127.0.0.1:3138/
-    ports:
-      - 9086:50051
+    # ports:
+    #   - 9086:50051
+    network_mode: host
     environment: 
       IN_NSIA: "no"
       DB_HOST: "10.8.3.29:57055"
       DB_USER: "reportvie"
       DB_PASSWORD: "reportvie"
       DB_NAME: "SUN_COTEDIVOIRE"
-      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_SERVER_ADDRESS: ":50053"
       MICRO_REGISTERY: "mdns"
 
   abjnet_email_service:
@@ -90,10 +94,11 @@ services:
       # args:
       #   HTTP_PROXY: http://172.17.0.1:3138/
       #   HTTPS_PROXY: http://172.17.0.1:3138/
-    ports:
-      - 9087:50051
+    # ports:
+    #   - 9087:50051
+    network_mode: host
     environment: 
-      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_SERVER_ADDRESS: ":50054"
       MICRO_REGISTERY: "mdns"
       SMTP_HOST: 10.10.4.15
       SMTP_PORT: 25
@@ -107,11 +112,11 @@ services:
       # args:
       #   HTTP_PROXY: http://172.17.0.1:3138/
       #   HTTPS_PROXY: http://172.17.0.1:3138/
-    ports:
-      - 9088:50051
+    # ports:
+    #   - 9088:50051
     environment: 
       DELETESUBSAT: "* * * * *"
-      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_SERVER_ADDRESS: ":50055"
       MICRO_REGISTERY: "mdns"
 
   #we use the default db postgres created   
