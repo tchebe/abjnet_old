@@ -81,7 +81,8 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 	log.Println("Authenticated with token ".token)
 	response, err := productC.GetAll(ctx, &productP.Request{})
 	if err != nil {
-		res.WriteError(http.StatusBadRequest, errors.New("Une erreur est survenue lors de la recuperation des produits ", err))
+		theerror = fmt.Sprintf("Une erreur est survenue lors de la recuperation des produits %v", err)
+		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 	}
 	res.WriteEntity(response)
 }
