@@ -6,7 +6,7 @@ services:
     restart: always
     image: micro/micro
     # build: .
-    command: api --handler=rpc --address=:8080 --namespace=abjnet --enable_rpc
+    command: api --handler=http --address=:8080 --namespace=abjnet.api
     ports:
       - 8080:8080
     #   - 8081:8081
