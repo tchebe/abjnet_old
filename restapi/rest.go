@@ -109,7 +109,7 @@ func main() {
 	wc.EnableContentEncoding(true)
 	ws.Produces(restful.MIME_JSON, restful.MIME_XML)
 	ws.Route(ws.POST("/login").Consumes("application/x-www-form-urlencoded").To(api.Login))
-	ws.Route(ws.GET("/login").To(api.ListContracts))
+	ws.Route(ws.GET("/listeproduit").To(api.ListContracts))
 	wc.Add(ws)
 	//register handler
 	service.Handle("/", wc)
