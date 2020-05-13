@@ -56,7 +56,6 @@ services:
     depends_on: 
       - abjnet_user_service
       - abjnet_product_service
-      - "database"
     environment: 
       MICRO_SERVER_ADDRESS: ":50052"
       DB_HOST: "127.0.0.1:5434"
