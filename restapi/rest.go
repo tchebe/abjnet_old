@@ -28,9 +28,35 @@ var (
 	decoder       *schema.Decoder
 )
 
+type createUser struct {
+	Nom      string
+	Prenom   string
+	Email    string
+	Password string
+}
 type userdetails struct {
 	Email    string
 	Password string
+}
+
+//CreateUser creates a user in db
+func (s *Api) CreateUser(req *restful.Request, res *restful.Response) {
+	err := req.Request.ParseForm()
+	if err != nil {
+		res.WriteErrorString(http.StatusBadRequest, err.Error())
+		return
+	}
+	user := new(createUser)
+	err = decoder.Decode(user, req.Request.PostForm)
+	if err != nil {
+		res.WriteError(http.StatusBadRequest, fmt.Errorf("Reverifiez les parametres de creation de l'utilisateur"))
+		return
+	}
+	response, err := userC.Create(context.TODO(), &userP.User{Nom: user.Nom, Prenom: user.Prenom, Email: user.Email, Password: user.Password})
+	if err != nil {
+		res.WriteError(http.StatusBadRequest, errors.New("Impossible de creer cet utilisateur"))
+	}
+	res.WriteEntity(response)
 }
 
 //Login logs in the user and returns a token
@@ -56,6 +82,8 @@ func (s *Api) Login(req *restful.Request, res *restful.Response) {
 	res.WriteEntity(response)
 
 }
+
+//ListContracts affiche la liste des contrats
 func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to fetch list of contracts via rest api")
 	//extract the token from the headers
@@ -153,6 +181,7 @@ func main() {
 	wc.EnableContentEncoding(true)
 	ws.Produces(restful.MIME_JSON, restful.MIME_XML)
 	ws.Path("/api")
+	ws.Route(ws.POST("/createuser").Consumes("application/json").To(api.CreateUser))
 	ws.Route(ws.POST("/login").Consumes("application/x-www-form-urlencoded").To(api.Login))
 	ws.Route(ws.GET("/listeproduit").To(api.ListContracts))
 	ws.Route(ws.POST("/souscription").Consumes("application/x-www-form-urlencoded").To(api.Souscrire))
