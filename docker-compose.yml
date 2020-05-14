@@ -7,7 +7,7 @@ services:
     restart: always
     image: micro/micro
     # build: ./api_gateway
-    command: api --handler=event --address=:8080 --namespace=abjnet
+    command: api --handler=event --address=:9090 --namespace=abjnet
     network_mode: host
     # ports:
     #   - :8080
@@ -88,7 +88,7 @@ services:
       - abjnet_souscription_service
     network_mode: host
     environment: 
-      IN_NSIA: "no"
+      IN_NSIA: "yes"
       DB_HOST: "10.8.3.29:57055"
       DB_USER: "reportvie"
       DB_PASSWORD: "reportvie"
