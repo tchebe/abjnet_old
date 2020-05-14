@@ -9,8 +9,8 @@ services:
     # build: ./api_gateway
     command: api --handler=event --address=:8080 --namespace=abjnet
     network_mode: host
-    ports:
-      - :8080
+    # ports:
+    #   - :8080
     environment:
       MICRO_REGISTERY: "mdns"
       MICRO_NAMESPACE: "abjnet"
@@ -139,7 +139,7 @@ services:
   database:
     image: postgres
     ports:
-      - :5434
+      - ":5434"
     network_mode: host
     environment: 
       POSTGRES_PASSWORD: "postgres"
