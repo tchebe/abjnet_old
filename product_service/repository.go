@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/jinzhu/gorm"
 	pb "github.com/zjjt/abjnet/product_service/proto/product"
@@ -35,7 +36,7 @@ func (repo *ProductRepository) Get(id string) (*pb.Product, error) {
 func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 	var products []*pb.Product
 	type p struct {
-		Id   string
+		Id   int
 		Name string
 	}
 	var pro []p
@@ -49,7 +50,7 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 			return nil, err
 		}
 		for _, v := range pro {
-			products = append(products, &pb.Product{Id: v.Id, Name: v.Name})
+			products = append(products, &pb.Product{Id: strconv.Itoa(v.Id), Name: v.Name})
 		}
 		log.Printf("content of pro %v\n", pro)
 		log.Printf("content of products %v\n", products)
