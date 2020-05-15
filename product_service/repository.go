@@ -39,7 +39,7 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 		Id   int
 		Name string
 	}
-	var pro p
+	var pro *p
 	if os.Getenv("IN_NSIA") == "no" {
 		products = append(products, &pb.Product{Id: "1", Name: "CAREC TEST RETRAITE"})
 		products = append(products, &pb.Product{Id: "2", Name: "CAREC TEST EPARGNE"})
