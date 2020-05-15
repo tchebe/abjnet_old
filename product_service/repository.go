@@ -36,12 +36,12 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 	if os.Getenv("IN_NSIA") == "no" {
 		products = append(products, &pb.Product{Id: "1", Name: "CAREC TEST RETRAITE"})
 		products = append(products, &pb.Product{Id: "2", Name: "CAREC TEST EPARGNE"})
-
 	} else {
 		req := repo.db.Raw("exec dbo.lstprdweblogy").Scan(&products)
 		if err := req.Error; err != nil {
 			return nil, err
 		}
+
 	}
 	return products, nil
 }
