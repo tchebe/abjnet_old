@@ -33,13 +33,21 @@ func (repo *ProductRepository) Get(id string) (*pb.Product, error) {
 }
 func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 	var products []*pb.Product
+	type p struct {
+		Id   string
+		Name string
+	}
+	var pro []p
 	if os.Getenv("IN_NSIA") == "no" {
 		products = append(products, &pb.Product{Id: "1", Name: "CAREC TEST RETRAITE"})
 		products = append(products, &pb.Product{Id: "2", Name: "CAREC TEST EPARGNE"})
 	} else {
-		req := repo.db.Raw("exec dbo.lstprdweblogy").Scan(&products)
+		req := repo.db.Raw("exec dbo.lstprdweblogy").Scan(&pro)
 		if err := req.Error; err != nil {
 			return nil, err
+		}
+		for _, v := range pro {
+			products = append(products, &pb.Product{Id: v.Id, Name: v.Name})
 		}
 
 	}
