@@ -43,8 +43,13 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 		products = append(products, &pb.Product{Id: "1", Name: "CAREC TEST RETRAITE"})
 		products = append(products, &pb.Product{Id: "2", Name: "CAREC TEST EPARGNE"})
 	} else {
-		req := repo.db.Raw("exec dbo.lstprdweblogy").Scan(&pro)
-		if err := req.Error; err != nil {
+		rows, err := repo.db.Raw("exec dbo.lstprdweblogy").Rows()
+		defer rows.Close()
+		log.Printf("content of rows %v\n", rows)
+		for rows.Next() {
+			rows.Scan(&pro)
+		}
+		if err != nil {
 			return nil, err
 		}
 		for _, v := range pro {
