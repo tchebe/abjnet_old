@@ -70,14 +70,16 @@ func (s *Api) Login(req *restful.Request, res *restful.Response) {
 	user := new(userdetails)
 	err = decoder.Decode(user, req.Request.PostForm)
 	if err != nil {
-		log.Println("here l38")
+		theerror := fmt.Sprintf("erreur pendant le decodage des parametres de login %v", err)
+		log.Println(theerror)
 		res.WriteError(http.StatusBadRequest, fmt.Errorf("Mauvais identifiants de connexion1"))
 		return
 	}
 	response, err := userC.Auth(context.TODO(), &userP.User{Email: user.Email, Password: user.Password})
 	if err != nil {
 		theerror := fmt.Sprintf("Mauvais identifiants de connexion %v", err)
-		res.WriteError(http.StatusBadRequest, errors.New(theerror))
+		log.Println(theerror)
+		res.WriteError(http.StatusBadRequest, errors.New("Mauvais identifiants de connexion"))
 	}
 	res.WriteEntity(response)
 
@@ -110,7 +112,8 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 	response, err := productC.GetAll(ctx, &productP.Request{})
 	if err != nil {
 		theerror := fmt.Sprintf("Une erreur est survenue lors de la recuperation des produits %v", err)
-		res.WriteError(http.StatusBadRequest, errors.New(theerror))
+		log.Println(theerror)
+		res.WriteError(http.StatusBadRequest, errors.New("Une erreur est survenue lors de la recuperation des produits"))
 	}
 	res.WriteEntity(response)
 }
@@ -146,12 +149,14 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	err = decoder.Decode(sub, req.Request.PostForm)
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors de la souscription %v", err)
-
-		res.WriteError(http.StatusBadRequest, errors.New(theerror))
+		log.Println(theerror)
+		res.WriteError(http.StatusBadRequest, errors.New("une erreur est survenue lors de la souscription"))
 		return
 	}
 	response, err := souscriptionC.Subscribe(ctx, sub)
 	if err != nil {
+		theerror := fmt.Sprintf("une erreur est survenue lors de la souscription %v", err)
+		log.Println(theerror)
 		res.WriteError(http.StatusBadRequest, errors.New("Un probleme a été rencontré lors de la souscription"))
 	}
 	res.WriteEntity(response)
@@ -181,7 +186,7 @@ func main() {
 	wc.EnableContentEncoding(true)
 	ws.Produces(restful.MIME_JSON, restful.MIME_XML)
 	ws.Path("/api")
-	ws.Route(ws.POST("/createuser").Consumes("application/json").To(api.CreateUser))
+	ws.Route(ws.POST("/createuser").Consumes("application/x-www-form-urlencoded").To(api.CreateUser))
 	ws.Route(ws.POST("/login").Consumes("application/x-www-form-urlencoded").To(api.Login))
 	ws.Route(ws.GET("/listeproduit").To(api.ListContracts))
 	ws.Route(ws.POST("/souscription").Consumes("application/x-www-form-urlencoded").To(api.Souscrire))
