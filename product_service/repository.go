@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/jinzhu/gorm"
@@ -49,7 +50,13 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 		for _, v := range pro {
 			products = append(products, &pb.Product{Id: v.Id, Name: v.Name})
 		}
+		log.Printf("content of pro %v\n", pro)
+		log.Printf("content of products %v\n", products)
 
 	}
-	return products, nil
+	if len(products) > 0 {
+		return products, nil
+	}
+	return nil, nil
+
 }
