@@ -76,8 +76,8 @@ func (s *Api) Login(req *restful.Request, res *restful.Response) {
 	}
 	response, err := userC.Auth(context.TODO(), &userP.User{Email: user.Email, Password: user.Password})
 	if err != nil {
-		log.Println("here l44")
-		res.WriteError(http.StatusBadRequest, errors.New("Mauvais identifiants de connexion"))
+		theerror := fmt.Sprintf("Mauvais identifiants de connexion %v", err)
+		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 	}
 	res.WriteEntity(response)
 
