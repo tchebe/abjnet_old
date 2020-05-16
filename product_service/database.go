@@ -16,7 +16,7 @@ func createSqlServerDBConnection() (*gorm.DB, error) {
 
 	return gorm.Open(
 		"mssql",
-		fmt.Sprintf("sqlserver://%s:%s@%s/%s?sslmode=disable", user, password, host, dbname),
+		fmt.Sprintf("sqlserver://%s:%s@%s/database=%s?sslmode=disable", user, password, host, dbname),
 	)
 
 }
