@@ -1,7 +1,11 @@
 version: '3.5'
 
 services:
-  
+  nats:
+    container_name: nats
+    image: nats
+    ports: 
+      -4222:4222
   abjnet_api_gateway:
     container_name: abjnet_api_gateway
     restart: always
@@ -35,6 +39,7 @@ services:
     # ports:
     #   - 9084:50051
     depends_on: 
+      - "nats"
       - "database"
     network_mode: host
     environment: 
@@ -132,7 +137,7 @@ services:
     # ports:
     #   - 9088:50051
     environment: 
-      DELETESUBSAT: "53 6 * * *"
+      DELETESUBSAT: "05 7 * * *"
       MICRO_SERVER_ADDRESS: ":50055"
       MICRO_REGISTERY: "mdns"
 
