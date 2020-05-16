@@ -5,7 +5,7 @@ services:
     container_name: nats
     image: nats
     ports: 
-      -4222:4222
+      - "4222:4222"
   abjnet_api_gateway:
     container_name: abjnet_api_gateway
     restart: always
