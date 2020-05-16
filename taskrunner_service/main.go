@@ -34,10 +34,7 @@ func main() {
 	if err := pubsub.Connect(); err != nil {
 		log.Fatal(err)
 	}
-	if err := service.Run(); err != nil {
-		theerror := fmt.Sprintf("%v --from taskrunner_service", err)
-		fmt.Println(theerror)
-	}
+
 	//publishing the event and sending all the subs to the email_service
 	job := cron.New()
 	job.AddFunc(os.Getenv("DELETESUBSAT"), func() {
@@ -50,6 +47,10 @@ func main() {
 	log.Println("publishing the delete subscriptions event test")
 	if err := publishEvent(pubsub, topic); err != nil {
 		fmt.Println(err)
+	}
+	if err := service.Run(); err != nil {
+		theerror := fmt.Sprintf("%v --from taskrunner_service", err)
+		fmt.Println(theerror)
 	}
 	//to stop the goroutine from exiting
 	for {
