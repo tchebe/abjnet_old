@@ -52,7 +52,7 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 		}
 		for rows.Next() {
 			log.Println(rows)
-			repo.db.ScanRows(rows, &pro)
+			rows.Scan(&pro.Id, &pro.Name)
 			log.Printf("content of pro %v\n", pro)
 			products = append(products, &pb.Product{Id: strconv.Itoa(pro.Id), Name: pro.Name})
 		}
