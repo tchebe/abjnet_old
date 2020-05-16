@@ -7,7 +7,7 @@ services:
     restart: always
     image: micro/micro
     # build: ./api_gateway
-    command: api --handler=event --address=:9090 --namespace=abjnet
+    command: api --handler=http --address=:9090 --namespace=abjnet
     network_mode: host
     # ports:
     #   - :8080
@@ -117,23 +117,23 @@ services:
       SMTP_PORT: 25
       FROM: "thibaut.zehi@groupensia.com"
 
-  # abjnet_taskrunner_service:
-  #   depends_on: 
-  #     - abjnet_email_service
-  #   restart: always
-  #   container_name: "abjnet_taskrunner_service"
-  #   build: 
-  #     context: ./taskrunner_service
-  #   network_mode: host
-  #     # args:
-  #     #   HTTP_PROXY: http://172.17.0.1:3138/
-  #     #   HTTPS_PROXY: http://172.17.0.1:3138/
-  #   # ports:
-  #   #   - 9088:50051
-  #   environment: 
-  #     DELETESUBSAT: "* * * * *"
-  #     MICRO_SERVER_ADDRESS: ":50055"
-  #     MICRO_REGISTERY: "mdns"
+  abjnet_taskrunner_service:
+    depends_on: 
+      - abjnet_email_service
+    restart: always
+    container_name: "abjnet_taskrunner_service"
+    build: 
+      context: ./taskrunner_service
+    network_mode: host
+      # args:
+      #   HTTP_PROXY: http://172.17.0.1:3138/
+      #   HTTPS_PROXY: http://172.17.0.1:3138/
+    # ports:
+    #   - 9088:50051
+    environment: 
+      DELETESUBSAT: "40 05 * * *"
+      MICRO_SERVER_ADDRESS: ":50055"
+      MICRO_REGISTERY: "mdns"
 
   #we use the default db postgres created   
   database:
