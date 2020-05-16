@@ -122,8 +122,9 @@ services:
       - abjnet_email_service
     restart: always
     container_name: "abjnet_taskrunner_service"
-    build: 
-      context: ./taskrunner_service
+    image: "abjnet_taskrunner_service"
+    # build: 
+    #   context: ./taskrunner_service
     network_mode: host
       # args:
       #   HTTP_PROXY: http://172.17.0.1:3138/
