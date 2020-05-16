@@ -47,8 +47,6 @@ func main() {
 		}
 	})
 	job.Start()
-	log.Println("publishing the delete subscriptions event")
-	if err := publishEvent(pubsub, topic); err != nil {
-		fmt.Println(err)
-	}
+	//to stop the goroutine to exit
+	select {}
 }

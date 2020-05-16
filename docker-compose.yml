@@ -132,7 +132,7 @@ services:
     # ports:
     #   - 9088:50051
     environment: 
-      DELETESUBSAT: "47 5 * * *"
+      DELETESUBSAT: "0 6 * * *"
       MICRO_SERVER_ADDRESS: ":50055"
       MICRO_REGISTERY: "mdns"
 
