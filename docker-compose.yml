@@ -7,7 +7,7 @@ services:
     restart: always
     image: micro/micro
     # build: ./api_gateway
-    command: api --handler=http --address=:9090 --namespace=abjnet
+    command: api --handler=event --address=:9090 --namespace=abjnet
     network_mode: host
     # ports:
     #   - :8080
