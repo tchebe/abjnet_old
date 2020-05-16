@@ -45,7 +45,7 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 		products = append(products, &pb.Product{Id: "2", Name: "CAREC TEST EPARGNE"})
 	} else {
 		//"SELECT JAPRODP_WNPRO Id,JAPRODP_LIPR01 Name FROM NSIACIP.JAPRODP WHERE JAPRODP_WNPRO IN ('6100')"
-		if err := repo.db.Debug().Raw("exec SUN_COTEDIVOIRE.dbo.lstprdweblogy").Scan(&pro).Error; err != nil {
+		if err := repo.db.Debug().Raw("exec dbo.lstprdweblogy").Scan(&pro).Error; err != nil {
 			log.Printf("error %v\n", err)
 			return nil, err
 		}
