@@ -41,12 +41,18 @@ func main() {
 	//publishing the event and sending all the subs to the email_service
 	job := cron.New()
 	job.AddFunc(os.Getenv("DELETESUBSAT"), func() {
-		log.Println("publishing the delete subscriptions event")
+		log.Println("publishing the delete subscriptions event 1")
 		if err := publishEvent(pubsub, topic); err != nil {
 			fmt.Println(err)
 		}
 	})
 	job.Start()
-	//to stop the goroutine to exit
-	select {}
+	log.Println("publishing the delete subscriptions event test")
+	if err := publishEvent(pubsub, topic); err != nil {
+		fmt.Println(err)
+	}
+	//to stop the goroutine from exiting
+	for {
+		select {}
+	}
 }
