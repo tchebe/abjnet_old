@@ -50,14 +50,13 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 }
 func main() {
 	var db *gorm.DB
-	if os.Getenv("IN_NSIA") == "yes" {
-		db, err := createSqlServerDBConnection()
-		defer db.Close()
-		if err != nil {
-			log.Fatalf("Could not connect to the database: %v", err)
-		} else {
-			log.Println("Connected to DB successfully")
-		}
+
+	db, err := createSqlServerDBConnection()
+	defer db.Close()
+	if err != nil {
+		log.Fatalf("Could not connect to the database: %v", err)
+	} else {
+		log.Println("Connected to DB successfully")
 	}
 
 	// Automatically migrates the product struct
