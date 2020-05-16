@@ -39,20 +39,24 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 		Id   int
 		Name string
 	}
-	var pro *p
+
 	if os.Getenv("IN_NSIA") == "no" {
 		products = append(products, &pb.Product{Id: "1", Name: "CAREC TEST RETRAITE"})
 		products = append(products, &pb.Product{Id: "2", Name: "CAREC TEST EPARGNE"})
 	} else {
-
-		if err := repo.db.Debug().Raw("exec dbo.lstprdweblogy").Scan(&pro).Error; err != nil {
+		rows, err := repo.db.Debug().Raw("exec dbo.lstprdweblogy").Rows()
+		defer rows.Close()
+		if err != nil {
 			log.Printf("error %v\n", err)
 			return nil, err
 		}
-		//for _, v := range pro {
-		products = append(products, &pb.Product{Id: strconv.Itoa(pro.Id), Name: pro.Name})
-		//}
-		log.Printf("content of pro %v\n", pro)
+
+		for rows.Next() {
+			var pro p
+			repo.db.ScanRows(rows, &pro)
+			products = append(products, &pb.Product{Id: strconv.Itoa(pro.Id), Name: pro.Name})
+		}
+		//log.Printf("content of pro %v\n", pro)
 		log.Printf("content of products %v\n", products)
 
 	}
