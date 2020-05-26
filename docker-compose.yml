@@ -44,7 +44,7 @@ services:
     network_mode: host
     environment: 
       MICRO_SERVER_ADDRESS: ":50051"
-      DB_HOST: "127.0.0.1:5434"
+      DB_HOST: "127.0.0.1:5432"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
@@ -68,7 +68,7 @@ services:
     network_mode: host
     environment: 
       MICRO_SERVER_ADDRESS: ":50052"
-      DB_HOST: "127.0.0.1:5434"
+      DB_HOST: "127.0.0.1:5432"
       DB_USER: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
