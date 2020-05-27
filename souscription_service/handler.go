@@ -27,8 +27,20 @@ func (s *service) Subscribe(ctx context.Context, req *pb.Souscription, res *pb.R
 		}}
 		return errors.New(theerror)
 	}
+	//get the id of the subscription
+	resp, err := s.repo.GetSub(req)
+	if err != nil {
+		theerror := fmt.Sprintf("%v --from souscription_service", err)
+		res.Done = false
+		res.Errors = []*pb.Error{{
+			Code:        400,
+			Description: "souscription echouée.Veuillez contacter l'administrateur système",
+		}}
+		return errors.New(theerror)
+	}
 	res.Done = true
 	res.Description = "Souscription prise en compte.Un retour vous sera fait d'ici 24h"
+	res.Souscription.Id = resp.Id
 	return nil
 }
 
