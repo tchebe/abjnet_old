@@ -11,7 +11,7 @@ message Souscription{
     string id=1;
     string nom=2;
     string prenom=3;
-    string dateofbith=4;
+    string dateofbirth=4;
     string telephone=5;
     fixed32 abjcardno=6;
     uint64 montant=7;
@@ -24,9 +24,11 @@ message Souscription{
 message Request{}
 message Response{
     bool done=1;
-    Souscription souscription=2;
-    repeated Souscription souscriptions=3;
-    repeated Error errors=4;
+    string description=2;
+    Souscription souscription=3;
+    repeated Souscription souscriptions=4;
+    repeated Error errors=5;
+    
 }
 message Error{
     int32 code=1;

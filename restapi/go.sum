@@ -443,6 +443,12 @@ github.com/xeipuuv/gojsonschema v1.1.0/go.mod h1:5yf86TLmAcydyeJq5YvxkGPE2fm/u4m
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 h1:eY9dn8+vbi4tKz5Qo6v2eYzo7kUS51QINcR5jNpbZS8=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
+github.com/zjjt/abjnet v0.0.0-20200526114452-6eb0dacc75fe h1:O+Oj9hsa1nXRwe3Eq59wG2RWo/l1JtzQUmM5jSVkDok=
+github.com/zjjt/abjnet/product_service v0.0.0-20200526114452-6eb0dacc75fe h1:qcw34hsyxCWmUysWgwIzp/CaUSlxVFa1j2gQeCDB+2c=
+github.com/zjjt/abjnet/product_service v0.0.0-20200526114452-6eb0dacc75fe/go.mod h1:QY6iRsU2mF11frH8sqsQfNm4qfGP3JBFd2OwFUCpDGs=
+github.com/zjjt/abjnet/souscription_service v0.0.0-20200526114452-6eb0dacc75fe h1:k0nVyY/WsIrn9i6tcmuAXESbcG0RUOestB0QEbBunys=
+github.com/zjjt/abjnet/souscription_service v0.0.0-20200526114452-6eb0dacc75fe/go.mod h1:la8N30n7jXLddeevGW5ny0AyVYCCRyq7gpqIUHjI0uU=
+github.com/zjjt/abjnet/user_service v0.0.0-20200511095046-4fffd71d851d/go.mod h1:iKFmHxVNh6z8m8F16qlYFWxjgmmBP5wdL6iLNiLSJuk=
 github.com/zjjt/abjnet/user_service v0.0.0-20200513035319-0a41532704a5 h1:SIB4ggSDbtT7212cDYorgkhY8Mry3oo8l2uTtdlPFgY=
 github.com/zjjt/abjnet/user_service v0.0.0-20200513035319-0a41532704a5/go.mod h1:p0bszgIRUWZeLHGB29+UwkxkYr6dm3eIJ9TcC9f9w5I=
 go.etcd.io/bbolt v1.3.4 h1:hi1bXHMVrlQh6WwxAy+qZCV/SYIlqo+Ushwdpa4tAKg=

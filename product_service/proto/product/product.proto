@@ -12,7 +12,12 @@ message Product{
     string name=2;
 }
 message Request{}
-
+message ClientRequest{
+    string nom=1;
+    string prenom=2;
+    string dateofbirth=3;
+    
+}
 message Response{
     Product product=1;
     repeated Product products=2;

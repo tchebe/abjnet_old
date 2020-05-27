@@ -20,9 +20,15 @@ func newSouscriptionService(repo repository) *service {
 func (s *service) Subscribe(ctx context.Context, req *pb.Souscription, res *pb.Response) error {
 	if err := s.repo.Subscribe(req); err != nil {
 		theerror := fmt.Sprintf("%v --from souscription_service", err)
+		res.Done = false
+		res.Errors = []*pb.Error{{
+			Code:        400,
+			Description: "souscription echouée.Veuillez contacter l'administrateur système",
+		}}
 		return errors.New(theerror)
 	}
-	res.Souscription = req
+	res.Done = true
+	res.Description = "Souscription prise en compte.Le traitement sera effectué dans un délai maximum de 24h"
 	return nil
 }
 

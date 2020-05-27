@@ -104,7 +104,7 @@ func prepareExcelFile(subs []*pbS.Souscription) *excelize.File {
 		index := i + 2
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("A%d", index), v.Nom)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("B%d", index), v.Prenom)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("C%d", index), v.Dateofbith)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("C%d", index), v.Dateofbirth)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("D%d", index), v.Telephone)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Abjcardno)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("F%d", index), v.Montant)
