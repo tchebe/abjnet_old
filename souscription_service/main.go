@@ -52,7 +52,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	}
 }
 
-const topic = "taskrunner.deleteall"
+const topic = "taskrunner.deletethem"
 
 func publishEvent(subs []*pb.Souscription, pubsub broker.Broker, topic string) error {
 	//when sending an event we have to serialize it to bytes
@@ -112,11 +112,11 @@ func main() {
 	if err := pubsub.Connect(); err != nil {
 		log.Fatal(err)
 	}
-	//when we receive the taskrunner.deleteall event we get all souscriptions from DB
+	//when we receive the taskrunner.deletethem event we get all souscriptions from DB
 	//and we send it to the email service if properly sent we then clear the db
 	_, err = pubsub.Subscribe(topic, func(p broker.Event) error {
 		//getting all subscription from database
-		subs, err := repo.GetAll()
+		subs, err := repo.GetAll("TRAITEE")
 		if err != nil {
 			theerror := fmt.Sprintf("%v --from souscription_service", err)
 			return errors.New(theerror)
@@ -126,7 +126,7 @@ func main() {
 			return err
 		}
 		//now deleting all the subs from the DB
-		if _, err := repo.DeleteAll(); err != nil {
+		if _, err := repo.DeleteAll("TRAITEE"); err != nil {
 			return err
 		}
 		return nil

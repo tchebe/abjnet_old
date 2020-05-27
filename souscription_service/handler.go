@@ -46,7 +46,7 @@ func (s *service) Subscribe(ctx context.Context, req *pb.Souscription, res *pb.R
 
 //GetAll -returns a slice of souscriptions
 func (s *service) GetAll(ctx context.Context, req *pb.Request, res *pb.Response) error {
-	subs, err := s.repo.GetAll()
+	subs, err := s.repo.GetAll("")
 	if err != nil {
 		theerror := fmt.Sprintf("%v --from souscription_service", err)
 		return errors.New(theerror)
@@ -57,7 +57,7 @@ func (s *service) GetAll(ctx context.Context, req *pb.Request, res *pb.Response)
 
 //DeleteAll -deletes all subs from the database
 func (s *service) DeleteAll(ctx context.Context, req *pb.Request, res *pb.Response) error {
-	done, err := s.repo.DeleteAll()
+	done, err := s.repo.DeleteAll("")
 	if err != nil {
 		theerror := fmt.Sprintf("%v --from souscription_service", err)
 		return errors.New(theerror)

@@ -11,8 +11,9 @@ import (
 
 type repository interface {
 	Subscribe(sub *pb.Souscription) error
-	GetAll() ([]*pb.Souscription, error)
-	DeleteAll() (bool, error)
+	GetAll(string) ([]*pb.Souscription, error)
+	DeleteAll(string) (bool, error)
+	GetSub(sub *pb.Souscription) (*pb.Souscription, error)
 }
 
 type SubRepository struct {
