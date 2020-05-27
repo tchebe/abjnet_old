@@ -118,6 +118,7 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 	res.WriteEntity(response)
 }
 
+//Souscrire creates a subscription in the system
 func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to suscribe to a contract via rest api")
 	//extract the token from the headers
@@ -154,6 +155,8 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 		return
 	}
+	//les statuts peuvent etre CREE,TRAITEMENT,TRAITEE
+	sub.Etattraitement = "CREE"
 	response, err := souscriptionC.Subscribe(ctx, sub)
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors de la souscription %v s", err)

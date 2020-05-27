@@ -1,6 +1,9 @@
 package main
 
 import (
+	"errors"
+	"time"
+
 	"github.com/jinzhu/gorm"
 	pb "github.com/zjjt/abjnet/souscription_service/proto/souscription"
 )
@@ -19,6 +22,15 @@ func newSubRepository(db *gorm.DB) *SubRepository {
 	return &SubRepository{db}
 }
 func (repo *SubRepository) Subscribe(sub *pb.Souscription) error {
+	subTime := time.Now().Format("02-01-2006 15:04:05")
+	sub.CreatedAt = subTime
+	//check if the subscription doesnt exist already
+	subexist := new(pb.Souscription)
+	repo.db.First(subexist, sub)
+	if subexist != nil {
+		return errors.New("Cette souscription existe déjà")
+	}
+
 	if err := repo.db.Create(sub).Error; err != nil {
 		return err
 	}

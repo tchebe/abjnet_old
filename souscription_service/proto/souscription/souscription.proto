@@ -21,6 +21,7 @@ message Souscription{
     string beneficiaire=11;
     string email=12;
     string etattraitement=13;
+    string createdAt=14;
 }
 message Request{}
 message Response{
