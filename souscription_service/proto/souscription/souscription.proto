@@ -20,6 +20,7 @@ message Souscription{
     string echeance=10;
     string beneficiaire=11;
     string email=12;
+    string etattraitement=13;
 }
 message Request{}
 message Response{

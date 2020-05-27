@@ -28,7 +28,7 @@ func (s *service) Subscribe(ctx context.Context, req *pb.Souscription, res *pb.R
 		return errors.New(theerror)
 	}
 	res.Done = true
-	res.Description = "Souscription prise en compte.Le traitement sera effectué dans un délai maximum de 24h"
+	res.Description = "Souscription prise en compte.Un retour vous sera fait d'ici 24h"
 	return nil
 }
 

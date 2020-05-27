@@ -10,7 +10,7 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
-const topic = "taskrunner.deleteall"
+const topic = "taskrunner.deletethem"
 
 func publishEvent(pubsub broker.Broker, topic string) error {
 	//create a broker message
