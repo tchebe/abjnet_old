@@ -5,8 +5,14 @@ package product;
 service ProductService{
     rpc Get(Product) returns (Response){}
     rpc GetAll(Request)returns(Response){}
+    rpc GetClientProducts(Client)returns(Response){}
 }
-
+message Client{
+    string nom=1;
+    string prenom=2;
+    string dateofbirth=3;
+    string abjcardno=4;
+}
 message Product{
     string id=1;
     string name=2;
@@ -20,8 +26,8 @@ message ClientRequest{
 }
 message Response{
     Product product=1;
-    repeated Product products=2;
-    repeated Error errors=3;
+    repeated Product products=3;
+    repeated Error errors=4;
 }
 message Error{
     int32 code=1;

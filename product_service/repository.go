@@ -12,6 +12,7 @@ import (
 type repository interface {
 	Get(id string) (*pb.Product, error)
 	GetAll() ([]*pb.Product, error)
+	GetAllClientProducts(*pb.Client) ([]*pb.Product, error)
 }
 
 type ProductRepository struct {
@@ -22,6 +23,7 @@ func newProductRepository(db *gorm.DB) *ProductRepository {
 	return &ProductRepository{db}
 }
 
+//Get gets a single product by using its id
 func (repo *ProductRepository) Get(id string) (*pb.Product, error) {
 	var product *pb.Product
 	if os.Getenv("IN_NSIA") == "no" {
@@ -33,6 +35,8 @@ func (repo *ProductRepository) Get(id string) (*pb.Product, error) {
 	}
 	return product, nil
 }
+
+//GetAll gets all products to display
 func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 	var products []*pb.Product
 	type p struct {
@@ -67,5 +71,38 @@ func (repo *ProductRepository) GetAll() ([]*pb.Product, error) {
 		return products, nil
 	}
 	return nil, nil
+
+}
+
+func (repo *ProductRepository) GetAllClientProducts(client *pb.Client) ([]*pb.Product, error) {
+	var products []*pb.Product
+	if os.Getenv("IN_NSIA") == "no" {
+		products = append(products, &pb.Product{Id: "1", Name: "CAREC TEST RETRAITE"})
+		products = append(products, &pb.Product{Id: "2", Name: "CAREC TEST EPARGNE"})
+	} else {
+		//select first from nsiacif.jaidenp
+		// if err:=repo.db.Debug().Raw("select top 1 from nsiacif.jaidenp").Scan().Error;err!=nil{
+		// 	return nil,err
+		// }
+		// rows, err := repo.db.Debug().Raw("exec dbo.lstprdweblogy").Rows()
+		// defer rows.Close()
+		// if err != nil {
+		// 	log.Printf("error %v\n", err)
+		// 	return nil, err
+		// }
+		// for rows.Next() {
+		// 	log.Println(rows)
+		// 	rows.Scan(&pro.Id, &pro.Name)
+		// 	log.Printf("content of pro %v\n", pro)
+		// 	products = append(products, &pb.Product{Id: strconv.Itoa(pro.Id), Name: pro.Name})
+		// }
+		// //for _, v := range pro {
+
+		// //}
+
+		log.Printf("content of products %v\n", products)
+
+	}
+	return products, nil
 
 }

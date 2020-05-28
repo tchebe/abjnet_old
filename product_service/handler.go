@@ -29,6 +29,9 @@ func (s *service) Get(ctx context.Context, req *pb.Product, res *pb.Response) er
 	res.Product = product
 	return nil
 }
+func (s *service) GetClientProducts(ctx context.Context, req *pb.Client, res *pb.Response) error {
+	return nil
+}
 
 //GetAll -returns a slice of products
 func (s *service) GetAll(ctx context.Context, req *pb.Request, res *pb.Response) error {
