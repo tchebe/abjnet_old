@@ -58,6 +58,7 @@ func publishEvent(subs []*pb.Souscription, pubsub broker.Broker, topic string) e
 	//when sending an event we have to serialize it to bytes
 	//we are sending to our ecosystem the event souscription.sendmail with the details
 	//with all today's subscription
+	log.Println("[PUB] publishing event ", topic)
 	body, err := json.Marshal(subs)
 	if err != nil {
 		theerror := fmt.Sprintf("%v --from souscription_service", err)
@@ -119,15 +120,6 @@ func main() {
 		//getting all subscription from database with status TRAITEMENT
 		log.Println("[SUB] receiving event ", topic[0])
 
-		subs, err := repo.GetAll("TRAITEMENT")
-		if err != nil {
-			theerror := fmt.Sprintf("%v --from souscription_service", err)
-			return errors.New(theerror)
-		}
-		//publishing the event and sending all the subs to the email_service
-		if err := publishEvent(subs, pubsub, "souscription.sendmail"); err != nil {
-			return err
-		}
 		//now deleting all the subs from the DB with status TRAITEMENT
 		if _, err := repo.DeleteAll("TRAITEMENT"); err != nil {
 			return err
@@ -144,6 +136,15 @@ func main() {
 		//now deleting all the subs from the DB with status TRAITEMENT
 		log.Println("[SUB] receiving event ", topic[1])
 		if _, err := repo.UpdateAll("CREE", "TRAITEMENT"); err != nil {
+			return err
+		}
+		subs, err := repo.GetAll("TRAITEMENT")
+		if err != nil {
+			theerror := fmt.Sprintf("%v --from souscription_service", err)
+			return errors.New(theerror)
+		}
+		//publishing the event and sending all the subs to the email_service
+		if err := publishEvent(subs, pubsub, "souscription.sendmail"); err != nil {
 			return err
 		}
 		return nil
