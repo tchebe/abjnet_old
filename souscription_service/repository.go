@@ -10,8 +10,9 @@ import (
 
 type repository interface {
 	Subscribe(sub *pb.Souscription) (*pb.Souscription, error)
-	GetAll(string) ([]*pb.Souscription, error)
-	DeleteAll(string) (bool, error)
+	GetAll(etat string) ([]*pb.Souscription, error)
+	DeleteAll(etat string) (bool, error)
+	UpdateAll(etatactuel string, newetat string) (bool, error)
 	GetSub(sub *pb.Souscription) (*pb.Souscription, error)
 }
 
@@ -46,16 +47,23 @@ func (repo *SubRepository) Subscribe(sub *pb.Souscription) (*pb.Souscription, er
 	return subexist, nil
 }
 
+//UpdateAll updates all subs where etat = args
+func (repo *SubRepository) UpdateAll(etatactuel string, newetat string) (bool, error) {
+	if err := repo.db.Model(pb.Souscription{}).Where("etattraitement = ?", etatactuel).Updates(pb.Souscription{Etattraitement: newetat}).Error; err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 //GetAll gets all the subscription in db based on the etattraitement if it is set
 func (repo *SubRepository) GetAll(etat string) ([]*pb.Souscription, error) {
 	var subs []*pb.Souscription
-	if etat != "CREE" || etat != "TRAITEMENT" || etat != "TRAITEE" {
-		if err := repo.db.Find(&subs).Error; err != nil {
+	if etat != "CREE" || etat != "TRAITEMENT" {
+		if err := repo.db.Find(&subs, "etattraitement = ?", etat).Error; err != nil {
 			return nil, err
 		}
 	} else {
-		sub := &pb.Souscription{Etattraitement: etat}
-		if err := repo.db.Find(&subs, sub).Error; err != nil {
+		if err := repo.db.Find(&subs).Error; err != nil {
 			return nil, err
 		}
 	}

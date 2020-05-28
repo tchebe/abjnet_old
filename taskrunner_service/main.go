@@ -10,7 +10,7 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
-const topic = "taskrunner.deletethem"
+var topic = []string{"taskrunner.deletesubs", "taskrunner.updatesubs"}
 
 func publishEvent(pubsub broker.Broker, topic string) error {
 	//create a broker message
@@ -37,17 +37,19 @@ func main() {
 
 	//publishing the event and sending all the subs to the email_service
 	job := cron.New()
+	job.AddFunc(os.Getenv("MAJSUBAT"), func() {
+		log.Println("[PUB]publishing the update subscriptions event ")
+		if err := publishEvent(pubsub, topic[1]); err != nil {
+			fmt.Println(err)
+		}
+	})
 	job.AddFunc(os.Getenv("DELETESUBSAT"), func() {
-		log.Println("publishing the delete subscriptions event 1")
-		if err := publishEvent(pubsub, topic); err != nil {
+		log.Println("[PUB]publishing the delete subscriptions event ")
+		if err := publishEvent(pubsub, topic[0]); err != nil {
 			fmt.Println(err)
 		}
 	})
 	job.Start()
-	log.Println("publishing the delete subscriptions event test")
-	if err := publishEvent(pubsub, topic); err != nil {
-		fmt.Println(err)
-	}
 	if err := service.Run(); err != nil {
 		theerror := fmt.Sprintf("%v --from taskrunner_service", err)
 		fmt.Println(theerror)

@@ -52,7 +52,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	}
 }
 
-const topic = "taskrunner.deletethem"
+var topic = []string{"taskrunner.deletesubs", "taskrunner.updatesubs"}
 
 func publishEvent(subs []*pb.Souscription, pubsub broker.Broker, topic string) error {
 	//when sending an event we have to serialize it to bytes
@@ -80,6 +80,7 @@ func publishEvent(subs []*pb.Souscription, pubsub broker.Broker, topic string) e
 	}
 	return nil
 }
+
 func init() {
 	if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
 		if err := godotenv.Load("../.env"); err != nil {
@@ -112,11 +113,11 @@ func main() {
 	if err := pubsub.Connect(); err != nil {
 		log.Fatal(err)
 	}
-	//when we receive the taskrunner.deletethem event we get all souscriptions from DB
+	//when we receive the taskrunner.deletesubs event we get all souscriptions from DB
 	//and we send it to the email service if properly sent we then clear the db
-	_, err = pubsub.Subscribe(topic, func(p broker.Event) error {
-		//getting all subscription from database
-		subs, err := repo.GetAll("TRAITEE")
+	_, err = pubsub.Subscribe(topic[0], func(p broker.Event) error {
+		//getting all subscription from database with status TRAITEMENT
+		subs, err := repo.GetAll("TRAITEMENT")
 		if err != nil {
 			theerror := fmt.Sprintf("%v --from souscription_service", err)
 			return errors.New(theerror)
@@ -125,12 +126,26 @@ func main() {
 		if err := publishEvent(subs, pubsub, "souscription.sendmail"); err != nil {
 			return err
 		}
-		//now deleting all the subs from the DB
-		if _, err := repo.DeleteAll("TRAITEE"); err != nil {
+		//now deleting all the subs from the DB with status TRAITEMENT
+		if _, err := repo.DeleteAll("TRAITEMENT"); err != nil {
 			return err
 		}
 		return nil
 	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	//when we receive the taskrunner.updatesubs event we run an update on subs which have the
+	//etattraitement set to CREE we update it with TRAITEMENT
+	_, err = pubsub.Subscribe(topic[1], func(p broker.Event) error {
+		//now deleting all the subs from the DB with status TRAITEMENT
+		if _, err := repo.UpdateAll("CREE", "TRAITEMENT"); err != nil {
+			return err
+		}
+		return nil
+	})
+
 	if err != nil {
 		log.Println(err)
 	}
