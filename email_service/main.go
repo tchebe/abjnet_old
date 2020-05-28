@@ -37,6 +37,7 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 				return err
 			case "souscription.sendmail":
 				_, err := pubsub.Subscribe(v, func(p broker.Event) error {
+					log.Println("[SUB] receiving event ", v)
 					eventHeadersMap := p.Message().Header
 					go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
 					return nil

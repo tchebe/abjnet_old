@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
 	"github.com/robfig/cron/v3"
@@ -22,16 +23,22 @@ func publishEvent(pubsub broker.Broker, topic string) error {
 	}
 	return nil
 }
+func init() {
+	if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
+		if err := godotenv.Load("../.env"); err != nil {
+			log.Fatalf("Couldnt load .env file %v", err)
+		}
+	}
 
+}
 func main() {
 	service := micro.NewService(micro.Name("abjnet.service.taskrunner"))
 	service.Init()
 	//get the broker instance
-	pubsub := service.Server().Options().Broker
-	if err := pubsub.Init(); err != nil {
+	if err := broker.Init(); err != nil {
 		log.Fatalf("Broker Init error: %v", err)
 	}
-	if err := pubsub.Connect(); err != nil {
+	if err := broker.Connect(); err != nil {
 		log.Fatal(err)
 	}
 

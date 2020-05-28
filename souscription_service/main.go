@@ -106,7 +106,7 @@ func main() {
 	service := micro.NewService(micro.Name("abjnet.service.souscription"), micro.WrapHandler(AuthWrapper))
 	service.Init()
 	//get the broker instance
-	pubsub := service.Server().Options().Broker
+	pubsub := broker.NewBroker()
 	if err := pubsub.Init(); err != nil {
 		log.Fatalf("Broker Init error: %v", err)
 	}
@@ -117,6 +117,8 @@ func main() {
 	//and we send it to the email service if properly sent we then clear the db
 	_, err = pubsub.Subscribe(topic[0], func(p broker.Event) error {
 		//getting all subscription from database with status TRAITEMENT
+		log.Println("[SUB] receiving event ", topic[0])
+
 		subs, err := repo.GetAll("TRAITEMENT")
 		if err != nil {
 			theerror := fmt.Sprintf("%v --from souscription_service", err)
@@ -140,6 +142,7 @@ func main() {
 	//etattraitement set to CREE we update it with TRAITEMENT
 	_, err = pubsub.Subscribe(topic[1], func(p broker.Event) error {
 		//now deleting all the subs from the DB with status TRAITEMENT
+		log.Println("[SUB] receiving event ", topic[1])
 		if _, err := repo.UpdateAll("CREE", "TRAITEMENT"); err != nil {
 			return err
 		}
