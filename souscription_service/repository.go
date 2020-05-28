@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -10,7 +9,7 @@ import (
 )
 
 type repository interface {
-	Subscribe(sub *pb.Souscription) error
+	Subscribe(sub *pb.Souscription) (*pb.Souscription, error)
 	GetAll(string) ([]*pb.Souscription, error)
 	DeleteAll(string) (bool, error)
 	GetSub(sub *pb.Souscription) (*pb.Souscription, error)
@@ -27,27 +26,24 @@ func newSubRepository(db *gorm.DB) *SubRepository {
 //GetSub gets a subscription
 func (repo *SubRepository) GetSub(sub *pb.Souscription) (*pb.Souscription, error) {
 	sup := new(pb.Souscription)
-	if err := repo.db.First(&sup, sub).Error; err != nil {
+	if err := repo.db.First(&sup, "nom = ? and prenom = ? and dateofbirth = ? and telephone = ? and abjcardno = ? and montant = ? and codeproduit = ? and datepayment = ? and echeance = ? and beneficiaire = ? and email = ? and etattraitement = ? and created_at = ? ", sub.Nom, sub.Prenom, sub.Dateofbirth, sub.Telephone, sub.Abjcardno, sub.Montant, sub.Codeproduit, sub.Datepayment, sub.Echeance, sub.Beneficiaire, sub.Email, sub.Etattraitement, sub.CreatedAt).Error; err != nil {
 		return nil, err
 	}
 	return sup, nil
 }
 
 //Subscribe creates a subscription in the DB
-func (repo *SubRepository) Subscribe(sub *pb.Souscription) error {
-	subTime := time.Now().Format("02-01-2006 15:04:05")
+func (repo *SubRepository) Subscribe(sub *pb.Souscription) (*pb.Souscription, error) {
+	subTime := time.Now().Format("02-01-2006 15:04")
 	sub.CreatedAt = subTime
 	//check if the subscription doesnt exist already
 	subexist := new(pb.Souscription)
-	repo.db.First(subexist, sub)
-	if subexist != nil {
-		return errors.New("Cette souscription existe déjà")
+	if err := repo.db.FirstOrCreate(&subexist, sub).Error; err != nil {
+		fmt.Printf("subexist:%v", subexist)
+		return nil, fmt.Errorf("Cette souscription existe déjà")
 	}
 
-	if err := repo.db.Create(sub).Error; err != nil {
-		return err
-	}
-	return nil
+	return subexist, nil
 }
 
 //GetAll gets all the subscription in db based on the etattraitement if it is set
