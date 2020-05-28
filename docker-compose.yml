@@ -49,7 +49,7 @@ services:
       DB_PASSWORD: "postgres"
       DB_NAME: "postgres"
       #TOKENEXPIRE in minutes
-      TOKENEXPIRE: "15"
+      TOKENEXPIRE: "60"
       MICRO_REGISTERY: "mdns"
   
   abjnet_souscription_service:
@@ -121,6 +121,7 @@ services:
       SMTP_HOST: 10.10.4.15
       SMTP_PORT: 25
       FROM: "thibaut.zehi@groupensia.com"
+      ADPASSWORD: "ZjjTEnt@1988"
 
   abjnet_taskrunner_service:
     depends_on: 

@@ -150,7 +150,7 @@ func sendEmail(from string, to string, cc string, topic string, msghtml string, 
 	if err != nil {
 		log.Fatal("Error please check the smtp port in environment")
 	}
-	d := mail.NewDialer(os.Getenv("SMTP_HOST"), port, os.Getenv("FROM"), "ZjjTEnt@1988")
+	d := mail.NewDialer(os.Getenv("SMTP_HOST"), port, os.Getenv("FROM"), os.Getenv("ADPASSWORD"))
 	//d.StartTLSPolicy = mail.MandatoryStartTLS
 
 	// Send the email

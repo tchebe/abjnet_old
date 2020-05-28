@@ -58,7 +58,6 @@ func publishEvent(subs []*pb.Souscription, pubsub broker.Broker, topic string) e
 	//when sending an event we have to serialize it to bytes
 	//we are sending to our ecosystem the event souscription.sendmail with the details
 	//with all today's subscription
-	log.Println("[PUB] publishing event ", topic)
 	body, err := json.Marshal(subs)
 	if err != nil {
 		theerror := fmt.Sprintf("%v --from souscription_service", err)
@@ -75,6 +74,7 @@ func publishEvent(subs []*pb.Souscription, pubsub broker.Broker, topic string) e
 		Body: body,
 	}
 	//publish the message to the broker
+	log.Println("[PUB] publishing event ", topic)
 	if err := pubsub.Publish(topic, msg); err != nil {
 		theerror := fmt.Sprintf("%v --from souscription_service", err)
 		log.Printf("[PUB] failed %s\n", theerror)
