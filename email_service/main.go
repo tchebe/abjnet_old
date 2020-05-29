@@ -13,6 +13,7 @@ import (
 	"github.com/go-mail/mail"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
+	pbPay "github.com/zjjt/abjnet/payment_service/proto/payment"
 	pbP "github.com/zjjt/abjnet/product_service/proto/product"
 	pbS "github.com/zjjt/abjnet/souscription_service/proto/souscription"
 	pbU "github.com/zjjt/abjnet/user_service/proto/user"
@@ -35,7 +36,7 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 					return nil
 				})
 				return err
-			case "souscription.sendmail":
+			case "souscription.sendmail", "payment.sendmail":
 				_, err := pubsub.Subscribe(v, func(p broker.Event) error {
 					log.Println("[SUB] receiving event ", v)
 					eventHeadersMap := p.Message().Header
@@ -43,6 +44,7 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 					return nil
 				})
 				return err
+
 			case "product.deleted":
 				_, err := pubsub.Subscribe(v, func(p broker.Event) error {
 					var product *pbP.Product
@@ -65,7 +67,7 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 
 func main() {
 	//slice of topics to suscribe to
-	topics := []string{"user.created", "souscription.sendmail"}
+	topics := []string{"user.created", "souscription.sendmail", "payment.sendmail"}
 	srv := micro.NewService(micro.Name("abjnet.service.email"))
 	srv.Init()
 	//get the broker instance
@@ -86,7 +88,7 @@ func main() {
 		log.Println(err)
 	}
 }
-func prepareExcelFile(subs []*pbS.Souscription) *excelize.File {
+func prepareExcelFileSub(subs []*pbS.Souscription) *excelize.File {
 	excelfile := excelize.NewFile()
 	//here we create the top header rows
 	excelfile.SetCellValue("Sheet1", "A1", "NOM ASSURE")
@@ -118,7 +120,34 @@ func prepareExcelFile(subs []*pbS.Souscription) *excelize.File {
 	}
 	return excelfile
 }
+func prepareExcelFilePay(payments []*pbPay.Payment) *excelize.File {
+	excelfile := excelize.NewFile()
+	//here we create the top header rows
+	excelfile.SetCellValue("Sheet1", "A1", "NUMERO TRANSACTION")
+	excelfile.SetCellValue("Sheet1", "B1", "NOM ASSURE")
+	excelfile.SetCellValue("Sheet1", "C1", "PRENOMS ASSURE")
+	excelfile.SetCellValue("Sheet1", "D1", "CONTACT TELEPHONIQUE")
+	excelfile.SetCellValue("Sheet1", "E1", "DATE DE PAIEMENT APM")
+	excelfile.SetCellValue("Sheet1", "F1", "CONVENTION")
+	excelfile.SetCellValue("Sheet1", "G1", "POLICE")
+	excelfile.SetCellValue("Sheet1", "H1", "MONTANT")
+	excelfile.SetCellValue("Sheet1", "I1", "DATE RECEPTION PAIEMENT NSIA")
+	//here we fill the file with the data
+	for i, v := range payments {
+		index := i + 2
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("A%d", index), v.Nom)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("B%d", index), v.Prenom)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("C%d", index), v.Dateofbirth)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("D%d", index), v.Telephone)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Abjcardno)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("F%d", index), v.Montant)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Codeproduit)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Datepayment)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("I%d", index), v.Echeance)
 
+	}
+	return excelfile
+}
 func sendEmail(from string, to string, cc string, topic string, msghtml string, byteArr []byte) error {
 	//first we unpack to slices the to and cc args
 	TO := strings.Split(to, ",")
@@ -138,7 +167,7 @@ func sendEmail(from string, to string, cc string, topic string, msghtml string, 
 		var subs []*pbS.Souscription
 		json.Unmarshal(byteArr, &subs)
 		//here we create the excel file from the subs
-		excelfile := prepareExcelFile(subs)
+		excelfile := prepareExcelFileSub(subs)
 		// Save xlsx file by the given path.
 		if err := excelfile.SaveAs(fmt.Sprintf("%s.xlsx", topic)); err != nil {
 			fmt.Println(err)

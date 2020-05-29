@@ -1,0 +1,31 @@
+syntax= "proto3";
+
+package payment;
+
+service PaymentService{
+    rpc Pay(Payment)returns(Response){}
+}
+
+message Payment{
+    int64 transacno=1;
+    string nomclient=2;
+    string prenomclient=3;
+    string telephone=4;
+    string datepaymentuser=5;
+    int32 conventionno=6;
+    int32 policeno=7;
+    int64 montant=8;
+    string createdAt=9;
+}
+
+message Response{
+    bool done=1;
+    string description=2;
+    Payment payment=3;
+    repeated Error errors=4;
+}
+message Error{
+    int32 code=1;
+    string description=2;
+}
+

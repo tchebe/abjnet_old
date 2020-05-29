@@ -139,6 +139,7 @@ services:
     #   - 9088:50051
     environment: 
       DELETESUBSAT: "05 7 * * *"
+      DELETEPAYSAT: "05 7 * * *"
       MAJSUBAT: "05 7 * * *"
       MICRO_SERVER_ADDRESS: ":50055"
       MICRO_REGISTERY: "mdns"
