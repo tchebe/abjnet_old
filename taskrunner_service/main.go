@@ -13,7 +13,7 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
-var topic = []string{"taskrunner.deletesubs", "taskrunner.updatesubs", "taskrunner.deletepayments"}
+var topic = []string{"taskrunner.deletesubs", "taskrunner.updatesubs", "taskrunner.deletepayments", "taskrunner.deleteprestations"}
 
 func publishEvent(pubsub broker.Broker, topic string) error {
 	//create a broker message
@@ -59,7 +59,12 @@ func main() {
 		}
 	})
 	job.AddFunc(os.Getenv("DELETEPAYSAT"), func() {
-		if err := publishEvent(pubsub, topic[1]); err != nil {
+		if err := publishEvent(pubsub, topic[2]); err != nil {
+			fmt.Println(err)
+		}
+	})
+	job.AddFunc(os.Getenv("DELETEPRESAT"), func() {
+		if err := publishEvent(pubsub, topic[3]); err != nil {
 			fmt.Println(err)
 		}
 	})

@@ -49,8 +49,8 @@ func (repo *PrestaRepository) checkElligibility(presta *pb.Prestation) error {
 }
 
 //GetAll gets all the payments in db
-func (repo *PrestaRepository) GetAll() ([]*pb.Payment, error) {
-	var pays []*pb.Payment
+func (repo *PrestaRepository) GetAll() ([]*pb.Prestation, error) {
+	var pays []*pb.Prestation
 	if err := repo.db.Find(&pays).Error; err != nil {
 		return nil, err
 	}

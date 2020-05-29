@@ -48,6 +48,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 		return err
 	}
 }
+
 func main() {
 	var db *gorm.DB
 

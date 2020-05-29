@@ -103,8 +103,8 @@ func main() {
 	// into database columns/types etc. This will
 	// check for changes and migrate them each time
 	// this service is restarted.
-	db.AutoMigrate(&pb.Payment{})
-	repo := newPayRepository(db)
+	db.AutoMigrate(&pb.Prestation{})
+	repo := newPrestaRepository(db)
 	service := micro.NewService(micro.Name("abjnet.service.payment"), micro.WrapHandler(AuthWrapper))
 	service.Init()
 	//get the broker instance

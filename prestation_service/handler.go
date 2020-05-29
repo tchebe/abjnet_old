@@ -30,7 +30,7 @@ func (s *service) Rachat(ctx context.Context, req *pb.Prestation, res *pb.Respon
 
 	res.Done = true
 	res.Description = "Prestation prise en compte.Un retour vous sera fait d'ici 24h"
-	res.Payment = resp
+	res.Prestation = resp
 	return nil
 }
 func (s *service) ValeurRachat(ctx context.Context, req *pb.Request, res *pb.Response) error {

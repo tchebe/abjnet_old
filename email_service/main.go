@@ -14,6 +14,7 @@ import (
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
 	pbPay "github.com/zjjt/abjnet/payment_service/proto/payment"
+	pbPre "github.com/zjjt/abjnet/prestation_service/proto/prestation"
 	pbP "github.com/zjjt/abjnet/product_service/proto/product"
 	pbS "github.com/zjjt/abjnet/souscription_service/proto/souscription"
 	pbU "github.com/zjjt/abjnet/user_service/proto/user"
@@ -36,7 +37,7 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) error {
 					return nil
 				})
 				return err
-			case "souscription.sendmail", "payment.sendmail":
+			case "souscription.sendmail", "payment.sendmail", "prestation.sendmail":
 				_, err := pubsub.Subscribe(v, func(p broker.Event) error {
 					log.Println("[SUB] receiving event ", v)
 					eventHeadersMap := p.Message().Header
@@ -120,6 +121,7 @@ func prepareExcelFileSub(subs []*pbS.Souscription) *excelize.File {
 	}
 	return excelfile
 }
+
 func prepareExcelFilePay(payments []*pbPay.Payment) *excelize.File {
 	excelfile := excelize.NewFile()
 	//here we create the top header rows
@@ -144,6 +146,36 @@ func prepareExcelFilePay(payments []*pbPay.Payment) *excelize.File {
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Policeno)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Montant)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("I%d", index), v.CreatedAt)
+
+	}
+	return excelfile
+}
+func prepareExcelFilePresta(prestations []*pbPre.Prestation) *excelize.File {
+	excelfile := excelize.NewFile()
+	//here we create the top header rows
+	excelfile.SetCellValue("Sheet1", "A1", "NUMERO TRANSACTION")
+	excelfile.SetCellValue("Sheet1", "B1", "NOM ASSURE")
+	excelfile.SetCellValue("Sheet1", "C1", "PRENOMS ASSURE")
+	excelfile.SetCellValue("Sheet1", "D1", "CONTACT TELEPHONIQUE")
+	excelfile.SetCellValue("Sheet1", "E1", "DATE DE DEMANDE")
+	excelfile.SetCellValue("Sheet1", "F1", "CONVENTION")
+	excelfile.SetCellValue("Sheet1", "G1", "POLICE")
+	excelfile.SetCellValue("Sheet1", "H1", "MONTANT DEMANDE")
+	excelfile.SetCellValue("Sheet1", "I1", "MONTANT RESTANT APRES RACHAT")
+	excelfile.SetCellValue("Sheet1", "J1", "DATE RECEPTION DEMANDE NSIA")
+	//here we fill the file with the data
+	for i, v := range prestations {
+		index := i + 2
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("A%d", index), v.Transacno)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("B%d", index), v.Nomclient)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("C%d", index), v.Prenomclient)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("D%d", index), v.Telephone)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Datedamandeuser)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("F%d", index), v.Conventionno)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Policeno)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Montantdemande)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("I%d", index), v.Montantrestant)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("J%d", index), v.CreatedAt)
 
 	}
 	return excelfile

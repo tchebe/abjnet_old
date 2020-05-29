@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -27,6 +28,7 @@ func (repo *PayRepository) MakePayment(payment *pb.Payment) (*pb.Payment, error)
 	payment.CreatedAt = payTime
 	//check if the subscription doesnt exist already
 	payexist := new(pb.Payment)
+	log.Println(payment)
 	if err := repo.db.FirstOrCreate(&payexist, payment).Error; err != nil {
 		fmt.Printf("payexist:%v", payexist)
 		return nil, fmt.Errorf("Ce paiment existe déjà")
