@@ -118,6 +118,52 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 	res.WriteEntity(response)
 }
 
+//ListContracts affiche la liste des contrats
+func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
+	log.Println("attempting to fetch list of contracts via rest api")
+	//extract the token from the headers
+	tokenheader := req.HeaderParameter("Authorization")
+	if tokenheader == "" {
+		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+		return
+	}
+	splitted := strings.Split(tokenheader, " ")
+	if len(splitted) != 2 {
+		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+		return
+	}
+	token := splitted[1]
+	_, err := userC.ValidateToken(context.Background(), &userP.Token{
+		Token: token,
+	})
+	if err != nil {
+		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+		return
+	}
+	ctx := metadata.Set(context.Background(), "Token", token)
+	log.Println("Authenticated with token ", token)
+	err = req.Request.ParseForm()
+	if err != nil {
+		res.WriteErrorString(http.StatusBadRequest, err.Error())
+		return
+	}
+	police := struct{ Police int }{}
+	err = decoder.Decode(police, req.Request.PostForm)
+	if err != nil {
+		theerror := fmt.Sprintf("erreur pendant le decodage des parametres de Cotisations %v", err)
+		log.Println(theerror)
+		res.WriteError(http.StatusBadRequest, fmt.Errorf("Mauvais numero de police"))
+		return
+	}
+	response, err := productC.GetCotisations(ctx, &productP.Request{Police: police})
+	if err != nil {
+		theerror := fmt.Sprintf("Une erreur est survenue lors de la recuperation des produits %v", err)
+		log.Println(theerror)
+		res.WriteError(http.StatusBadRequest, errors.New("Une erreur est survenue lors de la recuperation des produits"))
+	}
+	res.WriteEntity(response)
+}
+
 //Souscrire creates a subscription in the system
 func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to suscribe to a contract via rest api")
