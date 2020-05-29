@@ -13,8 +13,8 @@ message Prestation{
     string prenomclient=3;
     string telephone=4;
     string datedamandeuser=5;
-    int32 conventionno=6;
-    int32 policeno=7;
+    int64 conventionno=6;
+    int64 policeno=7;
     int64 montantdemande=8;
     int64 montantrestant=9;
     string createdAt=10;
