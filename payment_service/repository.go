@@ -47,7 +47,7 @@ func (repo *PayRepository) GetAll() ([]*pb.Payment, error) {
 }
 
 //DeleteAll deletes all the payments
-func (repo *SubRepository) DeleteAll() (bool, error) {
+func (repo *PayRepository) DeleteAll() (bool, error) {
 	if err := repo.db.Exec("TRUNCATE TABLE payments RESTART IDENTITY;").Error; err != nil {
 		return false, err
 	}

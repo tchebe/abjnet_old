@@ -12,7 +12,7 @@ type service struct {
 	repo repository
 }
 
-func newSouscriptionService(repo repository) *service {
+func newPaymentService(repo repository) *service {
 	return &service{repo}
 }
 
@@ -30,6 +30,6 @@ func (s *service) Pay(ctx context.Context, req *pb.Payment, res *pb.Response) er
 
 	res.Done = true
 	res.Description = "Paiement pris en compte.Un retour vous sera fait d'ici 24h"
-	res.Souscription = resp
+	res.Payment = resp
 	return nil
 }
