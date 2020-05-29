@@ -155,7 +155,7 @@ func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
 		res.WriteError(http.StatusBadRequest, fmt.Errorf("Mauvais numero de police"))
 		return
 	}
-	response, err := productC.GetCotisations(ctx, &productP.Police{Police: police.Police})
+	response, err := productC.GetCotisations(ctx, &productP.Police{Police: int64(police.Police)})
 	if err != nil {
 		theerror := fmt.Sprintf("Une erreur est survenue lors de la recuperation des produits %v", err)
 		log.Println(theerror)

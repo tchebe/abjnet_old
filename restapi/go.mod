@@ -6,7 +6,7 @@ require (
 	github.com/emicklei/go-restful/v3 v3.1.0
 	github.com/gorilla/schema v1.1.0
 	github.com/micro/go-micro/v2 v2.7.0
-	github.com/zjjt/abjnet/product_service v0.0.0-20200529102531-bec71291590d
-	github.com/zjjt/abjnet/souscription_service v0.0.0-20200529102531-bec71291590d
-	github.com/zjjt/abjnet/user_service v0.0.0-20200529102531-bec71291590d
+	github.com/zjjt/abjnet/product_service v0.0.0-20200529110212-276002e478ee
+	github.com/zjjt/abjnet/souscription_service v0.0.0-20200529110212-276002e478ee
+	github.com/zjjt/abjnet/user_service v0.0.0-20200529110212-276002e478ee
 )
