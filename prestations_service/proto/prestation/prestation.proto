@@ -1,0 +1,35 @@
+syntax= "proto3";
+
+package prestation;
+
+service PrestationService{
+    rpc Rachat(Prestation)returns(Response){}
+    rpc ValeurRachat(Request)returns(Response){}
+}
+
+message Prestation{
+    int64 transacno=1;
+    string nomclient=2;
+    string prenomclient=3;
+    string telephone=4;
+    string datedamandeuser=5;
+    int32 conventionno=6;
+    int32 policeno=7;
+    int64 montantdemande=8;
+    int64 montantrestant=9;
+    string createdAt=10;
+}
+message Request{
+    int32 police=1;
+}
+
+message Response{
+    bool done=1;
+    string description=2;
+    Prestation payment=3;
+    repeated Error errors=4;
+}
+message Error{
+    int32 code=1;
+    string description=2;
+}

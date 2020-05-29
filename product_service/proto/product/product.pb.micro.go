@@ -36,6 +36,7 @@ var _ server.Option
 type ProductService interface {
 	Get(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 	GetAll(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
+	GetCotisations(ctx context.Context, in *Police, opts ...client.CallOption) (*Response, error)
 	GetClientProducts(ctx context.Context, in *Client, opts ...client.CallOption) (*Response, error)
 }
 
@@ -71,6 +72,16 @@ func (c *productService) GetAll(ctx context.Context, in *Request, opts ...client
 	return out, nil
 }
 
+func (c *productService) GetCotisations(ctx context.Context, in *Police, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "ProductService.GetCotisations", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *productService) GetClientProducts(ctx context.Context, in *Client, opts ...client.CallOption) (*Response, error) {
 	req := c.c.NewRequest(c.name, "ProductService.GetClientProducts", in)
 	out := new(Response)
@@ -86,6 +97,7 @@ func (c *productService) GetClientProducts(ctx context.Context, in *Client, opts
 type ProductServiceHandler interface {
 	Get(context.Context, *Product, *Response) error
 	GetAll(context.Context, *Request, *Response) error
+	GetCotisations(context.Context, *Police, *Response) error
 	GetClientProducts(context.Context, *Client, *Response) error
 }
 
@@ -93,6 +105,7 @@ func RegisterProductServiceHandler(s server.Server, hdlr ProductServiceHandler, 
 	type productService interface {
 		Get(ctx context.Context, in *Product, out *Response) error
 		GetAll(ctx context.Context, in *Request, out *Response) error
+		GetCotisations(ctx context.Context, in *Police, out *Response) error
 		GetClientProducts(ctx context.Context, in *Client, out *Response) error
 	}
 	type ProductService struct {
@@ -112,6 +125,10 @@ func (h *productServiceHandler) Get(ctx context.Context, in *Product, out *Respo
 
 func (h *productServiceHandler) GetAll(ctx context.Context, in *Request, out *Response) error {
 	return h.ProductServiceHandler.GetAll(ctx, in, out)
+}
+
+func (h *productServiceHandler) GetCotisations(ctx context.Context, in *Police, out *Response) error {
+	return h.ProductServiceHandler.GetCotisations(ctx, in, out)
 }
 
 func (h *productServiceHandler) GetClientProducts(ctx context.Context, in *Client, out *Response) error {

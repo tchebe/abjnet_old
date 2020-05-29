@@ -5,6 +5,7 @@ package product;
 service ProductService{
     rpc Get(Product) returns (Response){}
     rpc GetAll(Request)returns(Response){}
+    rpc GetCotisations(Police)returns(Response){}
     rpc GetClientProducts(Client)returns(Response){}
 }
 message Client{
@@ -16,6 +17,34 @@ message Client{
 message Product{
     string id=1;
     string name=2;
+}
+message Police{
+    int32 police=1;
+}
+message Etat{
+    string police=1;
+    string datedebuteffet=2;
+    string datefineffet=3;
+    string libelleproduit=4;
+    string modereglement=5;
+    string fractionnement=6;
+    string numeropayeur=7;
+    string nompayeur=8;
+    string telephone=9;
+    string profession=10;
+    string adresse=11;
+    string datenaissance=12;
+    string lieunaissance=13;
+    string nomsouscripteur=14;
+    string quittance=15;
+    string prime=16;
+    string datecomptable=17;
+    string datequittance=18;
+    string etatquittance=19;
+    string montantsolde=20;
+    string montantimpaye=21;
+    string nombresolde=22;
+    string nombreimpaye=23;
 }
 message Request{}
 message ClientRequest{

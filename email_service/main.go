@@ -135,15 +135,15 @@ func prepareExcelFilePay(payments []*pbPay.Payment) *excelize.File {
 	//here we fill the file with the data
 	for i, v := range payments {
 		index := i + 2
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("A%d", index), v.Nom)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("B%d", index), v.Prenom)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("C%d", index), v.Dateofbirth)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("A%d", index), v.Transacno)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("B%d", index), v.Nomclient)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("C%d", index), v.Prenomclient)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("D%d", index), v.Telephone)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Abjcardno)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("F%d", index), v.Montant)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Codeproduit)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Datepayment)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("I%d", index), v.Echeance)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Datepaymentuser)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("F%d", index), v.Conventionno)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Policeno)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Montant)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("I%d", index), v.CreatedAt)
 
 	}
 	return excelfile
