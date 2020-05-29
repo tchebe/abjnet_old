@@ -26,7 +26,7 @@ message Request{
 message Response{
     bool done=1;
     string description=2;
-    Prestation payment=3;
+    Prestation prestation=3;
     repeated Error errors=4;
 }
 message Error{
