@@ -38,14 +38,14 @@ func (repo *PrestaRepository) MakePrestation(presta *pb.Prestation) (*pb.Prestat
 func (repo *PrestaRepository) checkElligibility(presta *pb.Prestation) error {
 	//check the remaining montant from the last row in db
 	p := new(pb.Prestation)
-	if err := repo.db.Last(&p, "nomclient = ? and prenomclient = ? and policeno = ?",presta.).Error; err != nil {
+	if err := repo.db.Last(&p, "nomclient = ? and prenomclient = ? and policeno = ?", presta.Nomclient, presta.Prenomclient, presta.Policeno).Error; err != nil {
 		log.Println(err)
 	}
 
 }
 
 //GetAll gets all the payments in db
-func (repo *PayRepository) GetAll() ([]*pb.Payment, error) {
+func (repo *PrestaRepository) GetAll() ([]*pb.Payment, error) {
 	var pays []*pb.Payment
 	if err := repo.db.Find(&pays).Error; err != nil {
 		return nil, err
@@ -56,8 +56,8 @@ func (repo *PayRepository) GetAll() ([]*pb.Payment, error) {
 }
 
 //DeleteAll deletes all the payments
-func (repo *PayRepository) DeleteAll() (bool, error) {
-	if err := repo.db.Exec("TRUNCATE TABLE payments RESTART IDENTITY;").Error; err != nil {
+func (repo *PrestaRepository) DeleteAll() (bool, error) {
+	if err := repo.db.Exec("TRUNCATE TABLE prestations RESTART IDENTITY;").Error; err != nil {
 		return false, err
 	}
 
