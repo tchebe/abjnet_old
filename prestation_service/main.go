@@ -15,7 +15,7 @@ import (
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/metadata"
 	"github.com/micro/go-micro/v2/server"
-	pb "github.com/zjjt/abjnet/payment_service/proto/payment"
+	pb "github.com/zjjt/abjnet/prestation_service/proto/prestation"
 	userproto "github.com/zjjt/abjnet/user_service/proto/user"
 )
 
@@ -33,7 +33,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 		}
 		meta, ok := metadata.FromContext(ctx)
 		if !ok {
-			return errors.New("no auth meta-data found in request --from payment_service l35")
+			return errors.New("no auth meta-data found in request --from prestation_service l35")
 		}
 		//it changed from token to Token
 		token := meta["Token"]
@@ -44,7 +44,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 			Token: token,
 		})
 		if err != nil {
-			theerror := fmt.Sprintf("%v --from payment_service l46", err)
+			theerror := fmt.Sprintf("%v --from prestation_service l46", err)
 			return errors.New(theerror)
 		}
 		err = fn(ctx, req, res)
@@ -52,15 +52,15 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	}
 }
 
-var topic = "taskrunner.deletepayments"
+var topic = "taskrunner.deleteprestations"
 
-func publishEvent(subs []*pb.Payment, pubsub broker.Broker, topic string) error {
+func publishEvent(subs []*pb.Prestation, pubsub broker.Broker, topic string) error {
 	//when sending an event we have to serialize it to bytes
-	//we are sending to our ecosystem the event payment.sendmail with the details
+	//we are sending to our ecosystem the event prestation.sendmail with the details
 	//with all today's subscription
 	body, err := json.Marshal(subs)
 	if err != nil {
-		theerror := fmt.Sprintf("%v --from payment_service", err)
+		theerror := fmt.Sprintf("%v --from prestation_service", err)
 		return errors.New(theerror)
 	}
 
@@ -69,14 +69,14 @@ func publishEvent(subs []*pb.Payment, pubsub broker.Broker, topic string) error 
 		Header: map[string]string{
 			"to":    os.Getenv("TO"),
 			"cc":    os.Getenv("CC"),
-			"objet": fmt.Sprintf("PAIEMENTS ABIDJAN.NET DU %v", time.Now().Format("02-01-2006")),
+			"objet": fmt.Sprintf("DEMANDES DE PRESTATION ABIDJAN.NET DU %v", time.Now().Format("02-01-2006")),
 		},
 		Body: body,
 	}
 	//publish the message to the broker
 	log.Println("[PUB] publishing event ", topic)
 	if err := pubsub.Publish(topic, msg); err != nil {
-		theerror := fmt.Sprintf("%v --from payment_service", err)
+		theerror := fmt.Sprintf("%v --from prestation_service", err)
 		log.Printf("[PUB] failed %s\n", theerror)
 	}
 	return nil
@@ -115,18 +115,18 @@ func main() {
 	if err := pubsub.Connect(); err != nil {
 		log.Fatal(err)
 	}
-	//when we receive the taskrunner.deletesubs event we get all payments from DB
+	//when we receive the taskrunner.deletesubs event we get all prestations from DB
 	//and we send it to the email service if properly sent we then clear the db
 	_, err = pubsub.Subscribe(topic, func(p broker.Event) error {
 		//getting all subscription from database
 		log.Println("[SUB] receiving event ", topic)
 		subs, err := repo.GetAll()
 		if err != nil {
-			theerror := fmt.Sprintf("%v --from payment_service", err)
+			theerror := fmt.Sprintf("%v --from prestation_service", err)
 			return errors.New(theerror)
 		}
 		//publishing the event and sending all the subs to the email_service
-		if err := publishEvent(subs, pubsub, "payment.sendmail"); err != nil {
+		if err := publishEvent(subs, pubsub, "prestation.sendmail"); err != nil {
 			return err
 		}
 		//now deleting all the subs from the DB
@@ -140,7 +140,7 @@ func main() {
 		log.Println(err)
 	}
 
-	pb.RegisterPaymentServiceHandler(service.Server(), newPaymentService(repo))
+	pb.RegisterPrestationServiceHandler(service.Server(), newPrestationService(repo))
 	if err := service.Run(); err != nil {
 		theerror := fmt.Sprintf("%v --from payment_service", err)
 		fmt.Println(theerror)

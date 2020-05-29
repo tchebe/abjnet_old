@@ -26,8 +26,9 @@ message Request{
 message Response{
     bool done=1;
     string description=2;
-    Prestation prestation=3;
-    repeated Error errors=4;
+    string maximumrachetable=3;
+    Prestation prestation=4;
+    repeated Error errors=5;
 }
 message Error{
     int32 code=1;
