@@ -95,7 +95,7 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to fetch list of contracts via rest api")
 	//extract the token from the headers
 	var token string
-	if os.Getenv("DISABLE_AUTH") != true {
+	if os.Getenv("DISABLE_AUTH") != "true" {
 		//extract the token from the headers
 		tokenheader := req.HeaderParameter("Authorization")
 		if tokenheader == "" {
@@ -132,7 +132,7 @@ func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to fetch list of contracts via rest api")
 	//extract the token from the headers
 	var token string
-	if os.Getenv("DISABLE_AUTH") != true {
+	if os.Getenv("DISABLE_AUTH") != "true" {
 		//extract the token from the headers
 		tokenheader := req.HeaderParameter("Authorization")
 		if tokenheader == "" {
@@ -155,7 +155,7 @@ func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
 	log.Println("Authenticated with token ", token)
-	err = req.Request.ParseForm()
+	err := req.Request.ParseForm()
 	if err != nil {
 		res.WriteErrorString(http.StatusBadRequest, err.Error())
 		return
@@ -182,7 +182,7 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to suscribe to a contract via rest api")
 	//extract the token from the headers
 	var token string
-	if os.Getenv("DISABLE_AUTH") != true {
+	if os.Getenv("DISABLE_AUTH") != "true" {
 		//extract the token from the headers
 		tokenheader := req.HeaderParameter("Authorization")
 		if tokenheader == "" {
@@ -204,7 +204,7 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
-	err = req.Request.ParseForm()
+	err := req.Request.ParseForm()
 	if err != nil {
 		res.WriteErrorString(http.StatusBadRequest, err.Error())
 		return
@@ -234,7 +234,7 @@ func (s *Api) Payer(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to pay a contract via rest api")
 	//extract the token from the headers
 	var token string
-	if os.Getenv("DISABLE_AUTH") != true {
+	if os.Getenv("DISABLE_AUTH") != "true" {
 		//extract the token from the headers
 		tokenheader := req.HeaderParameter("Authorization")
 		if tokenheader == "" {
@@ -256,7 +256,7 @@ func (s *Api) Payer(req *restful.Request, res *restful.Response) {
 		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
-	err = req.Request.ParseForm()
+	err := req.Request.ParseForm()
 	if err != nil {
 		res.WriteErrorString(http.StatusBadRequest, err.Error())
 		return
@@ -287,7 +287,7 @@ func (s *Api) ValeurRachat(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to make a prestation via rest api")
 	//extract the token from the headers
 	var token string
-	if os.Getenv("DISABLE_AUTH") != true {
+	if os.Getenv("DISABLE_AUTH") != "true" {
 		//extract the token from the headers
 		tokenheader := req.HeaderParameter("Authorization")
 		if tokenheader == "" {
@@ -309,7 +309,7 @@ func (s *Api) ValeurRachat(req *restful.Request, res *restful.Response) {
 		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
-	err = req.Request.ParseForm()
+	err := req.Request.ParseForm()
 	if err != nil {
 		res.WriteErrorString(http.StatusBadRequest, err.Error())
 		return
@@ -337,7 +337,7 @@ func (s *Api) ValeurRachat(req *restful.Request, res *restful.Response) {
 func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to make a prestation via rest api")
 	var token string
-	if os.Getenv("DISABLE_AUTH") != true {
+	if os.Getenv("DISABLE_AUTH") != "true" {
 		//extract the token from the headers
 		tokenheader := req.HeaderParameter("Authorization")
 		if tokenheader == "" {
@@ -359,7 +359,7 @@ func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
-	err = req.Request.ParseForm()
+	err := req.Request.ParseForm()
 	if err != nil {
 		res.WriteErrorString(http.StatusBadRequest, err.Error())
 		return
