@@ -7,14 +7,14 @@ service PaymentService{
 }
 
 message Payment{
-    int64 transacno=1;
+    string transacno=1;
     string nomclient=2;
     string prenomclient=3;
     string telephone=4;
     string datepaymentuser=5;
-    int32 conventionno=6;
-    int32 policeno=7;
-    int64 montant=8;
+    string conventionno=6;
+    string policeno=7;
+    string montant=8;
     string createdAt=9;
 }
 

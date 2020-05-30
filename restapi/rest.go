@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	restful "github.com/emicklei/go-restful/v3"
@@ -93,23 +94,27 @@ func (s *Api) Login(req *restful.Request, res *restful.Response) {
 func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to fetch list of contracts via rest api")
 	//extract the token from the headers
-	tokenheader := req.HeaderParameter("Authorization")
-	if tokenheader == "" {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	splitted := strings.Split(tokenheader, " ")
-	if len(splitted) != 2 {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	token := splitted[1]
-	_, err := userC.ValidateToken(context.Background(), &userP.Token{
-		Token: token,
-	})
-	if err != nil {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
+	var token string
+	if os.Getenv("DISABLE_AUTH") != true {
+		//extract the token from the headers
+		tokenheader := req.HeaderParameter("Authorization")
+		if tokenheader == "" {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		splitted := strings.Split(tokenheader, " ")
+		if len(splitted) != 2 {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		token = splitted[1]
+		_, err := userC.ValidateToken(context.Background(), &userP.Token{
+			Token: token,
+		})
+		if err != nil {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
 	log.Println("Authenticated with token ", token)
@@ -126,23 +131,27 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to fetch list of contracts via rest api")
 	//extract the token from the headers
-	tokenheader := req.HeaderParameter("Authorization")
-	if tokenheader == "" {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	splitted := strings.Split(tokenheader, " ")
-	if len(splitted) != 2 {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	token := splitted[1]
-	_, err := userC.ValidateToken(context.Background(), &userP.Token{
-		Token: token,
-	})
-	if err != nil {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
+	var token string
+	if os.Getenv("DISABLE_AUTH") != true {
+		//extract the token from the headers
+		tokenheader := req.HeaderParameter("Authorization")
+		if tokenheader == "" {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		splitted := strings.Split(tokenheader, " ")
+		if len(splitted) != 2 {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		token = splitted[1]
+		_, err := userC.ValidateToken(context.Background(), &userP.Token{
+			Token: token,
+		})
+		if err != nil {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
 	log.Println("Authenticated with token ", token)
@@ -172,23 +181,27 @@ func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
 func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to suscribe to a contract via rest api")
 	//extract the token from the headers
-	tokenheader := req.HeaderParameter("Authorization")
-	if tokenheader == "" {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	splitted := strings.Split(tokenheader, " ")
-	if len(splitted) != 2 {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	token := splitted[1]
-	_, err := userC.ValidateToken(context.Background(), &userP.Token{
-		Token: token,
-	})
-	if err != nil {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
+	var token string
+	if os.Getenv("DISABLE_AUTH") != true {
+		//extract the token from the headers
+		tokenheader := req.HeaderParameter("Authorization")
+		if tokenheader == "" {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		splitted := strings.Split(tokenheader, " ")
+		if len(splitted) != 2 {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		token = splitted[1]
+		_, err := userC.ValidateToken(context.Background(), &userP.Token{
+			Token: token,
+		})
+		if err != nil {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
 	err = req.Request.ParseForm()
@@ -220,27 +233,30 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 func (s *Api) Payer(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to pay a contract via rest api")
 	//extract the token from the headers
-	tokenheader := req.HeaderParameter("Authorization")
-	if tokenheader == "" {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	splitted := strings.Split(tokenheader, " ")
-	if len(splitted) != 2 {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	token := splitted[1]
-	_, err := userC.ValidateToken(context.Background(), &userP.Token{
-		Token: token,
-	})
-	if err != nil {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
+	var token string
+	if os.Getenv("DISABLE_AUTH") != true {
+		//extract the token from the headers
+		tokenheader := req.HeaderParameter("Authorization")
+		if tokenheader == "" {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		splitted := strings.Split(tokenheader, " ")
+		if len(splitted) != 2 {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		token = splitted[1]
+		_, err := userC.ValidateToken(context.Background(), &userP.Token{
+			Token: token,
+		})
+		if err != nil {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
 	err = req.Request.ParseForm()
-	log.Println(err)
 	if err != nil {
 		res.WriteErrorString(http.StatusBadRequest, err.Error())
 		return
@@ -248,6 +264,7 @@ func (s *Api) Payer(req *restful.Request, res *restful.Response) {
 	pay := new(paymentP.Payment)
 
 	err = decoder.Decode(pay, req.Request.PostForm)
+	log.Println(pay)
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors du paiement %v d", err)
 		log.Println(theerror)
@@ -255,37 +272,41 @@ func (s *Api) Payer(req *restful.Request, res *restful.Response) {
 		return
 	}
 
-	response, err := paymentC.Pay(ctx, pay)
-	log.Println(response)
+	resp, err := paymentC.Pay(ctx, pay)
+	log.Println("l259", resp)
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors du paiement %v s", err)
 		log.Println(theerror)
 		res.WriteError(http.StatusBadRequest, errors.New("Un probleme a été rencontré lors du paiement"))
 	}
-	res.WriteEntity(response)
+	res.WriteEntity(resp)
 }
 
 //ValeurRachat returns the rachat value
 func (s *Api) ValeurRachat(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to make a prestation via rest api")
 	//extract the token from the headers
-	tokenheader := req.HeaderParameter("Authorization")
-	if tokenheader == "" {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	splitted := strings.Split(tokenheader, " ")
-	if len(splitted) != 2 {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	token := splitted[1]
-	_, err := userC.ValidateToken(context.Background(), &userP.Token{
-		Token: token,
-	})
-	if err != nil {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
+	var token string
+	if os.Getenv("DISABLE_AUTH") != true {
+		//extract the token from the headers
+		tokenheader := req.HeaderParameter("Authorization")
+		if tokenheader == "" {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		splitted := strings.Split(tokenheader, " ")
+		if len(splitted) != 2 {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		token = splitted[1]
+		_, err := userC.ValidateToken(context.Background(), &userP.Token{
+			Token: token,
+		})
+		if err != nil {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
 	err = req.Request.ParseForm()
@@ -315,24 +336,27 @@ func (s *Api) ValeurRachat(req *restful.Request, res *restful.Response) {
 //Prester creates a prestation in the system
 func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to make a prestation via rest api")
-	//extract the token from the headers
-	tokenheader := req.HeaderParameter("Authorization")
-	if tokenheader == "" {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	splitted := strings.Split(tokenheader, " ")
-	if len(splitted) != 2 {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
-	}
-	token := splitted[1]
-	_, err := userC.ValidateToken(context.Background(), &userP.Token{
-		Token: token,
-	})
-	if err != nil {
-		res.WriteErrorString(http.StatusForbidden, "Not Authorized")
-		return
+	var token string
+	if os.Getenv("DISABLE_AUTH") != true {
+		//extract the token from the headers
+		tokenheader := req.HeaderParameter("Authorization")
+		if tokenheader == "" {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		splitted := strings.Split(tokenheader, " ")
+		if len(splitted) != 2 {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		token = splitted[1]
+		_, err := userC.ValidateToken(context.Background(), &userP.Token{
+			Token: token,
+		})
+		if err != nil {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
 	}
 	ctx := metadata.Set(context.Background(), "Token", token)
 	err = req.Request.ParseForm()
@@ -388,7 +412,7 @@ func main() {
 	ws.Route(ws.GET("/listeproduit").To(api.ListContracts))
 	ws.Route(ws.POST("/souscription").Consumes("application/x-www-form-urlencoded").To(api.Souscrire))
 	ws.Route(ws.POST("/cotisations").Consumes("application/x-www-form-urlencoded").To(api.Cotisations))
-	ws.Route(ws.POST("/paimentprime").Consumes("application/x-www-form-urlencoded").To(api.Payer))
+	ws.Route(ws.POST("/prime").Consumes("application/x-www-form-urlencoded").To(api.Payer))
 	ws.Route(ws.POST("/valeurrachat").Consumes("application/x-www-form-urlencoded").To(api.ValeurRachat))
 	ws.Route(ws.POST("/prestation").Consumes("application/x-www-form-urlencoded").To(api.Prester))
 	wc.Add(ws)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	pb "github.com/zjjt/abjnet/payment_service/proto/payment"
 )
@@ -17,6 +18,7 @@ func newPaymentService(repo repository) *service {
 }
 
 func (s *service) Pay(ctx context.Context, req *pb.Payment, res *pb.Response) error {
+	log.Println(req)
 	resp, err := s.repo.MakePayment(req)
 	if err != nil {
 		theerror := fmt.Sprintf("%v --from payment_service", err)
