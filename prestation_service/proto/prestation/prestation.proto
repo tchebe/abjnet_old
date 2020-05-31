@@ -13,12 +13,14 @@ message Prestation{
     string nomclient=3;
     string prenomclient=4;
     string telephone=5;
-    string datedamandeuser=6;
+    string datedemandeuser=6;
     string conventionno=7;
     string policeno=8;
     string montantdemande=9;
     string montantrestant=10;
-    string createdAt=11;
+    string etattraitement=11;
+    string createdAt=12;
+
 }
 message Request{
     int32 police=1;

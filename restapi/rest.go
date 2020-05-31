@@ -11,6 +11,7 @@ import (
 
 	restful "github.com/emicklei/go-restful/v3"
 	"github.com/gorilla/schema"
+	"github.com/joho/godotenv"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/metadata"
 	"github.com/micro/go-micro/v2/web"
@@ -42,6 +43,10 @@ type createUser struct {
 type userdetails struct {
 	Email    string
 	Password string
+}
+
+func wrapReturns(vs ...interface{}) []interface{} {
+	return vs
 }
 
 //CreateUser creates a user in db
@@ -231,7 +236,7 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 
 //Payer creates a payment in the system
 func (s *Api) Payer(req *restful.Request, res *restful.Response) {
-	log.Println("attempting to pay a contract via rest api")
+	log.Println("attempting to pay a premium via rest api")
 	//extract the token from the headers
 	var token string
 	if os.Getenv("DISABLE_AUTH") != "true" {
@@ -264,22 +269,21 @@ func (s *Api) Payer(req *restful.Request, res *restful.Response) {
 	pay := new(paymentP.Payment)
 
 	err = decoder.Decode(pay, req.Request.PostForm)
-	log.Println(pay)
+	log.Println("pay payload is ", pay)
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors du paiement %v d", err)
 		log.Println(theerror)
 		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 		return
 	}
-
-	resp, err := paymentC.Pay(ctx, pay)
-	log.Println("l259", resp)
+	log.Printf("Pay response %v\n%v", wrapReturns(paymentC.Pay(ctx, pay))...)
+	response, err := paymentC.Pay(ctx, pay)
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors du paiement %v s", err)
 		log.Println(theerror)
 		res.WriteError(http.StatusBadRequest, errors.New("Un probleme a été rencontré lors du paiement"))
 	}
-	res.WriteEntity(resp)
+	res.WriteEntity(response)
 }
 
 //ValeurRachat returns the rachat value
@@ -373,7 +377,8 @@ func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 		return
 	}
-
+	//les statuts peuvent etre CREE,TRAITEMENT
+	presta.Etattraitement = "CREE"
 	response, err := prestationC.Rachat(ctx, presta)
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors de la demande de prestation %v s", err)
@@ -388,7 +393,14 @@ func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 // 	token:=req.HeaderParameter("Authorization")
 // 	if token == ""
 // }
+func init() {
+	if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
+		if err := godotenv.Load("../.env"); err != nil {
+			log.Fatalf("Couldnt load .env file %v", err)
+		}
+	}
 
+}
 func main() {
 	//create rest service
 	service := web.NewService(
@@ -399,6 +411,9 @@ func main() {
 	userC = userP.NewUserService("abjnet.service.user", client.DefaultClient)
 	productC = productP.NewProductService("abjnet.service.product", client.DefaultClient)
 	souscriptionC = souscriptionP.NewSouscriptionService("abjnet.service.souscription", client.DefaultClient)
+	paymentC = paymentP.NewPaymentService("abjnet.service.payment", client.DefaultClient)
+	prestationC = prestationP.NewPrestationService("abjnet.service.prestation", client.DefaultClient)
+
 	//create RESTFUL handler
 	decoder = schema.NewDecoder()
 	api := new(Api)

@@ -58,7 +58,7 @@ func (repo *SubRepository) UpdateAll(etatactuel string, newetat string) (bool, e
 //GetAll gets all the subscription in db based on the etattraitement if it is set
 func (repo *SubRepository) GetAll(etat string) ([]*pb.Souscription, error) {
 	var subs []*pb.Souscription
-	if etat != "CREE" || etat != "TRAITEMENT" {
+	if etat == "CREE" || etat == "TRAITEMENT" {
 		if err := repo.db.Find(&subs, "etattraitement = ?", etat).Error; err != nil {
 			return nil, err
 		}
@@ -74,14 +74,9 @@ func (repo *SubRepository) GetAll(etat string) ([]*pb.Souscription, error) {
 
 //DeleteAll deletes all the subscriptions in db based on the etattraitement=TRAITEE if it is set or just removes everything
 func (repo *SubRepository) DeleteAll(etat string) (bool, error) {
-	if etat != "TRAITEE" {
-		if err := repo.db.Exec("TRUNCATE TABLE souscriptions RESTART IDENTITY;").Error; err != nil {
-			return false, err
-		}
-	} else {
-		if err := repo.db.Where("etattraitement LIKE ?", fmt.Sprintf("%%v%", etat)).Delete(pb.Souscription{}).Error; err != nil {
-			return false, err
-		}
+
+	if err := repo.db.Where("etattraitement LIKE ?", fmt.Sprintf("%%v%", etat)).Delete(pb.Souscription{}).Error; err != nil {
+		return false, err
 	}
 
 	return true, nil

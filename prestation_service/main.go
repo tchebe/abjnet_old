@@ -52,7 +52,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	}
 }
 
-var topic = "taskrunner.deleteprestations"
+var topic = []string{"taskrunner.updatepresta_traitement", "taskrunner.updatepresta_traitee", "taskrunner.deleteprestations"}
 
 func publishEvent(subs []*pb.Prestation, pubsub broker.Broker, topic string) error {
 	//when sending an event we have to serialize it to bytes
@@ -105,7 +105,7 @@ func main() {
 	// this service is restarted.
 	db.AutoMigrate(&pb.Prestation{})
 	repo := newPrestaRepository(db)
-	service := micro.NewService(micro.Name("abjnet.service.payment"), micro.WrapHandler(AuthWrapper))
+	service := micro.NewService(micro.Name("abjnet.service.prestation"), micro.WrapHandler(AuthWrapper))
 	service.Init()
 	//get the broker instance
 	pubsub := broker.NewBroker()
@@ -115,23 +115,61 @@ func main() {
 	if err := pubsub.Connect(); err != nil {
 		log.Fatal(err)
 	}
-	//when we receive the taskrunner.deletesubs event we get all prestations from DB
-	//and we send it to the email service if properly sent we then clear the db
-	_, err = pubsub.Subscribe(topic, func(p broker.Event) error {
-		//getting all subscription from database
-		log.Println("[SUB] receiving event ", topic)
-		subs, err := repo.GetAll()
+	//when we receive the taskrunner.updatepresta_traitement event we update all prestations from DB
+	//with etattraitement CREE to TRAITEMENT
+	//and we send it to the email service
+	_, err = pubsub.Subscribe(topic[0], func(p broker.Event) error {
+		//updating all prestations from database
+		log.Println("[SUB] receiving event ", topic[0])
+		_, err := repo.UpdateAll("CREE", "TRAITEMENT")
+		if err != nil {
+			theerror := fmt.Sprintf("%v --from prestation_service", err)
+			return errors.New(theerror)
+		}
+		//sending all the prestations in TRAITEMENT to NSIA CHAP CHAP BORNE
+		//TODO
+		//res,err:=http.Get(fmt.Sprintf("%s/saveDemandeExterne?client_id=${dataForm['client_id'].toString()}&historique_connexion_id=${dataForm['historique_connexion_id'].toString()}&numeroPayeur=${dataForm['numeroPayeur'].toString()}&police=${dataForm['police'].toString()}&montant=${dataForm['montant'].toString()}&nbre_mois_remb=${dataForm['nbre_mois_remb'].toString()}&type_demande_id=${dataForm['type_demande_id'].toString()}&provenance=2"))
+		//getting all the prestations to send
+		prestations, err := repo.GetAll("TRAITEMENT")
 		if err != nil {
 			theerror := fmt.Sprintf("%v --from prestation_service", err)
 			return errors.New(theerror)
 		}
 		//publishing the event and sending all the subs to the email_service
-		if err := publishEvent(subs, pubsub, "prestation.sendmail"); err != nil {
+		if err := publishEvent(prestations, pubsub, "prestation.sendmail"); err != nil {
 			return err
 		}
-		//now deleting all the subs from the DB
-		if _, err := repo.DeleteAll(); err != nil {
-			return err
+		return nil
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	//when we receive the taskrunner.updatepresta_traitee event we update all prestations from DB
+	//with etattraitement TRAITEMENT to TRAITEE
+	_, err = pubsub.Subscribe(topic[1], func(p broker.Event) error {
+		//updating all prestations from database
+		log.Println("[SUB] receiving event ", topic[1])
+		_, err := repo.UpdateAll("TRAITEMENT", "TRAITEE")
+		if err != nil {
+			theerror := fmt.Sprintf("%v --from prestation_service", err)
+			return errors.New(theerror)
+		}
+		return nil
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	//when we receive the taskrunner.deleteprestation event we delete all prestations from DB
+	//with etattraitement TRAITEE
+	_, err = pubsub.Subscribe(topic[2], func(p broker.Event) error {
+		//updating all prestations from database
+		log.Println("[SUB] receiving event ", topic[2])
+		_, err := repo.DeleteAll("TRAITEE")
+		if err != nil {
+			theerror := fmt.Sprintf("%v --from prestation_service", err)
+			return errors.New(theerror)
 		}
 		return nil
 	})
