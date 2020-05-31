@@ -55,4 +55,4 @@ dockerbuild_api_gateway_proxy:
 	cd .. && cd api_gateway && docker build --build-arg HTTP_PROXY=http://172.17.0.1:3128/  --build-arg HTTPS_PROXY=http://172.17.0.1:3128/ -t abjnet_api_gateway . 
 
 dockerbuild_all:
-	dockerbuild_user_service dockerbuild_email_service dockerbuild_product_service dockerbuild_souscription_service dockerbuild_taskrunner_service dockerbuild_prestation_service dockerbuild_payment_service dockerbuild_api_gateway
+	make dockerbuild_user_service dockerbuild_email_service dockerbuild_product_service dockerbuild_souscription_service dockerbuild_taskrunner_service dockerbuild_prestation_service dockerbuild_payment_service dockerbuild_api_gateway
