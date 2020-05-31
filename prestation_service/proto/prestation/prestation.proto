@@ -8,16 +8,17 @@ service PrestationService{
 }
 
 message Prestation{
-    int64 transacno=1;
-    string nomclient=2;
-    string prenomclient=3;
-    string telephone=4;
-    string datedamandeuser=5;
-    int64 conventionno=6;
-    int64 policeno=7;
-    int64 montantdemande=8;
-    int64 montantrestant=9;
-    string createdAt=10;
+    string id=1;
+    string transacno=2;
+    string nomclient=3;
+    string prenomclient=4;
+    string telephone=5;
+    string datedamandeuser=6;
+    string conventionno=7;
+    string policeno=8;
+    string montantdemande=9;
+    string montantrestant=10;
+    string createdAt=11;
 }
 message Request{
     int32 police=1;
