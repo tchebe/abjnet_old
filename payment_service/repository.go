@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -13,6 +14,8 @@ type repository interface {
 	GetAll() ([]*pb.Payment, error)
 	DeleteAll() (bool, error)
 }
+
+//PayRepository implements the repository interface
 type PayRepository struct {
 	db *gorm.DB
 }
@@ -27,9 +30,10 @@ func (repo *PayRepository) MakePayment(payment *pb.Payment) (*pb.Payment, error)
 	payment.CreatedAt = payTime
 	//check if the payment doesnt exist already
 	payexist := new(pb.Payment)
+	log.Println("payexist is:", payexist)
 	if err := repo.db.FirstOrCreate(&payexist, payment).Error; err != nil {
-		fmt.Printf("payexist:%v", payexist)
-		return nil, fmt.Errorf("erreur: %v\n%v\n%v", err, payment, payexist)
+		log.Println(fmt.Errorf("payexist:%v", payexist))
+		return nil, fmt.Errorf("erreur: %v", err)
 	}
 
 	return payexist, nil
