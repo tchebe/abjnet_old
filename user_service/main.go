@@ -3,17 +3,19 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/micro/go-micro/v2"
 	pb "github.com/zjjt/abjnet/user_service/proto/user"
 )
 
 func init() {
-	/*if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
+	if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
 		if err := godotenv.Load("../.env"); err != nil {
 			log.Fatalf("Couldnt load .env file %v", err)
 		}
-	}*/
+	}
 
 }
 func main() {

@@ -23,7 +23,7 @@ message Prestation{
 
 }
 message Request{
-    int32 police=1;
+    string police=1;
 }
 
 message Response{

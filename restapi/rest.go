@@ -11,6 +11,7 @@ import (
 
 	restful "github.com/emicklei/go-restful/v3"
 	"github.com/gorilla/schema"
+	"github.com/joho/godotenv"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/metadata"
 	"github.com/micro/go-micro/v2/web"
@@ -228,7 +229,7 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors de la souscription %v s", err)
 		log.Println(theerror)
-		res.WriteError(http.StatusBadRequest, errors.New("Un probleme a été rencontré lors de la souscription"))
+		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 	}
 	res.WriteEntity(response)
 }
@@ -280,14 +281,14 @@ func (s *Api) Payer(req *restful.Request, res *restful.Response) {
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors du paiement %v s", err)
 		log.Println(theerror)
-		res.WriteError(http.StatusBadRequest, errors.New("Un probleme a été rencontré lors du paiement"))
+		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 	}
 	res.WriteEntity(response)
 }
 
 //ValeurRachat returns the rachat value
 func (s *Api) ValeurRachat(req *restful.Request, res *restful.Response) {
-	log.Println("attempting to make a prestation via rest api")
+	log.Println("attempting to make get VR via rest api")
 	//extract the token from the headers
 	var token string
 	if os.Getenv("DISABLE_AUTH") != "true" {
@@ -326,12 +327,12 @@ func (s *Api) ValeurRachat(req *restful.Request, res *restful.Response) {
 		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 		return
 	}
-
+	log.Println("content of req VR ", police)
 	response, err := prestationC.ValeurRachat(ctx, police)
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors de la consultation de la valeur de rachat %v s", err)
 		log.Println(theerror)
-		res.WriteError(http.StatusBadRequest, errors.New("Un probleme a été rencontré lors de la consultation de la valeur de rachat"))
+		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 	}
 	res.WriteEntity(response)
 }
@@ -371,7 +372,7 @@ func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 
 	err = decoder.Decode(presta, req.Request.PostForm)
 	if err != nil {
-		theerror := fmt.Sprintf("une erreur est survenue lors du paiement %v d", err)
+		theerror := fmt.Sprintf("une erreur est survenue lors de la demande de prestation %v d", err)
 		log.Println(theerror)
 		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 		return
@@ -382,7 +383,7 @@ func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors de la demande de prestation %v s", err)
 		log.Println(theerror)
-		res.WriteError(http.StatusBadRequest, errors.New("Un probleme a été rencontré lors de la demande de prestation"))
+		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 	}
 	res.WriteEntity(response)
 }
@@ -393,11 +394,11 @@ func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 // 	if token == ""
 // }
 func init() {
-	/*if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
+	if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
 		if err := godotenv.Load("../.env"); err != nil {
 			log.Fatalf("Couldnt load .env file %v", err)
 		}
-	}*/
+	}
 
 }
 func main() {

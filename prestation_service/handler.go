@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	pb "github.com/zjjt/abjnet/prestation_service/proto/prestation"
 )
@@ -34,7 +35,15 @@ func (s *service) Rachat(ctx context.Context, req *pb.Prestation, res *pb.Respon
 	return nil
 }
 func (s *service) ValeurRachat(ctx context.Context, req *pb.Request, res *pb.Response) error {
+	log.Println("police for GetVR in handler is ", req)
+
+	vr, err := s.repo.GetVR(&pb.Prestation{Policeno: req.Police})
+	if err != nil {
+		res.Done = false
+		res.Maximumrachetable = "nothing"
+		return err
+	}
 	res.Done = true
-	res.Maximumrachetable = "100000"
+	res.Maximumrachetable = vr
 	return nil
 }

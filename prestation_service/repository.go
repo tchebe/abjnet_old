@@ -13,6 +13,7 @@ import (
 
 type repository interface {
 	MakeRachat(prestation *pb.Prestation) (*pb.Prestation, error)
+	GetVR(presta *pb.Prestation) (string, error)
 	GetAll(etat string) ([]*pb.Prestation, error)
 	UpdateAll(etat string, newetat string) (bool, error)
 	DeleteAll(etat string) (bool, error)
@@ -44,14 +45,24 @@ func (repo *PrestaRepository) MakeRachat(presta *pb.Prestation) (*pb.Prestation,
 
 	return prestaexist, nil
 }
-func (repo *PrestaRepository) getVR(presta *pb.Prestation) (string, error) {
+func (repo *PrestaRepository) GetVR(presta *pb.Prestation) (string, error) {
 	//ici on fait un appel au ws de valeur de rachat avec la police
 	//pour avoir le montant rachetable dans le systeme
 	//TODO
 	//si le ws marche pas on verifie la derniere prestation effectuée avec l'etat TRAITEE
 	p := new(pb.Prestation)
+	log.Println("police for GetVR in repository is ", presta.Policeno)
+	if presta.Nomclient == "" {
+		if err := repo.db.Last(&p, "policeno = ? and etattraitement = ?", presta.Policeno, "TRAITEE").Error; err != nil {
+			log.Println(err)
+			//comme le ws de valeur de rachat n'est pas encore disponible on va renvoyer un
+			//montant de un million par defaut pour les besoins du test
+			//sinon on va renvoyer "",err
+			return "1000000", nil
+		}
+	}
 	if err := repo.db.Last(&p, "nomclient = ? and prenomclient = ? and policeno = ? and etattraitement = ?", presta.Nomclient, presta.Prenomclient, presta.Policeno, "TRAITEE").Error; err != nil {
-		log.Println(err)
+		log.Println("in GetVR ", err)
 		//comme le ws de valeur de rachat n'est pas encore disponible on va renvoyer un
 		//montant de un million par defaut pour les besoins du test
 		//sinon on va renvoyer "",err
@@ -63,10 +74,10 @@ func (repo *PrestaRepository) getVR(presta *pb.Prestation) (string, error) {
 func (repo *PrestaRepository) checkElligibility(presta *pb.Prestation) error {
 	//check the remaining montant from the last row in db which hasnt been treated yet
 	p := new(pb.Prestation)
-	if err := repo.db.Last(&p, "nomclient = ? and prenomclient = ? and policeno = ? and etattraitement = ? or etattraitement = ?", presta.Nomclient, presta.Prenomclient, presta.Policeno, "CREE", "TRAITEMENT").Error; err != nil {
-		log.Println(err)
-	}
-	if p != nil {
+	err := repo.db.Last(&p, "nomclient = ? and prenomclient = ? and policeno = ? and etattraitement = ? or etattraitement = ?", presta.Nomclient, presta.Prenomclient, presta.Policeno, "CREE", "TRAITEMENT").Error
+	log.Println("in checkelligibility ", err)
+
+	if err == nil {
 		//si on a retrouvé une prestation a l'etat CREE on renvoi une erreur
 		return errors.New("Une demande de prestation est en cours de traitement,veuillez réessayer plus tard")
 	}
@@ -75,7 +86,7 @@ func (repo *PrestaRepository) checkElligibility(presta *pb.Prestation) error {
 	if err != nil {
 		return errors.New("erreur pendant la conversion du montant demandé")
 	}
-	vr, err := repo.getVR(presta)
+	vr, err := repo.GetVR(presta)
 	if err != nil {
 		return errors.New("erreur pendant l'obtention de la valeur de rachat")
 	}
