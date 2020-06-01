@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -74,8 +75,8 @@ func (repo *SubRepository) GetAll(etat string) ([]*pb.Souscription, error) {
 
 //DeleteAll deletes all the subscriptions in db based on the etattraitement=TRAITEE if it is set or just removes everything
 func (repo *SubRepository) DeleteAll(etat string) (bool, error) {
-
-	if err := repo.db.Where("etattraitement LIKE ?", fmt.Sprintf("%%v%", etat)).Delete(pb.Souscription{}).Error; err != nil {
+	log.Println("deleting subs now")
+	if err := repo.db.Delete(pb.Souscription{}, "etattraitement LIKE ?", fmt.Sprintf("%%v%", etat)).Error; err != nil {
 		return false, err
 	}
 
