@@ -19,7 +19,7 @@ message Product{
     string name=2;
 }
 message Police{
-    int64 police=1;
+    string police=1;
 }
 message Etat{
     string police=1;
