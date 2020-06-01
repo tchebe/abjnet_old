@@ -43,6 +43,7 @@ services:
       - "database"
     network_mode: host
     environment: 
+      ENV: "TEST"
       MICRO_SERVER_ADDRESS: ":50051"
       DB_HOST: "127.0.0.1:5432"
       DB_USER: "postgres"
@@ -67,6 +68,7 @@ services:
       - abjnet_user_service
     network_mode: host
     environment: 
+      ENV: "TEST"
       MICRO_SERVER_ADDRESS: ":50052"
       DB_HOST: "127.0.0.1:5432"
       DB_USER: "postgres"
@@ -93,6 +95,7 @@ services:
       - abjnet_souscription_service
     network_mode: host
     environment: 
+      ENV: "TEST"
       IN_NSIA: "yes"
       DB_HOST: "10.8.3.29:57055"
       DB_USER: "reportvie"
@@ -116,6 +119,7 @@ services:
       - abjnet_product_service
     network_mode: host
     environment: 
+      ENV: "TEST"
       MICRO_SERVER_ADDRESS: ":50054"
       DB_HOST: "127.0.0.1:5432"
       DB_USER: "postgres"
@@ -143,6 +147,7 @@ services:
       - abjnet_prestation_service
     network_mode: host
     environment: 
+      ENV: "TEST"
       MICRO_SERVER_ADDRESS: ":50055"
       DB_HOST: "127.0.0.1:5432"
       DB_USER: "postgres"
@@ -169,6 +174,7 @@ services:
     #   - 9087:50051
     network_mode: host
     environment: 
+      ENV: "TEST"
       MICRO_SERVER_ADDRESS: ":50056"
       MICRO_REGISTERY: "mdns"
       SMTP_HOST: 10.10.4.15
@@ -191,6 +197,7 @@ services:
     # ports:
     #   - 9088:50051
     environment: 
+      ENV: "TEST"
       NBHOURTODELSUB: "1"
       DELETEPAYSAT: "05 7 * * *"
       NBDAYTODELPRE: "31"
