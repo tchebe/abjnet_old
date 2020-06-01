@@ -9,7 +9,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
 	"github.com/micro/go-micro/v2/client"
@@ -83,11 +82,11 @@ func publishEvent(subs []*pb.Payment, pubsub broker.Broker, topic string) error 
 }
 
 func init() {
-	if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
+	/*if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
 		if err := godotenv.Load("../.env"); err != nil {
 			log.Fatalf("Couldnt load .env file %v", err)
 		}
-	}
+	}*/
 
 }
 
