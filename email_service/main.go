@@ -170,7 +170,7 @@ func prepareExcelFilePresta(prestations []*pbPre.Prestation) *excelize.File {
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("B%d", index), v.Nomclient)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("C%d", index), v.Prenomclient)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("D%d", index), v.Telephone)
-		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Datedamandeuser)
+		excelfile.SetCellValue("Sheet1", fmt.Sprintf("E%d", index), v.Datedemandeuser)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("F%d", index), v.Conventionno)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("G%d", index), v.Policeno)
 		excelfile.SetCellValue("Sheet1", fmt.Sprintf("H%d", index), v.Montantdemande)
