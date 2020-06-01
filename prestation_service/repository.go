@@ -45,21 +45,25 @@ func (repo *PrestaRepository) MakeRachat(presta *pb.Prestation) (*pb.Prestation,
 
 	return prestaexist, nil
 }
+
+//GetVR get the VR of a police
 func (repo *PrestaRepository) GetVR(presta *pb.Prestation) (string, error) {
 	//ici on fait un appel au ws de valeur de rachat avec la police
 	//pour avoir le montant rachetable dans le systeme
 	//TODO
 	//si le ws marche pas on verifie la derniere prestation effectuée avec l'etat TRAITEE
 	p := new(pb.Prestation)
-	log.Println("police for GetVR in repository is ", presta.Policeno)
+	log.Println("police for GetVR in repository is ", presta)
 	if presta.Nomclient == "" {
-		if err := repo.db.Last(&p, "policeno = ? and etattraitement = ?", presta.Policeno, "TRAITEE").Error; err != nil {
-			log.Println(err)
+		err := repo.db.Last(&p, "policeno = ? and etattraitement = ?", presta.Policeno, "TRAITEE").Error
+		if err != nil {
 			//comme le ws de valeur de rachat n'est pas encore disponible on va renvoyer un
 			//montant de un million par defaut pour les besoins du test
 			//sinon on va renvoyer "",err
 			return "1000000", nil
 		}
+		return p.Montantrestant, nil
+
 	}
 	if err := repo.db.Last(&p, "nomclient = ? and prenomclient = ? and policeno = ? and etattraitement = ?", presta.Nomclient, presta.Prenomclient, presta.Policeno, "TRAITEE").Error; err != nil {
 		log.Println("in GetVR ", err)

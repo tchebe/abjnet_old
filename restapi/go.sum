@@ -398,12 +398,15 @@ github.com/xeipuuv/gojsonschema v1.1.0/go.mod h1:5yf86TLmAcydyeJq5YvxkGPE2fm/u4m
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/zjjt/abjnet v0.0.0-20200531141652-e91fe0365427 h1:5ALiotnDSsZKQu3Dm+zSMWwTkrCG4NgmXpTC3C4EwSc=
 github.com/zjjt/abjnet v0.0.0-20200531232302-1d16e73bcf89 h1:vltXU+yyW/V+7rt9PBWG0KgKmEYxLmzm/8Tg0tnP7qM=
+github.com/zjjt/abjnet v0.0.0-20200601212057-d89d44de0468 h1:GyuYAfpXfXvbTawQgaAeArUWFq4oVd7Y4YF+Is4D/B4=
 github.com/zjjt/abjnet/payment_service v0.0.0-20200531141652-e91fe0365427 h1:znilon0mUtxZo2Yu+2XShtO9UYtgGeJneNMtypkLPqo=
 github.com/zjjt/abjnet/payment_service v0.0.0-20200531141652-e91fe0365427/go.mod h1:EjetH8JDIALt/YEfzxL3TRgqtGkokquPT6tKLMov2YM=
 github.com/zjjt/abjnet/prestation_service v0.0.0-20200531141652-e91fe0365427 h1:ZTrayafOl2SvMXUWXJyaEI+mK/+rjiegLsS1irjpL/E=
 github.com/zjjt/abjnet/prestation_service v0.0.0-20200531141652-e91fe0365427/go.mod h1:5MeCfV1Mj8DGvw5FQZEQ1LHWRX29FzNEGApRrQYuFxQ=
 github.com/zjjt/abjnet/prestation_service v0.0.0-20200531232302-1d16e73bcf89 h1:wqYTzZ5hWIjGUgJEYK77m8qMW6Ia6/tg9Rxqnl4jbk8=
 github.com/zjjt/abjnet/prestation_service v0.0.0-20200531232302-1d16e73bcf89/go.mod h1:56H679gooPGMPH+Tb0F9vJ31F/8N12CQhVETRnqG6D4=
+github.com/zjjt/abjnet/prestation_service v0.0.0-20200601212057-d89d44de0468 h1:H83hQd7aqHoa2rzFe+R6HsKCU9Ax4S+j7ml7hBnOaS0=
+github.com/zjjt/abjnet/prestation_service v0.0.0-20200601212057-d89d44de0468/go.mod h1:56H679gooPGMPH+Tb0F9vJ31F/8N12CQhVETRnqG6D4=
 github.com/zjjt/abjnet/product_service v0.0.0-20200531124055-aab7d7162a78 h1:2xboFbW3qH3K4RA+fR9ryegLTuS6wMXlX4iG8DxzjWk=
 github.com/zjjt/abjnet/product_service v0.0.0-20200531124055-aab7d7162a78/go.mod h1:BN5q8s260UawtU3ZTm8ZsiNFBBcPV9SR7MVLWOUKcpQ=
 github.com/zjjt/abjnet/souscription_service v0.0.0-20200531141652-e91fe0365427 h1:GYPZodGNUWJIMb0t8WujScA0oUNxxvj6nStDp9vwFpQ=

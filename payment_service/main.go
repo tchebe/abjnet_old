@@ -82,11 +82,11 @@ func publishEvent(subs []*pb.Payment, pubsub broker.Broker, topic string) error 
 }
 
 func init() {
-	/*if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
+	/*/*if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
 		if err := godotenv.Load("../.env"); err != nil {
 			log.Fatalf("Couldnt load .env file %v", err)
 		}
-	}*/
+	}*/*/
 
 }
 

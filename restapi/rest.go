@@ -11,7 +11,6 @@ import (
 
 	restful "github.com/emicklei/go-restful/v3"
 	"github.com/gorilla/schema"
-	"github.com/joho/godotenv"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/metadata"
 	"github.com/micro/go-micro/v2/web"
@@ -394,11 +393,11 @@ func (s *Api) Prester(req *restful.Request, res *restful.Response) {
 // 	if token == ""
 // }
 func init() {
-	if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
+	/*if os.Getenv("ENV") != "PROD" || os.Getenv("ENV") != "TEST" {
 		if err := godotenv.Load("../.env"); err != nil {
 			log.Fatalf("Couldnt load .env file %v", err)
 		}
-	}
+	}*/
 
 }
 func main() {
