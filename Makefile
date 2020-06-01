@@ -55,6 +55,6 @@ dockerbuild_api_gateway_proxy:
 	cd api_gateway && docker build --build-arg HTTP_PROXY=http://172.17.0.1:3128/  --build-arg HTTPS_PROXY=http://172.17.0.1:3128/ -t abjnet_api_gateway . 
 
 dockerbuild_all:
-	make dockerbuild_user_service dockerbuild_email_service dockerbuild_product_service dockerbuild_souscription_service dockerbuild_taskrunner_service dockerbuild_prestation_service dockerbuild_payment_service dockerbuild_api_gateway
+	make dockerbuild_user_service dockerbuild_email_service dockerbuild_product_service dockerbuild_souscription_service dockerbuild_taskrunner_service dockerbuild_prestation_service dockerbuild_payment_service dockerbuild_api_gateway dockerbuild_api_user
 dockersave_all:
 	sudo docker save abjnet_user_service > abjnet_user_service.tar && sudo docker save abjnet_product_service > abjnet_product_service.tar && sudo docker save abjnet_souscription_service > abjnet_souscription_service.tar && sudo docker save abjnet_payment_service > abjnet_payment_service.tar && sudo docker save abjnet_prestation_service > abjnet_prestation_service.tar && sudo docker save abjnet_email_service > abjnet_email_service.tar && sudo docker save abjnet_taskrunner_service > abjnet_taskrunner_service.tar && sudo docker save abjnet_api_rest > abjnet_api_rest.tar    
