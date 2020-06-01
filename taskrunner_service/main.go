@@ -32,7 +32,7 @@ func init() {
 		if err := godotenv.Load("../.env"); err != nil {
 			log.Fatalf("Couldnt load .env file %v", err)
 		}
-	}*/*/
+	}*/
 
 }
 func main() {
