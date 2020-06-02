@@ -18,9 +18,21 @@ import (
 	pbS "github.com/zjjt/abjnet/souscription_service/proto/souscription"
 )
 
-//brokerSuscriberranges over a slice of topics and make the broker suscribe to each
-//topic based on its particular details
-func brokerSuscriber(topics []string, pubsub broker.Broker) {
+func main() {
+	//slice of topics to suscribe to
+	topics := []string{"user.created", "souscription.sendmail", "payment.sendmail", "prestation.sendmail"}
+	srv := micro.NewService(micro.Name("abjnet.service.email"))
+	srv.Init()
+	//get the broker instance
+	pubsub := srv.Server().Options().Broker
+	if err := pubsub.Init(); err != nil {
+		log.Fatalf("Broker Init error: %v", err)
+	}
+	if err := pubsub.Connect(); err != nil {
+		log.Fatal(err)
+	}
+	//Subscribe to messages on the broker
+
 	_, err := pubsub.Subscribe(topics[0], func(p broker.Event) error {
 		log.Println("[SUB] receiving event ", topics[0])
 		eventHeadersMap := p.Message().Header
@@ -49,25 +61,6 @@ func brokerSuscriber(topics []string, pubsub broker.Broker) {
 		return nil
 	})
 	log.Println("[SUB ERROR]", err)
-
-}
-
-func main() {
-	//slice of topics to suscribe to
-	topics := []string{"user.created", "souscription.sendmail", "payment.sendmail", "prestation.sendmail"}
-	srv := micro.NewService(micro.Name("abjnet.service.email"))
-	srv.Init()
-	//get the broker instance
-	pubsub := srv.Server().Options().Broker
-	if err := pubsub.Init(); err != nil {
-		log.Fatalf("Broker Init error: %v", err)
-	}
-	if err := pubsub.Connect(); err != nil {
-		log.Fatal(err)
-	}
-	//Subscribe to messages on the broker
-
-	brokerSuscriber(topics, pubsub)
 
 	//run the server
 	if err := srv.Run(); err != nil {
