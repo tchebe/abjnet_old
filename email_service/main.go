@@ -166,9 +166,23 @@ func sendEmail(from string, to string, cc string, topic string, msghtml string, 
 	//if there's a file to join first we unmarshall the byteArr into the appropriate format
 	if len(byteArr) > 0 {
 		var subs []*pbS.Souscription
-		json.Unmarshal(byteArr, &subs)
-		//here we create the excel file from the subs
-		excelfile := prepareExcelFileSub(subs)
+		var pays []*pbPay.Payment
+		var prestas []*pbPre.Prestation
+		var excelfile *excelize.File
+		if strings.Contains(topic, "SOUSCRIPTIONS") {
+			json.Unmarshal(byteArr, &subs)
+			//here we create the excel file from the subs
+			excelfile = prepareExcelFileSub(subs)
+		} else if strings.Contains(topic, "PRESTATIONS") {
+			json.Unmarshal(byteArr, &prestas)
+			//here we create the excel file from the subs
+			excelfile = prepareExcelFilePresta(prestas)
+		} else {
+			json.Unmarshal(byteArr, &pays)
+			//here we create the excel file from the subs
+			excelfile = prepareExcelFilePay(pays)
+		}
+
 		// Save xlsx file by the given path.
 		if err := excelfile.SaveAs(fmt.Sprintf("%s.xlsx", topic)); err != nil {
 			fmt.Println(err)
