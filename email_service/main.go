@@ -21,17 +21,34 @@ import (
 //brokerSuscriberranges over a slice of topics and make the broker suscribe to each
 //topic based on its particular details
 func brokerSuscriber(topics []string, pubsub broker.Broker) {
-	for _, v := range topics {
-
-		_, err := pubsub.Subscribe(v, func(p broker.Event) error {
-			log.Println("[SUB] receiving event ", v)
-			eventHeadersMap := p.Message().Header
-			go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
-			return nil
-		})
-		log.Println("[SUB ERROR]", err)
-
-	}
+	_, err := pubsub.Subscribe(topics[0], func(p broker.Event) error {
+		log.Println("[SUB] receiving event ", topics[0])
+		eventHeadersMap := p.Message().Header
+		go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
+		return nil
+	})
+	log.Println("[SUB ERROR]", err)
+	_, err = pubsub.Subscribe(topics[1], func(p broker.Event) error {
+		log.Println("[SUB] receiving event ", topics[1])
+		eventHeadersMap := p.Message().Header
+		go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
+		return nil
+	})
+	log.Println("[SUB ERROR]", err)
+	_, err = pubsub.Subscribe(topics[2], func(p broker.Event) error {
+		log.Println("[SUB] receiving event ", topics[2])
+		eventHeadersMap := p.Message().Header
+		go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
+		return nil
+	})
+	log.Println("[SUB ERROR]", err)
+	_, err = pubsub.Subscribe(topics[3], func(p broker.Event) error {
+		log.Println("[SUB] receiving event ", topics[3])
+		eventHeadersMap := p.Message().Header
+		go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
+		return nil
+	})
+	log.Println("[SUB ERROR]", err)
 
 }
 
@@ -195,6 +212,7 @@ func sendEmail(from string, to string, cc string, topic string, msghtml string, 
 		log.Fatal("Error please check the smtp port in environment")
 	}
 	d := mail.NewDialer(os.Getenv("SMTP_HOST"), port, os.Getenv("FROM"), os.Getenv("ADPASSWORD"))
+	d.SSL = false
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	//d.StartTLSPolicy = mail.MandatoryStartTLS
 
