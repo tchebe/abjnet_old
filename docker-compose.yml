@@ -177,7 +177,7 @@ services:
       ENV: "TEST"
       MICRO_SERVER_ADDRESS: ":50056"
       MICRO_REGISTERY: "mdns"
-      SMTP_HOST: 10.10.4.15
+      SMTP_HOST: mail.groupensia.com
       SMTP_PORT: 25
       FROM: "thibaut.zehi@groupensia.com"
       ADPASSWORD: "ZjjTEnt@1988"
