@@ -66,7 +66,6 @@ func main() {
 	if err := srv.Run(); err != nil {
 		log.Println(err)
 	}
-	select {}
 }
 func prepareExcelFileSub(subs []*pbS.Souscription) *excelize.File {
 	excelfile := excelize.NewFile()
