@@ -75,8 +75,9 @@ func (repo *SubRepository) GetAll(etat string) ([]*pb.Souscription, error) {
 
 //DeleteAll deletes all the subscriptions in db based on the etattraitement=TRAITEE if it is set or just removes everything
 func (repo *SubRepository) DeleteAll(etat string) (bool, error) {
+	state := "%" + etat + "%"
 	log.Println("deleting subs now")
-	if err := repo.db.Delete(pb.Souscription{}, "etattraitement LIKE ?", fmt.Sprintf("%%v%", etat)).Error; err != nil {
+	if err := repo.db.Raw("delete from souscriptions where etattraitement like ?", state).Error; err != nil {
 		return false, err
 	}
 

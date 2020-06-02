@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -21,17 +22,15 @@ import (
 //topic based on its particular details
 func brokerSuscriber(topics []string, pubsub broker.Broker) {
 	for _, v := range topics {
-		switch v {
-		case "souscription.sendmail", "payment.sendmail", "prestation.sendmail":
-			_, err := pubsub.Subscribe(v, func(p broker.Event) error {
-				log.Println("[SUB] receiving event ", v)
-				eventHeadersMap := p.Message().Header
-				go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
-				return nil
-			})
-			log.Println("[SUB ERROR]", err)
 
-		}
+		_, err := pubsub.Subscribe(v, func(p broker.Event) error {
+			log.Println("[SUB] receiving event ", v)
+			eventHeadersMap := p.Message().Header
+			go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
+			return nil
+		})
+		log.Println("[SUB ERROR]", err)
+
 	}
 
 }
@@ -182,6 +181,7 @@ func sendEmail(from string, to string, cc string, topic string, msghtml string, 
 		log.Fatal("Error please check the smtp port in environment")
 	}
 	d := mail.NewDialer(os.Getenv("SMTP_HOST"), port, os.Getenv("FROM"), os.Getenv("ADPASSWORD"))
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	//d.StartTLSPolicy = mail.MandatoryStartTLS
 
 	// Send the email
