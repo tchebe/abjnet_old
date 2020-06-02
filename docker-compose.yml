@@ -202,7 +202,7 @@ services:
       DELETEPAYSAT: "05 7 * * *"
       NBDAYTODELPRE: "31"
       NBDAYTOUPPRE: "5"
-      MAJSUBAT: "10 01 * * *"
+      MAJSUBAT: "12 01 * * *"
       MAJPREAT: "55 11 * * *"
       MICRO_SERVER_ADDRESS: ":50057"
       MICRO_REGISTERY: "mdns"
