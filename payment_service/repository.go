@@ -52,7 +52,10 @@ func (repo *PayRepository) GetAll() ([]*pb.Payment, error) {
 
 //DeleteAll deletes all the payments
 func (repo *PayRepository) DeleteAll() (bool, error) {
-	if err := repo.db.Exec("TRUNCATE TABLE payments RESTART IDENTITY;").Error; err != nil {
+	log.Println("deleting payments now")
+	err := repo.db.Exec("delete from prestations").Error
+	log.Println(err)
+	if err != nil {
 		return false, err
 	}
 

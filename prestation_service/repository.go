@@ -122,14 +122,11 @@ func (repo *PrestaRepository) GetAll(etat string) ([]*pb.Prestation, error) {
 
 //DeleteAll deletes all the payments where etat = ?
 func (repo *PrestaRepository) DeleteAll(etat string) (bool, error) {
-	if etat == "" {
-		if err := repo.db.Exec("TRUNCATE TABLE prestations RESTART IDENTITY;").Error; err != nil {
-			return false, err
-		}
-	} else {
-		if err := repo.db.Where("etattraitement LIKE ?", fmt.Sprintf("%%v%", etat)).Delete(pb.Prestation{}).Error; err != nil {
-			return false, err
-		}
+	log.Println("deleting prestations now")
+	err := repo.db.Exec("delete from prestations where etattraitement = ?", etat).Error
+	log.Println(err)
+	if err != nil {
+		return false, err
 	}
 
 	return true, nil
