@@ -36,6 +36,7 @@ func main() {
 	_, err := pubsub.Subscribe(topics[0], func(p broker.Event) error {
 		log.Println("[SUB] receiving event ", topics[0])
 		eventHeadersMap := p.Message().Header
+		log.Println("event msg ", eventHeadersMap)
 		go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
 		return nil
 	})
@@ -43,6 +44,8 @@ func main() {
 	_, err = pubsub.Subscribe(topics[1], func(p broker.Event) error {
 		log.Println("[SUB] receiving event ", topics[1])
 		eventHeadersMap := p.Message().Header
+		log.Println("event msg ", eventHeadersMap)
+
 		go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
 		return nil
 	})
@@ -50,6 +53,8 @@ func main() {
 	_, err = pubsub.Subscribe(topics[2], func(p broker.Event) error {
 		log.Println("[SUB] receiving event ", topics[2])
 		eventHeadersMap := p.Message().Header
+		log.Println("event msg ", eventHeadersMap)
+
 		go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
 		return nil
 	})
@@ -57,6 +62,8 @@ func main() {
 	_, err = pubsub.Subscribe(topics[3], func(p broker.Event) error {
 		log.Println("[SUB] receiving event ", topics[3])
 		eventHeadersMap := p.Message().Header
+		log.Println("event msg ", eventHeadersMap)
+
 		go sendEmail(os.Getenv("FROM"), eventHeadersMap["to"], eventHeadersMap["cc"], eventHeadersMap["objet"], "Bonjour,<br/> un test", p.Message().Body)
 		return nil
 	})
