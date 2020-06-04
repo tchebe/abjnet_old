@@ -203,7 +203,7 @@ services:
       NBDAYTODELPRE: "31"
       NBDAYTOUPPRE: "5"
       MAJSUBAT: "47 14 * * *"
-      MAJPREAT: "55 11 * * *"
+      MAJPREAT: "22 15 * * *"
       MICRO_SERVER_ADDRESS: ":50057"
       MICRO_REGISTERY: "mdns"
 
