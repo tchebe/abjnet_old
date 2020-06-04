@@ -162,7 +162,7 @@ func sendEmail(from string, to string, cc string, topic string, msghtml string, 
 	//first we unpack to slices the to and cc args
 	TO := strings.Split(to, ",")
 	CC := strings.Split(to, ",")
-
+	log.Printf("sending email from %v to %v en cc %v and subject %v", from, TO, CC, topic)
 	m := mail.NewMessage()
 	m.SetHeader("From", from)
 	m.SetHeader("To", TO...)
