@@ -61,3 +61,6 @@ dockersave_all:
 
 dockerload_all:
 	 cd ~/shared/containerimages && sudo docker load --input abjnet_user_service.tar && sudo docker load --input abjnet_product_service.tar && sudo docker load --input abjnet_souscription_service.tar && sudo docker load --input abjnet_payment_service.tar && sudo docker load --input abjnet_prestation_service.tar && sudo docker load --input abjnet_email_service.tar && sudo docker load --input abjnet_taskrunner_service.tar && sudo docker load --input abjnet_api_rest.tar    
+dockerrun_all:
+	sudo make dockerload_all && sudo docker-compose down --remove-orphans && sudo docker-compose up
+
