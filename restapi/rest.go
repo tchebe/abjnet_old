@@ -133,7 +133,7 @@ func (s *Api) ListContracts(req *restful.Request, res *restful.Response) {
 
 //Cotisations affiche l'etat des cotisation
 func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
-	log.Println("attempting to fetch list of contracts via rest api")
+	log.Println("attempting to fetch etat de cotisation via rest api")
 	//extract the token from the headers
 	var token string
 	if os.Getenv("DISABLE_AUTH") != "true" {
