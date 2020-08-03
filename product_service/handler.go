@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 
 	pb "github.com/zjjt/abjnet/product_service/proto/product"
 )
@@ -33,6 +35,18 @@ func (s *service) GetClientProducts(ctx context.Context, req *pb.Client, res *pb
 	return nil
 }
 func (s *service) GetCotisations(ctx context.Context, req *pb.Police, res *pb.Response) error {
+	resp, err := http.Get(fmt.Sprintf("http://10.11.100.48:8084/etatCotisationNOCACHE/%s", req.Police))
+	if err != nil {
+		theerror := fmt.Sprintf("%v --from product_service", err)
+		return errors.New(theerror)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		theerror := fmt.Sprintf("%v --from product_service", err)
+		return errors.New(theerror)
+	}
+	res.Etat = string(body)
 	return nil
 }
 

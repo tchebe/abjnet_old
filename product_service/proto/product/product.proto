@@ -21,6 +21,7 @@ message Product{
 message Police{
     string police=1;
 }
+
 message Etat{
     string police=1;
     string datedebuteffet=2;
@@ -55,6 +56,7 @@ message ClientRequest{
 }
 message Response{
     Product product=1;
+    string etat=2;
     repeated Product products=3;
     repeated Error errors=4;
 }
