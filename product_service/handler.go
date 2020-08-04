@@ -35,7 +35,7 @@ func (s *service) GetClientProducts(ctx context.Context, req *pb.Client, res *pb
 	return nil
 }
 func (s *service) GetCotisations(ctx context.Context, req *pb.Police, res *pb.Response) error {
-	resp, err := http.Get(fmt.Sprintf("http://10.11.100.48:8084/etatCotisationNOCACHE/%s", req.Police))
+	resp, err := http.Get(fmt.Sprintf("http://10.11.100.48:8084/etatCotisation/%s", req.Police))
 	if err != nil {
 		theerror := fmt.Sprintf("%v --from product_service", err)
 		return errors.New(theerror)
