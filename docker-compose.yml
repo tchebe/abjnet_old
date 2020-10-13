@@ -180,7 +180,7 @@ services:
       SMTP_HOST: NSIA-MBX-EX02.nsia.com
       SMTP_PORT: 25
       FROM: "thibaut.zehi@groupensia.com"
-      ADPASSWORD: "ZjjTEnt@1988"
+      ADPASSWORD: "tchebeEnt@1988"
 
   abjnet_taskrunner_service:
     depends_on: 

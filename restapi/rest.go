@@ -14,11 +14,11 @@ import (
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/metadata"
 	"github.com/micro/go-micro/v2/web"
-	paymentP "github.com/zjjt/abjnet/payment_service/proto/payment"
-	prestationP "github.com/zjjt/abjnet/prestation_service/proto/prestation"
-	productP "github.com/zjjt/abjnet/product_service/proto/product"
-	souscriptionP "github.com/zjjt/abjnet/souscription_service/proto/souscription"
-	userP "github.com/zjjt/abjnet/user_service/proto/user"
+	paymentP "github.com/tchebe/abjnet/payment_service/proto/payment"
+	prestationP "github.com/tchebe/abjnet/prestation_service/proto/prestation"
+	productP "github.com/tchebe/abjnet/product_service/proto/product"
+	souscriptionP "github.com/tchebe/abjnet/souscription_service/proto/souscription"
+	userP "github.com/tchebe/abjnet/user_service/proto/user"
 )
 
 //Api is a struct used in the rest api
@@ -181,7 +181,6 @@ func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
 	res.WriteEntity(response)
 }
 
-
 //permettant d'identifier le client de weblogy
 func (s *Api) PoliceExternes(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to list all the extern police via rest api")
@@ -231,6 +230,7 @@ func (s *Api) PoliceExternes(req *restful.Request, res *restful.Response) {
 	}
 	res.WriteEntity(response)
 }
+
 //Souscrire creates a subscription in the system
 func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to suscribe to a contract via rest api")

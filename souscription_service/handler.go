@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	pb "github.com/zjjt/abjnet/souscription_service/proto/souscription"
+	pb "github.com/tchebe/abjnet/souscription_service/proto/souscription"
 )
 
 type service struct {

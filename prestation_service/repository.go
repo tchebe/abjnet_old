@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	pb "github.com/zjjt/abjnet/prestation_service/proto/prestation"
+	pb "github.com/tchebe/abjnet/prestation_service/proto/prestation"
 )
 
 type repository interface {

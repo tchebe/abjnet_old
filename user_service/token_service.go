@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	pb "github.com/zjjt/abjnet/user_service/proto/user"
+	pb "github.com/tchebe/abjnet/user_service/proto/user"
 )
 
 var (

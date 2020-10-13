@@ -8,7 +8,7 @@ import (
 	"github.com/micro/go-micro/v2"
 	microclient "github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/config/cmd"
-	pb "github.com/zjjt/abjnet/user_service/proto/user"
+	pb "github.com/tchebe/abjnet/user_service/proto/user"
 )
 
 type user struct {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	pb "github.com/zjjt/abjnet/prestation_service/proto/prestation"
+	pb "github.com/tchebe/abjnet/prestation_service/proto/prestation"
 )
 
 type service struct {

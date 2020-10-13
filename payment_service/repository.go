@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	pb "github.com/zjjt/abjnet/payment_service/proto/payment"
+	pb "github.com/tchebe/abjnet/payment_service/proto/payment"
 )
 
 type repository interface {

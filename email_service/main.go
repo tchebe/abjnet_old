@@ -13,9 +13,9 @@ import (
 	"github.com/go-mail/mail"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
-	pbPay "github.com/zjjt/abjnet/payment_service/proto/payment"
-	pbPre "github.com/zjjt/abjnet/prestation_service/proto/prestation"
-	pbS "github.com/zjjt/abjnet/souscription_service/proto/souscription"
+	pbPay "github.com/tchebe/abjnet/payment_service/proto/payment"
+	pbPre "github.com/tchebe/abjnet/prestation_service/proto/prestation"
+	pbS "github.com/tchebe/abjnet/souscription_service/proto/souscription"
 )
 
 func main() {

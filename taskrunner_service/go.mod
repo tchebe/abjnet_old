@@ -1,4 +1,4 @@
-module github.com/zjjt/abjnet/taskrunner_service
+module github.com/tchebe/abjnet/taskrunner_service
 
 go 1.14
 

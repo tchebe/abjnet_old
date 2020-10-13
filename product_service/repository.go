@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/jinzhu/gorm"
-	pb "github.com/zjjt/abjnet/product_service/proto/product"
+	pb "github.com/tchebe/abjnet/product_service/proto/product"
 )
 
 type repository interface {

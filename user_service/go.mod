@@ -1,4 +1,4 @@
-module github.com/zjjt/abjnet/user_service
+module github.com/tchebe/abjnet/user_service
 
 go 1.14
 

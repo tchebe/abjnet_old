@@ -14,8 +14,8 @@ import (
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/metadata"
 	"github.com/micro/go-micro/v2/server"
-	pb "github.com/zjjt/abjnet/payment_service/proto/payment"
-	userproto "github.com/zjjt/abjnet/user_service/proto/user"
+	pb "github.com/tchebe/abjnet/payment_service/proto/payment"
+	userproto "github.com/tchebe/abjnet/user_service/proto/user"
 )
 
 //AuthWrapper is a higher order function that takes a HandlerFunc

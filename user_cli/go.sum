@@ -396,9 +396,9 @@ github.com/xeipuuv/gojsonschema v0.0.0-20180618132009-1d523034197f/go.mod h1:5yf
 github.com/xeipuuv/gojsonschema v1.1.0/go.mod h1:5yf86TLmAcydyeJq5YvxkGPE2fm/u4myDekKRoLuqhs=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
-github.com/zjjt/abjnet v0.0.0-20200508133603-c1790a700d4e h1:uHYmBa2FGGhX6RS4cjh+tIKjyaoCCg2/YWZsjU2dlvQ=
-github.com/zjjt/abjnet/user_service v0.0.0-20200508133603-c1790a700d4e h1:3nAHHCft3aDzv7ISmmu7HLKwtkUITUqbxXAuz05AsT0=
-github.com/zjjt/abjnet/user_service v0.0.0-20200508133603-c1790a700d4e/go.mod h1:iKFmHxVNh6z8m8F16qlYFWxjgmmBP5wdL6iLNiLSJuk=
+github.com/tchebe/abjnet v0.0.0-20200508133603-c1790a700d4e h1:uHYmBa2FGGhX6RS4cjh+tIKjyaoCCg2/YWZsjU2dlvQ=
+github.com/tchebe/abjnet/user_service v0.0.0-20200508133603-c1790a700d4e h1:3nAHHCft3aDzv7ISmmu7HLKwtkUITUqbxXAuz05AsT0=
+github.com/tchebe/abjnet/user_service v0.0.0-20200508133603-c1790a700d4e/go.mod h1:iKFmHxVNh6z8m8F16qlYFWxjgmmBP5wdL6iLNiLSJuk=
 go.etcd.io/bbolt v1.3.4/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=
 go.opencensus.io v0.20.1/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=
 go.opencensus.io v0.20.2/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=

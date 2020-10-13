@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	pb "github.com/zjjt/abjnet/product_service/proto/product"
+	pb "github.com/tchebe/abjnet/product_service/proto/product"
 )
 
 //event to be sent
@@ -66,7 +66,6 @@ func (s *service) GetlistePoliceExterne(ctx context.Context, req *pb.Police, res
 	res.Etat = string(body)
 	return nil
 }
-
 
 //GetAll -returns a slice of products
 func (s *service) GetAll(ctx context.Context, req *pb.Request, res *pb.Response) error {
