@@ -181,6 +181,56 @@ func (s *Api) Cotisations(req *restful.Request, res *restful.Response) {
 	res.WriteEntity(response)
 }
 
+
+//permettant d'identifier le client de weblogy
+func (s *Api) PoliceExternes(req *restful.Request, res *restful.Response) {
+	log.Println("attempting to list all the extern police via rest api")
+	//extract the token from the headers
+	var token string
+	if os.Getenv("DISABLE_AUTH") != "true" {
+		//extract the token from the headers
+		tokenheader := req.HeaderParameter("Authorization")
+		if tokenheader == "" {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		splitted := strings.Split(tokenheader, " ")
+		if len(splitted) != 2 {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+		token = splitted[1]
+		_, err := userC.ValidateToken(context.Background(), &userP.Token{
+			Token: token,
+		})
+		if err != nil {
+			res.WriteErrorString(http.StatusForbidden, "Not Authorized")
+			return
+		}
+	}
+	ctx := metadata.Set(context.Background(), "Token", token)
+	log.Println("Authenticated with token ", token)
+	err := req.Request.ParseForm()
+	if err != nil {
+		res.WriteErrorString(http.StatusBadRequest, err.Error())
+		return
+	}
+	police := new(productP.Police)
+	err = decoder.Decode(police, req.Request.PostForm)
+	if err != nil {
+		theerror := fmt.Sprintf("erreur pendant le decodage des parametres de Cotisations %v", err)
+		log.Println(theerror)
+		res.WriteError(http.StatusBadRequest, fmt.Errorf("Mauvais numero de police"))
+		return
+	}
+	response, err := productC.GetlistePoliceExterne(ctx, &productP.Police{Police: police.Police})
+	if err != nil {
+		theerror := fmt.Sprintf("Une erreur est survenue lors de la recuperation des polices externes %v", err)
+		log.Println(theerror)
+		res.WriteError(http.StatusBadRequest, errors.New("Une erreur est survenue lors de la recuperation des polices externes"))
+	}
+	res.WriteEntity(response)
+}
 //Souscrire creates a subscription in the system
 func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	log.Println("attempting to suscribe to a contract via rest api")
@@ -426,6 +476,7 @@ func main() {
 	ws.Route(ws.GET("/listeproduit").To(api.ListContracts))
 	ws.Route(ws.POST("/souscription").Consumes("application/x-www-form-urlencoded").To(api.Souscrire))
 	ws.Route(ws.POST("/cotisations").Consumes("application/x-www-form-urlencoded").To(api.Cotisations))
+	ws.Route(ws.POST("/policeExternes").Consumes("application/x-www-form-urlencoded").To(api.PoliceExternes))
 	ws.Route(ws.POST("/prime").Consumes("application/x-www-form-urlencoded").To(api.Payer))
 	ws.Route(ws.POST("/valeurrachat").Consumes("application/x-www-form-urlencoded").To(api.ValeurRachat))
 	ws.Route(ws.POST("/prestation").Consumes("application/x-www-form-urlencoded").To(api.Prester))

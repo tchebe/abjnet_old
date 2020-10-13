@@ -11,6 +11,7 @@ import (
 
 import (
 	context "context"
+	api "github.com/micro/go-micro/v2/api"
 	client "github.com/micro/go-micro/v2/client"
 	server "github.com/micro/go-micro/v2/server"
 )
@@ -27,9 +28,16 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 // Reference imports to suppress errors if they are not otherwise used.
+var _ api.Endpoint
 var _ context.Context
 var _ client.Option
 var _ server.Option
+
+// Api Endpoints for ProductService service
+
+func NewProductServiceEndpoints() []*api.Endpoint {
+	return []*api.Endpoint{}
+}
 
 // Client API for ProductService service
 
@@ -37,6 +45,7 @@ type ProductService interface {
 	Get(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 	GetAll(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
 	GetCotisations(ctx context.Context, in *Police, opts ...client.CallOption) (*Response, error)
+	GetlistePoliceExterne(ctx context.Context, in *Police, opts ...client.CallOption) (*Response, error)
 	GetClientProducts(ctx context.Context, in *Client, opts ...client.CallOption) (*Response, error)
 }
 
@@ -82,6 +91,16 @@ func (c *productService) GetCotisations(ctx context.Context, in *Police, opts ..
 	return out, nil
 }
 
+func (c *productService) GetlistePoliceExterne(ctx context.Context, in *Police, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "ProductService.GetlistePoliceExterne", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *productService) GetClientProducts(ctx context.Context, in *Client, opts ...client.CallOption) (*Response, error) {
 	req := c.c.NewRequest(c.name, "ProductService.GetClientProducts", in)
 	out := new(Response)
@@ -98,6 +117,7 @@ type ProductServiceHandler interface {
 	Get(context.Context, *Product, *Response) error
 	GetAll(context.Context, *Request, *Response) error
 	GetCotisations(context.Context, *Police, *Response) error
+	GetlistePoliceExterne(context.Context, *Police, *Response) error
 	GetClientProducts(context.Context, *Client, *Response) error
 }
 
@@ -106,6 +126,7 @@ func RegisterProductServiceHandler(s server.Server, hdlr ProductServiceHandler, 
 		Get(ctx context.Context, in *Product, out *Response) error
 		GetAll(ctx context.Context, in *Request, out *Response) error
 		GetCotisations(ctx context.Context, in *Police, out *Response) error
+		GetlistePoliceExterne(ctx context.Context, in *Police, out *Response) error
 		GetClientProducts(ctx context.Context, in *Client, out *Response) error
 	}
 	type ProductService struct {
@@ -129,6 +150,10 @@ func (h *productServiceHandler) GetAll(ctx context.Context, in *Request, out *Re
 
 func (h *productServiceHandler) GetCotisations(ctx context.Context, in *Police, out *Response) error {
 	return h.ProductServiceHandler.GetCotisations(ctx, in, out)
+}
+
+func (h *productServiceHandler) GetlistePoliceExterne(ctx context.Context, in *Police, out *Response) error {
+	return h.ProductServiceHandler.GetlistePoliceExterne(ctx, in, out)
 }
 
 func (h *productServiceHandler) GetClientProducts(ctx context.Context, in *Client, out *Response) error {

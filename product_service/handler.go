@@ -50,6 +50,24 @@ func (s *service) GetCotisations(ctx context.Context, req *pb.Police, res *pb.Re
 	return nil
 }
 
+//permettant d'identifier le client de weblogy
+func (s *service) GetlistePoliceExterne(ctx context.Context, req *pb.Police, res *pb.Response) error {
+	resp, err := http.Get(fmt.Sprintf("http://10.11.100.48:8084/listePoliceExterne/%s", req.Police))
+	if err != nil {
+		theerror := fmt.Sprintf("%v --from product_service", err)
+		return errors.New(theerror)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		theerror := fmt.Sprintf("%v --from product_service", err)
+		return errors.New(theerror)
+	}
+	res.Etat = string(body)
+	return nil
+}
+
+
 //GetAll -returns a slice of products
 func (s *service) GetAll(ctx context.Context, req *pb.Request, res *pb.Response) error {
 	products, err := s.repo.GetAll()

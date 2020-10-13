@@ -6,6 +6,7 @@ service ProductService{
     rpc Get(Product) returns (Response){}
     rpc GetAll(Request)returns(Response){}
     rpc GetCotisations(Police)returns(Response){}
+    rpc GetlistePoliceExterne(Police)returns(Response){}
     rpc GetClientProducts(Client)returns(Response){}
 }
 message Client{
