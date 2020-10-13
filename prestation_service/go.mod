@@ -11,4 +11,4 @@ require (
 	github.com/zjjt/abjnet/user_service v0.0.0-20200531124055-aab7d7162a78
 )
 
-replace github.com/zjjt/abjnet/user_service => github.com/tchebe/abjnet/user_service v0.0.0-20200531124055-aab7d7162a78
+replace github.com/zjjt/abjnet/user_service => github.com/tchebe/abjnet/user_service

@@ -19,4 +19,4 @@ require (
 	honnef.co/go/tools v0.0.1-2020.1.3 // indirect
 )
 
-replace github.com/zjjt/abjnet/user_service => github.com/tchebe/abjnet/user_service v0.0.0-20200508133603-c1790a700d4e
+replace github.com/zjjt/abjnet/user_service => github.com/tchebe/abjnet/user_service

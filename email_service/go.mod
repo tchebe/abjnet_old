@@ -13,8 +13,8 @@ require (
 	github.com/zjjt/abjnet/user_service v0.0.0-20200531233639-a49046ecb633
 )
 
-replace github.com/zjjt/abjnet/payment_service => github.com/tchebe/abjnet/payment_service v0.0.0-20200531233639-a49046ecb633
-replace github.com/zjjt/abjnet/prestation_service => github.com/tchebe/abjnet/prestation_service v0.0.0-20200531233639-a49046ecb633
-replace github.com/zjjt/abjnet/product_service => github.com/tchebe/abjnet/product_service v0.0.0-20200804064938-decd38f6bccb
-replace github.com/zjjt/abjnet/souscription_service => github.com/tchebe/abjnet/souscription_service v0.0.0-20200531233639-a49046ecb633
-replace github.com/zjjt/abjnet/user_service => github.com/tchebe/abjnet/user_service v0.0.0-20200531233639-a49046ecb633
+replace github.com/zjjt/abjnet/payment_service => github.com/tchebe/abjnet/payment_service
+replace github.com/zjjt/abjnet/prestation_service => github.com/tchebe/abjnet/prestation_service
+replace github.com/zjjt/abjnet/product_service => github.com/tchebe/abjnet/product_service
+replace github.com/zjjt/abjnet/souscription_service => github.com/tchebe/abjnet/souscription_service
+replace github.com/zjjt/abjnet/user_service => github.com/tchebe/abjnet/user_service
