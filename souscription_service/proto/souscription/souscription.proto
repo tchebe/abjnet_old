@@ -22,7 +22,15 @@ message Souscription{
     string email=12;
     string etattraitement=13;
     string createdAt=14;
+    string firstassociate=15;
+    string dateofbirth1=16;
+    string dateofbirth2=17;
+    string dateofbirth3=18;
+    string lienparente1=19;
+    string secondtassociate=20;
+    string lienparente2=21;
 }
+
 message Request{}
 message Response{
     bool done=1;
