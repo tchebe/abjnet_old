@@ -13,8 +13,8 @@ services:
     # build: ./api_gateway
     command: api --handler=http --address=:9090 --namespace=abjnet
     network_mode: host
-    # ports:
-    #   - :8080
+    ports:
+      - "9000:9000"
     environment:
       MICRO_REGISTERY: "mdns"
       MICRO_NAMESPACE: "abjnet"
