@@ -101,7 +101,10 @@ func main() {
 	// into database columns/types etc. This will
 	// check for changes and migrate them each time
 	// this service is restarted.
-	db.AutoMigrate(&pb.Souscription{})
+	if errMigr := db.AutoMigrate(&pb.Souscription{}); errMigr != nil {
+		log.Fatalf("Error while migrating sosucription table")
+	}
+	// db.AutoMigrate(&pb.Souscription{})
 	repo := newSubRepository(db)
 	service := micro.NewService(micro.Name("abjnet.service.souscription"), micro.WrapHandler(AuthWrapper))
 	service.Init()

@@ -10,6 +10,7 @@ require (
 	github.com/miekg/dns v1.1.29 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/tchebe/abjnet/user_service v0.0.0-20201013223527-4e595b60441a
+	google.golang.org/protobuf v1.23.0
 )
 
 replace github.com/zjjt/abjnet/user_service => github.com/tchebe/abjnet/user_service v0.0.0-20200531124055-aab7d7162a78
