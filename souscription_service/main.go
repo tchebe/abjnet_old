@@ -101,7 +101,7 @@ func main() {
 	// into database columns/types etc. This will
 	// check for changes and migrate them each time
 	// this service is restarted.
-	if errMigr := db.AutoMigrate(&pb.Souscription); errMigr != nil {
+	if errMigr := db.AutoMigrate(&pb.Souscription{}); errMigr != nil {
 		log.Println("Error while migrating souscription table: %v", errMigr)
 	}
 	// db.AutoMigrate(&pb.Souscription{})
