@@ -482,6 +482,7 @@ github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81P
 github.com/syndtr/gocapability v0.0.0-20170704070218-db04d3cc01c8/go.mod h1:hkRG7XYTFWNJGYcbNJQlaLq0fg1yr4J4t/NcTQtrfww=
 github.com/tchebe/abjnet v0.0.0-20200508133603-c1790a700d4e h1:uHYmBa2FGGhX6RS4cjh+tIKjyaoCCg2/YWZsjU2dlvQ=
 github.com/tchebe/abjnet v0.0.0-20201013223527-4e595b60441a h1:Sm6qy4z7jrUMMuQNyIPi9NrvXiEm4LaYY86u/6R1VRA=
+github.com/tchebe/abjnet/user_service v0.0.0-20200508133603-c1790a700d4e/go.mod h1:iKFmHxVNh6z8m8F16qlYFWxjgmmBP5wdL6iLNiLSJuk=
 github.com/tchebe/abjnet/user_service v0.0.0-20201013223527-4e595b60441a h1:uEZCFskHFfrxx3ajWiMDcbQVTj9XjNsYlSQYMBAdItI=
 github.com/tchebe/abjnet/user_service v0.0.0-20201013223527-4e595b60441a/go.mod h1:rn4StlzuZcnysSJfI6W0cjFiz+hjDpWEw6rvUE/1ku0=
 github.com/technoweenie/multipartstreamer v1.0.1/go.mod h1:jNVxdtShOxzAsukZwTSw6MDx5eUJoiEBsSvzDU9uzog=
