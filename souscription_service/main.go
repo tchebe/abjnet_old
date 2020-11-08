@@ -102,7 +102,7 @@ func main() {
 	// check for changes and migrate them each time
 	// this service is restarted.
 	if errMigr := db.AutoMigrate(&pb.Souscription{}); errMigr != nil {
-		log.Fatalf("Error while migrating sosucription table")
+		log.Fatalf("Error while migrating sosucription table: %v", errMigr)
 	}
 	// db.AutoMigrate(&pb.Souscription{})
 	repo := newSubRepository(db)
