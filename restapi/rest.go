@@ -269,6 +269,7 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors de la souscription %v d", err)
 		log.Println(theerror)
+		log.Println("une erreur est survenue lors de la souscription %v d", err)
 		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 		return
 	}
@@ -278,6 +279,7 @@ func (s *Api) Souscrire(req *restful.Request, res *restful.Response) {
 	if err != nil {
 		theerror := fmt.Sprintf("une erreur est survenue lors de la souscription %v s", err)
 		log.Println(theerror)
+		log.Println("une erreur est survenue lors de la souscription %v s", err)
 		res.WriteError(http.StatusBadRequest, errors.New(theerror))
 	}
 	res.WriteEntity(response)
